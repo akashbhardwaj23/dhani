@@ -4,22 +4,26 @@ export function ChangeWallet({
   setWallets,
   walletPublicKey,
   balance,
+  setModel,
+  model
 }: {
   setWallets: Dispatch<SetStateAction<boolean>>;
   walletPublicKey: string;
   balance: number;
+  setModel : Dispatch<SetStateAction<boolean>>;
+  model : boolean
 }) {
   const [copied, setCopied] = useState<boolean>(false);
-
-    const copyPublicKey = async () => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 5_000);
-        await navigator.clipboard.writeText(walletPublicKey)
-    }
+  
+  const copyPublicKey = async () => {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 5_000);
+    await navigator.clipboard.writeText(walletPublicKey);
+  };
 
   return (
     <div>
-      <div className="flex mb-4">
+      <div className={`flex mb-4`}>
         <div
           className=" flex items-center justify-center hover:cursor-pointer"
           onClick={() => setWallets((prev) => !prev)}
@@ -68,7 +72,7 @@ export function ChangeWallet({
           </svg>
         </div>
       </div>
-      <div className="bg-[#202127] p-6 flex justify-between items-center rounded-md  border-2 border-[#4c94ff] hover:bg-[#14151b] hover:cursor-pointer">
+      <div className="bg-[#202127] p-6 flex justify-between items-center rounded-md  border-2 mb-8 border-[#4c94ff] hover:bg-[#14151b] hover:cursor-pointer">
         <div className="flex items-center">
           <img
             src="https://seeklogo.com/images/S/solana-sol-logo-12828AD23D-seeklogo.com.png"
@@ -140,6 +144,28 @@ export function ChangeWallet({
           </div>
         </div>
       </div>
+      <div className="text-[#4c94ff] font-bold text-base flex items-center gap-2 hover:cursor-pointer" onClick={() => setModel(true)}>
+        <div className="flex justify-center items-center h-full">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="size-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+        </div>
+        <span className="flex justify-center items-center">
+          Add new solana wallet
+        </span>
+      </div>
     </div>
   );
 }
+
