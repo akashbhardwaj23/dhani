@@ -17,7 +17,7 @@ export function CreateOrImportWallet({
             Welcome back To Wallet
           </h1>
           <h2 className="text-[#969fa5] text-base font-medium flex justify-center tracking-tight">
-            Let's get started.
+            Lets get started.
           </h2>
         </div>
         <button

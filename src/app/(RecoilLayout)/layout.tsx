@@ -1,11 +1,8 @@
 "use client"
-import {atom, RecoilRoot} from "recoil"
+import { RecoilRoot} from "recoil"
 
 
-
-export const Wallet = atom
-
-export function RecoilLayout({
+export default function RecoilLayout({
     children
 }: {
     children : React.ReactNode
