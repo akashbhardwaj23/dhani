@@ -1,21 +1,21 @@
+import { SolanaImageUrl } from "@/config/assets";
+
 export function Appbar({
   onClick,
-  walletPublicKey,
   selectedWallet
 }: {
   onClick: () => void;
-  walletPublicKey: string;
   selectedWallet : number
 }) {
   return (
     <div className="flex justify-between px-4  items-center w-full">
-      <div className="bg-[#969faf] p-2 rounded-full">
-        <img src="/airdrop.png" alt="airdrop" className="w-8 h-8" />
+      <div className="p-2 rounded-full hover:cursor-pointer">
+        <img src="/icon.png" alt="airdrop" className="w-12 h-12" />
       </div>
       <div className="w-1/2 grid grid-cols-5 h-full items-center bg-[#202127] rounded-3xl  border border-[#37383d]">
         <div className="p-2 pl-3 rounded-l-3xl float-left col-span-1 hover:bg-[#0e0f14] hover:cursor-pointer">
           <img
-            src="https://seeklogo.com/images/S/solana-sol-logo-12828AD23D-seeklogo.com.png"
+            src={SolanaImageUrl}
             alt="sol"
             className="w-8 h-8"
           />
@@ -63,7 +63,7 @@ export function Appbar({
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          stroke-width="2"
+          strokeWidth="2"
           stroke="currentColor"
           fill="none"
           strokeLinecap="round"

@@ -10,7 +10,7 @@ export function CreateOrImportWallet({
     
       <div className="max-w-xl w-full flex h-full items-center flex-col">
         <div className="mb-4 p-2">
-          <img src="airdrop.png" alt="" className="w-20 h-20" />
+          <img src="icon.png" alt="" className="w-24 h-24" />
         </div>
         <div className="mb-40">
           <h1 className="text-white text-4xl font-semibold mb-4 tracking-tight">

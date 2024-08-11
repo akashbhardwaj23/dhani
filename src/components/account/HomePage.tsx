@@ -1,16 +1,22 @@
-
-
+import { SolanaImageUrl } from "@/config/assets";
+import { WalletType } from "@/lib/types/wallettypes";
 
 export function HomePage({
-    balance
+  wallets,
+  selectedWallet,
 }: {
-    balance : number
-}){
-    return (
-        <>
-        <div className="mt-16 mb-8">
+  wallets: WalletType[] | null;
+  selectedWallet: number;
+}) {
+  const wallet = wallets?.filter((wallet) => wallet.id === selectedWallet)[0];
+  const balance = wallet?.balance;
+
+  return (
+    <>
+      <div className="mt-16 mb-8">
         <div className=" flex justify-center text-4xl mb-3 text-white">
-          $ {balance}
+          ${" "}
+          {balance}
         </div>
         <div className=" flex justify-center text-xl text-[#b7b7b6]">
           Percentage
@@ -81,22 +87,26 @@ export function HomePage({
       <div className="w-full hover:bg-[#14151b] rounded-md">
         <div className="flex items-center justify-between p-3">
           <div className="flex items-center">
-            <img
-              src="https://seeklogo.com/images/S/solana-sol-logo-12828AD23D-seeklogo.com.png"
-              alt="sol"
-              className="w-14 h-14 mr-8"
-            />
+            <img src={SolanaImageUrl} alt="sol" className="w-14 h-14 mr-8" />
             <div className="">
               <h1 className="text-white text-xl">Solana</h1>
-              <h2 className="text-[#969faf] text-base">{balance} SOL</h2>
+              <h2 className="text-[#969faf] text-base">
+                {balance}{" "}
+                SOL
+              </h2>
             </div>
           </div>
           <div className="">
-            <h1 className="text-white font-semibold text-xl">$ {balance}</h1>
-            <h2 className="text-[#039e64] text-base text-center font-semibold">0.32%</h2>
+            <h1 className="text-white font-semibold text-xl">
+              ${" "}
+              {balance}
+            </h1>
+            <h2 className="text-[#039e64] text-base text-center font-semibold">
+              0.32%
+            </h2>
           </div>
         </div>
       </div>
-        </>
-    )
+    </>
+  );
 }

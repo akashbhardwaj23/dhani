@@ -1,55 +1,55 @@
 import { Appbar } from "@/ui/Appbar";
-import { HomePage } from "./account/Home";
+import { HomePage } from "./HomePage";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ChangeWallet } from "./account/ChangeWallet";
+import { ChangeWallet } from "./ChangeWallet";
 import { createNewWallet, createWalletSolana, getBalance } from "@/server/wallet";
+import { SetWalletType, WalletType } from "@/lib/types/wallettypes";
+import { useRecoilState } from "recoil";
+import { SecretKey } from "@/lib/utils/recoil";
 
 
-
-export interface Wallets {
-  publicKey : string;
-  id : number;
-  balance? : number
-}
 
 export function Wallet({ mnemonic }: { mnemonic: string }) {
   const [iswallets, setIsWallets] = useState(false);
-  const [walletPublicKey, setWalletPublicKey] = useState<string>("");
-  const [balance, setBalance] = useState<number>(0);
   const [model, setModel] = useState<boolean>(false);
-  const [wallets, setWallets] = useState<Wallets[] | null>(null);
-  const [selectedWallet, setSellectedWallet] = useState<number>(1)
+  const [wallets, setWallets] = useState<WalletType[] | null>(null);
+  const [selectedWallet, setSellectedWallet] = useState<number>(1);
+  const [secretKey, setSeceretKey] = useRecoilState(SecretKey)
 
   useEffect(() => {
-    const createWalletAndGetBalance = async () => {
-      console.log("Redering again")
-      const response = await createWalletSolana(mnemonic);
-      console.log(response);
-      const balance = await getBalance(response.publicKey);
-      console.log(balance);
-      setBalance(balance);
+    if(!wallets){
+      const createWalletAndGetBalance = async () => {
+        console.log("Redering again")
+         const response = await createWalletSolana(mnemonic);
+         console.log(response);
+         const balance = await getBalance(response.publicKey);
+         console.log(balance);
+   
+         setSeceretKey(response.secret.toLocaleString("hex"))
+   
+         // setWalletPublicKey(response.publicKey);
+         setWallets(prev => {
+           if(prev){
+             return [...prev, {
+               publicKey : response.publicKey,
+               id : prev.length + 1,
+               balance : balance
+             }]
+           } else {
+             return [{
+               publicKey : response.publicKey,
+               id : 1,
+               balance : balance
+             }]
+           }
+         })
+   
+       };
+       createWalletAndGetBalance();
 
-      setWalletPublicKey(response.publicKey);
-      setWallets(prev => {
-        if(prev){
-          return [...prev, {
-            publicKey : response.publicKey,
-            id : prev.length + 1,
-            balance : balance
-          }]
-        } else {
-          return [{
-            publicKey : response.publicKey,
-            id : 1,
-            balance : balance
-          }]
-        }
-      })
+    }
 
-      
-    };
-
-    createWalletAndGetBalance();
+    return 
   }, []);
 
   console.log(wallets)
@@ -64,11 +64,8 @@ export function Wallet({ mnemonic }: { mnemonic: string }) {
         {iswallets ? (
           <ChangeWallet
             setIsWallets={setIsWallets}
-            balance={balance}
-            walletPublicKey={walletPublicKey}
             setModel={setModel}
             wallets= {wallets}
-            model={model}
             setSellectedWallet={setSellectedWallet}
             selectedWallet={selectedWallet}
 
@@ -78,10 +75,9 @@ export function Wallet({ mnemonic }: { mnemonic: string }) {
           <>
             <Appbar
               onClick={() => setIsWallets(true)}
-              walletPublicKey={walletPublicKey}
               selectedWallet={selectedWallet}
             />
-            <HomePage balance={balance} />
+            <HomePage wallets={wallets} selectedWallet={selectedWallet} />
           </>
         )}
       </div>
@@ -90,9 +86,15 @@ export function Wallet({ mnemonic }: { mnemonic: string }) {
   );
 }
 
-function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch<SetStateAction<boolean>>; mnemonic : string; wallets : Wallets[] | null; setWallets: Dispatch<SetStateAction<Wallets[] | null>>}) {
+function Model(
+  { setModel, mnemonic, wallets, setWallets }: 
+  { setModel: Dispatch<SetStateAction<boolean>>; 
+    mnemonic : string; wallets : WalletType[] | null; 
+    setWallets: SetWalletType}
+  ) {
   const generateNewWallet = async () => {
     if(wallets){
+      console.log("Running here")
       const response = await createNewWallet(mnemonic, wallets[wallets.length - 1].id);
       const balance = await getBalance(response.publicKey);
       console.log(balance);
@@ -118,7 +120,7 @@ function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch
     <div className="absolute top-10 flex justify-center w-2/5">
       <div className="w-full h-full rounded-lg border border-[#4c94ff] text-white p-4">
         <div
-          className="mb-8 p-4 flex justify-start hover:cursor-pointer"
+          className="mb-4 p-4 flex justify-start hover:cursor-pointer"
           onClick={() => setModel(false)}
         >
           <svg
@@ -137,7 +139,7 @@ function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch
           </svg>
         </div>
         <div className="flex flex-col items-center mb-8">
-          <img src="/airdrop.png" alt="airdrop" className="w-20 h-20 mb-4" />
+          <img src="/icon.png" alt="airdrop" className="w-20 h-20 mb-4" />
           <h1 className="text-4xl text-white font-semibold mb-4">Account 1</h1>
           <h2 className="text-xl text-[#9ea3be] font-semibold">
             Add a new Solana wallet to this account.
@@ -145,7 +147,7 @@ function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer"
+          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -167,7 +169,7 @@ function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer"
+          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -199,7 +201,7 @@ function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer"
+          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -225,7 +227,7 @@ function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer"
+          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -242,9 +244,9 @@ function Model({ setModel, mnemonic, wallets, setWallets }: { setModel: Dispatch
                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
               />
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
               />
             </svg>

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 export function MnemonicInput({ onNext }: { onNext: (data: any) => any }) {
   const [mneumonicWords, setMneumonicWords] = useState<string[]>([]);
-  const rowsArray = [...Array(mneumonicWords.length / 3).fill("")];
   const mneumonics = mneumonicWords.map((e) => e.trim()).join(" ");
   const [copied, setCopied] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -133,14 +132,4 @@ function MneumonicTable({ mneumonicWords }: { mneumonicWords: string[] }) {
       </tbody>
     </table>
   );
-}
-
-{
-  /* <tr>
-          <td className="text-start text-sm">
-            <span className="mr-4 text-[#969fa5]">{i+1}</span>
-            <span className="text-white font-semibold">{mneumonicWord}</span>
-          </td>
-         
-        </tr> */
 }

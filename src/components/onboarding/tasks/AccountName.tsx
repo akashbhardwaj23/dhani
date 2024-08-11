@@ -1,3 +1,5 @@
+import { SolanaImageUrl } from "@/config/assets";
+
 export function AccountName({ onNext }: { onNext: (data: any) => any }) {
   return (
     <div className="max-w-xl w-full flex h-full items-center flex-col">
@@ -25,7 +27,7 @@ export function AccountName({ onNext }: { onNext: (data: any) => any }) {
           onClick={(e: any) => onNext({ network: e.target.value })}
         >
           <img
-            src="https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png"
+            src={SolanaImageUrl}
             alt="solana-icon"
             className="w-8 h-8 mr-4"
           />

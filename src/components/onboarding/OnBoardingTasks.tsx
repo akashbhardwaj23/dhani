@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { CreateOrImportWallet } from "./CreateOrImport";
+import { CreateOrImportWallet } from "./tasks/CreateOrImport";
 import { useStep } from "@/hooks/useStep";
-import { AccountName } from "./AccountName";
-import { MnemonicInput } from "./MnemonicInput";
-import { CreatePassword } from "./CreatePassword";
-import { Wallet } from "./Wallet";
+import { AccountName } from "./tasks/AccountName";
+import { MnemonicInput } from "./tasks/MnemonicInput";
+import { CreatePassword } from "./tasks/CreatePassword";
+import { Wallet } from "../account/Wallet";
 
 
 export function OnBoardingTasks(){
