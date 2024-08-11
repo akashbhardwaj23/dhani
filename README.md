@@ -23,7 +23,7 @@ Seprate Signin Page
 ![signin](/public/assets//signin.png)
 
 
-## Solana
+## Web3 Cohort
 
 Here is some information about the project
 
