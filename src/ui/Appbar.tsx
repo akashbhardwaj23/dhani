@@ -1,9 +1,11 @@
 export function Appbar({
   onClick,
-  walletPublicKey
-} : {
-  onClick : () => void,
-  walletPublicKey : string
+  walletPublicKey,
+  selectedWallet
+}: {
+  onClick: () => void;
+  walletPublicKey: string;
+  selectedWallet : number
 }) {
   return (
     <div className="flex justify-between px-4  items-center w-full">
@@ -18,8 +20,11 @@ export function Appbar({
             className="w-8 h-8"
           />
         </div>
-        <div className="flex border-x-2 border-[#37383d] h-full justify-center items-center col-span-3 text-base text-white font-semibold hover:bg-[#0e0f14] hover:cursor-pointer" onClick={onClick}>
-          <span className="mr-2">Wallet 1</span>
+        <div
+          className="flex border-x-2 border-[#37383d] h-full justify-center items-center col-span-3 text-base text-white font-semibold hover:bg-[#0e0f14] hover:cursor-pointer"
+          onClick={onClick}
+        >
+          <span className="mr-2">Wallet {selectedWallet}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -52,10 +57,23 @@ export function Appbar({
           </svg>
         </div>
       </div>
-      <div className="hover:animate-bounce hover:cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#4a4d59" className="size-8">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
-</svg>
-</div>
+      <div className="hover:animate-bounce hover:cursor-pointer">
+        <svg
+          className="size-10 text-red-500"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" />{" "}
+          <rect x="4" y="4" width="16" height="16" rx="2" />{" "}
+          <line x1="9" y1="4" x2="9" y2="20" />
+        </svg>
+      </div>
     </div>
   );
 }
