@@ -54,7 +54,7 @@ function WalletOptions({
   const copyText = async () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 5_000);
-    await navigator.clipboard.writeText("publicket");
+    await navigator.clipboard.writeText(wallet?.publicKey || "" );
   };
 
   if (selectedAction === "show-privatekey") {
@@ -141,7 +141,7 @@ function WalletOptions({
               </div>
 
               {copied ? (
-                <div className="absolute top-10 p-4 text-sm right-6 rounded-2xl text-white bg-red-500">
+                <div className="absolute top-10 p-4 text-sm right-6 rounded-2xl text-white ">
                   Copied
                 </div>
               ) : (
@@ -224,6 +224,11 @@ function WalletOptions({
   }
 }
 
+interface CopyWallet {
+  walletId : number;
+  value : boolean
+}
+
 function ShowWalletKeys({
   setModel,
   setIsWallets,
@@ -239,12 +244,21 @@ function ShowWalletKeys({
   selectedWallet: number;
   setOptions: SetActionBooleanType;
 }) {
-  const [copied, setCopied] = useState<boolean>(false);
+  const [copied, setCopied] = useState<CopyWallet | undefined>();
 
-  const copyPublicKey = async () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 5_000);
-    await navigator.clipboard.writeText("walletPublicKey");
+  const copyPublicKey = async (walletId : number) => {
+    setCopied({
+      walletId,
+      value : true
+    });
+    setTimeout(() => setCopied((copied) => {
+      return {
+        walletId : copied?.walletId || 1,
+        value : false
+      }
+    }), 5_000);
+    const walletPublicKey = wallets?.filter((wallet) => wallet.id === walletId)[0].publicKey;
+    await navigator.clipboard.writeText(walletPublicKey || "");
   };
 
   return (
@@ -324,7 +338,7 @@ function ShowWalletKeys({
 
           <div className="flex items-center">
             <div className="p-2 rounded-full hover:bg-black right-20 absolute">
-              {copied ? (
+              {copied?.value && copied.walletId === wallet.id  ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -347,7 +361,7 @@ function ShowWalletKeys({
                   strokeWidth={1.5}
                   stroke="#969faf"
                   className="size-8"
-                  onClick={copyPublicKey}
+                  onClick={() => copyPublicKey(wallet.id)}
                 >
                   <path
                     strokeLinecap="round"
