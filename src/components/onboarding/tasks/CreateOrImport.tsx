@@ -28,6 +28,7 @@ export function CreateOrImportWallet({
         </button>
         <button
           className={`bg-[#202127] text-white px-4 py-3 text-base font-semibold rounded-xl mb-2 w-1/2 tracking-tight`}
+          onClick={() => onNext({action : "import"})}
         >
           Import Wallet
         </button>

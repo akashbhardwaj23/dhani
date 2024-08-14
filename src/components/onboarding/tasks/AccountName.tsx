@@ -1,6 +1,6 @@
 import { SolanaImageUrl } from "@/config/assets";
 
-export function AccountName({ onNext }: { onNext: (data: any) => any }) {
+export function AccountName({ onNext }: { onNext: (name: any) => any }) {
   return (
     <div className="max-w-xl w-full flex h-full items-center flex-col">
       <div className="mb-8">
@@ -22,9 +22,9 @@ export function AccountName({ onNext }: { onNext: (data: any) => any }) {
 
       <div className="border-t-2 border-[#202127] w-full pt-4">
         <button
-          value={"sol"}
+          value={"SOLANA"}
           className="flex items-center p-4 bg-[#202127] text-white font-semibold w-full rounded-xl hover:border-2 focus:border-blue-700/80"
-          onClick={(e: any) => onNext({ network: e.target.value })}
+          onClick={(e: any) => onNext(e.target.value)}
         >
           <img
             src={SolanaImageUrl}

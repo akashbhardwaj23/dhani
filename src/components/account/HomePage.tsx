@@ -4,22 +4,30 @@ import { WalletType } from "@/lib/types/wallettypes";
 export function HomePage({
   wallets,
   selectedWallet,
+  onClick
 }: {
   wallets: WalletType[] | null;
   selectedWallet: number;
+  onClick : () => void
 }) {
   const wallet = wallets?.filter((wallet) => wallet.id === selectedWallet)[0];
   const balance = wallet?.balance;
 
   return (
     <>
-      <div className="mt-16 mb-8">
+      <div className="mt-16 mb-6">
         <div className=" flex justify-center text-4xl mb-3 text-white">
           ${" "}
           {balance}
         </div>
-        <div className=" flex justify-center text-xl text-[#b7b7b6]">
+        <div className=" flex justify-center text-xl text-[#b7b7b6] mb-3">
           Percentage
+        </div>
+
+        <div className="flex justify-center ">
+        <button className="text-base text-white border border-[#b7b7b6] p-2 bg-transparent rounded-md hover:cursor-pointer active:scale-95 active:text-sm">
+          Refresh Balance
+        </button>
         </div>
       </div>
       <div className="flex justify-between p-4 text-white text-xl mb-8">

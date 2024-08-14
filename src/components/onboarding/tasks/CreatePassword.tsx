@@ -19,6 +19,7 @@ export function CreatePassword({
       return;
     }
     if(password){
+      console.log(password)
         onNext(password)
     }
     

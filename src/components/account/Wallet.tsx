@@ -2,57 +2,102 @@ import { Appbar } from "@/ui/Appbar";
 import { HomePage } from "./HomePage";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChangeWallet } from "./ChangeWallet";
-import { createNewWallet, createWalletSolana, getBalance } from "@/server/wallet";
+import {
+  createNewWallet,
+  createWalletSolana,
+  getBalance,
+} from "@/server/wallet";
 import { SetWalletType, WalletType } from "@/lib/types/wallettypes";
 import { useRecoilState } from "recoil";
 import { SecretKey } from "@/lib/utils/recoil";
+import { OnBoardingTasksType } from "@/lib/types/onBoarding";
 
+interface User {
+  id : string;
+  Account : {id : number}[]
+}
 
-
-export function Wallet({ mnemonic }: { mnemonic: string }) {
+export function Wallet({
+  mnemonic,
+  onBoardingData,
+}: {
+  mnemonic: string;
+  onBoardingData: OnBoardingTasksType;
+}) {
   const [iswallets, setIsWallets] = useState(false);
   const [model, setModel] = useState<boolean>(false);
   const [wallets, setWallets] = useState<WalletType[] | null>(null);
   const [selectedWallet, setSellectedWallet] = useState<number>(1);
-  const [secretKey, setSeceretKey] = useRecoilState(SecretKey)
+  const [secretKey, setSeceretKey] = useRecoilState(SecretKey);
 
   useEffect(() => {
-    if(!wallets){
-      const createWalletAndGetBalance = async () => {
-        console.log("Redering again")
-         const response = await createWalletSolana(mnemonic);
-         console.log(response);
-         const balance = await getBalance(response.publicKey);
-         console.log(balance);
-   
-         setSeceretKey(response.secret.toLocaleString("hex"))
-   
-         // setWalletPublicKey(response.publicKey);
-         setWallets(prev => {
-           if(prev){
-             return [...prev, {
-               publicKey : response.publicKey,
-               id : prev.length + 1,
-               balance : balance
-             }]
-           } else {
-             return [{
-               publicKey : response.publicKey,
-               id : 1,
-               balance : balance
-             }]
-           }
-         })
-   
-       };
-       createWalletAndGetBalance();
 
+      if (!wallets) {
+        const createWalletAndGetBalance = async () => {
+          console.log("Redering again");
+          const response = await createWalletSolana(onBoardingData);
+          console.log(response);
+          const balance = await getBalance(response.publicKey);
+          console.log(balance);
+          setSeceretKey(response.secret.toLocaleString("hex"));
+
+          // setWalletPublicKey(response.publicKey);
+          setWallets((prev) => {
+            if (prev) {
+              return [
+                ...prev,
+                {
+                  publicKey: response.publicKey,
+                  id: prev.length + 1,
+                  balance: balance,
+                  accountId : response.account.id 
+                },
+              ];
+            } else {
+              return [
+                {
+                  publicKey: response.publicKey,
+                  id: 1,
+                  balance: balance,
+                  accountId : response.account.id 
+                },
+              ];
+            }
+          });
+        };
+        createWalletAndGetBalance();
+      
     }
-
-    return 
   }, []);
 
-  console.log(wallets)
+  console.log(wallets);
+
+
+  const getBalanceOnRefresh = async () => {
+    const walletPublickey = wallets?.filter((wallet) => wallet.id === selectedWallet)[0].publicKey;
+    const balance = await getBalance(walletPublickey || "")
+
+    setWallets((prev) => {
+
+      if(!prev){
+        return null
+      }
+      const newWallets = prev?.map((wallet) => {
+        if(wallet.id === selectedWallet){
+          wallet.balance = balance
+        }
+        return wallet;
+      })
+      return newWallets
+    })
+
+  }
+
+  if(!wallets){
+    return <div className="flex justify-center h-full w-full items-center text-3xl text-white">
+        Loading ....
+    </div>
+  }
 
   return (
     <>
@@ -65,11 +110,9 @@ export function Wallet({ mnemonic }: { mnemonic: string }) {
           <ChangeWallet
             setIsWallets={setIsWallets}
             setModel={setModel}
-            wallets= {wallets}
+            wallets={wallets}
             setSellectedWallet={setSellectedWallet}
             selectedWallet={selectedWallet}
-
-            
           />
         ) : (
           <>
@@ -77,43 +120,57 @@ export function Wallet({ mnemonic }: { mnemonic: string }) {
               onClick={() => setIsWallets(true)}
               selectedWallet={selectedWallet}
             />
-            <HomePage wallets={wallets} selectedWallet={selectedWallet} />
+            <HomePage wallets={wallets} selectedWallet={selectedWallet} onClick={() => getBalanceOnRefresh()} />
           </>
         )}
       </div>
-      {model && <Model setModel={setModel} mnemonic={mnemonic} wallets={wallets} setWallets={setWallets}  />}
+      {model && (
+        <Model
+          setModel={setModel}
+          mneumonic={onBoardingData.mneumonic}
+          wallets={wallets}
+          setWallets={setWallets}
+        />
+      )}
     </>
   );
 }
 
-function Model(
-  { setModel, mnemonic, wallets, setWallets }: 
-  { setModel: Dispatch<SetStateAction<boolean>>; 
-    mnemonic : string; wallets : WalletType[] | null; 
-    setWallets: SetWalletType}
-  ) {
+function Model({
+  setModel,
+  wallets,
+  mneumonic,
+  setWallets,
+}: {
+  setModel: Dispatch<SetStateAction<boolean>>;
+  wallets: WalletType[] | null;
+  mneumonic : string
+  setWallets: SetWalletType;
+}) {
   const generateNewWallet = async () => {
-    if(wallets){
-      console.log("Running here")
-      const response = await createNewWallet(mnemonic, wallets[wallets.length - 1].id);
+    if (wallets) {
+      console.log("Running here in generate new Wallets");
+      const response = await createNewWallet(mneumonic , wallets[wallets.length - 1].id, wallets[wallets.length - 1].accountId);
       const balance = await getBalance(response.publicKey);
       console.log(balance);
-      setWallets(prev => {
-        if(prev){
-          return [...prev, {
-            publicKey : response.publicKey,
-            id : prev.length + 1,
-            balance : balance
-          }]
+      setWallets((prev) => {
+        if (prev) {
+          return [
+            ...prev,
+            {
+              publicKey: response.publicKey,
+              id: prev.length + 1,
+              balance: balance,
+              accountId : response.account.id
+            },
+          ];
+        } else {
+          return [{ publicKey: response.publicKey, id: 1, balance: balance, accountId : response.account.id}];
         }
-        else {
-          return [{publicKey : response.publicKey, id : 1, balance : balance}]
-        }
-      })
+      });
     }
 
-    setModel(false)
-    
+    setModel(false);
   };
 
   return (

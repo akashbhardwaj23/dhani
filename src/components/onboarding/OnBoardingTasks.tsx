@@ -5,19 +5,29 @@ import { AccountName } from "./tasks/AccountName";
 import { MnemonicInput } from "./tasks/MnemonicInput";
 import { CreatePassword } from "./tasks/CreatePassword";
 import { Wallet } from "../account/Wallet";
+import type { OnBoardingTasksType } from "@/lib/types/onBoarding";
+import { createUser } from "@/server/user";
+
 
 
 export function OnBoardingTasks(){
-    const [onBoardingData, setOnBoardingData] = useState();
+    const [onBoardingData, setOnBoardingData] = useState<OnBoardingTasksType>({
+      action : "create",
+      networkName : "SOLANA",
+      mneumonic : "",
+      password : ""
+    });
     const [mnemonic, setMneumonic] = useState<string>()
-    // const [accountName, setAccountName] = useState()
+    const [user, setUser] = useState()
     const {step, setStep, nextStep, prevStep} = useStep();
+
+    console.log(onBoardingData);
 
     const steps = [
       <CreateOrImportWallet
         key={"CreateOrImportWallet"}
         onNext={(data) => {
-          setOnBoardingData({ ...data });
+          setOnBoardingData((onBoardingData) => ({...onBoardingData, action : data.action}));
           nextStep();
         }}
       />,
@@ -27,7 +37,7 @@ export function OnBoardingTasks(){
         onNext={(name) => {
           if (name) {
             //@ts-ignore
-            setOnBoardingData({ accountName: name });
+            setOnBoardingData((onBoardingData) => ({...onBoardingData, networkName : name}));
           }
           nextStep();
         }}
@@ -37,15 +47,14 @@ export function OnBoardingTasks(){
         onNext={async (data) => {
           setMneumonic(data)
           //@ts-ignore
-          setOnBoardingData({ mnemonic: data });
+          setOnBoardingData((onBoardingData) => ({...onBoardingData, mneumonic : data}));
           nextStep();
         }}
       />,
       <CreatePassword
         key={"CreatePassword"}
         onNext={async (data) => {
-          //@ts-ignore
-          setOnBoardingData({data});
+          setOnBoardingData((onBoardingData) => ({...onBoardingData, password : data}));
           nextStep();
         }}
       />,
@@ -56,7 +65,7 @@ export function OnBoardingTasks(){
     return (
         <div className="w-full flex justify-center p-20">
             {step === steps.length ? (
-                <Wallet mnemonic={mnemonic || ""}/>
+                <Wallet mnemonic={mnemonic || ""} onBoardingData ={onBoardingData}/>
             ): (
                 <>
                 {steps[step]}
