@@ -1,5 +1,5 @@
 "use client";
-import { PrimaryButton } from "@/ui/Button";
+import { PrimaryButton } from "@/components/ui/Button";
 
 export function CreateOrImportWallet({
   onNext 

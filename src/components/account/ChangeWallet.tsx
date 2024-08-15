@@ -1,17 +1,17 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { WalletType } from "@/lib/types/wallettypes";
 import { SolanaImageUrl } from "@/config/assets";
-import { RenameWalletAction, ShowSecretAction, RemoveWalletAction } from "../wallet-actions";
+import { RenameWalletAction, ShowSecretAction, RemoveWalletAction } from "../wallet-options";
 import { SelectedActions, SetActionBooleanType } from "@/lib/types/actiontype";
 
 export function ChangeWallet({
-  setIsWallets,
+  setIsWalletsPage,
   setModel,
   wallets,
   setSellectedWallet,
   selectedWallet,
 }: {
-  setIsWallets: SetActionBooleanType;
+  setIsWalletsPage: SetActionBooleanType;
   setModel: SetActionBooleanType;
   wallets: WalletType[] | null;
   setSellectedWallet: Dispatch<SetStateAction<number>>;
@@ -25,7 +25,7 @@ export function ChangeWallet({
         <WalletOptions setOptions={setOptions} wallets ={wallets} selectedWallet={selectedWallet} />
       ) : (
         <ShowWalletKeys
-          setIsWallets={setIsWallets}
+          setIsWalletsPage={setIsWalletsPage}
           setModel={setModel}
           setSellectedWallet={setSellectedWallet}
           selectedWallet={selectedWallet}
@@ -231,13 +231,13 @@ interface CopyWallet {
 
 function ShowWalletKeys({
   setModel,
-  setIsWallets,
+  setIsWalletsPage,
   wallets,
   selectedWallet,
   setSellectedWallet,
   setOptions,
 }: {
-  setIsWallets: SetActionBooleanType;
+  setIsWalletsPage: SetActionBooleanType;
   setModel: SetActionBooleanType;
   wallets: WalletType[] | null;
   setSellectedWallet: Dispatch<SetStateAction<number>>;
@@ -266,7 +266,7 @@ function ShowWalletKeys({
       <div className={`flex mb-4`}>
         <div
           className=" flex items-center justify-center hover:cursor-pointer"
-          onClick={() => setIsWallets((prev) => !prev)}
+          onClick={() => setIsWalletsPage((prev) => !prev)}
         >
           <svg
             className="size-6 text-red-500 hover:text-red-500/70"
@@ -318,7 +318,7 @@ function ShowWalletKeys({
             className="flex items-center"
             onClick={() => {
               setSellectedWallet(wallet.id);
-              setIsWallets(false);
+              setIsWalletsPage(false);
             }}
           >
             <img src={SolanaImageUrl} alt="sol" className="h-6 w-6 mr-8" />

@@ -6,7 +6,6 @@ import { MnemonicInput } from "./tasks/MnemonicInput";
 import { CreatePassword } from "./tasks/CreatePassword";
 import { Wallet } from "../account/Wallet";
 import type { OnBoardingTasksType } from "@/lib/types/onBoarding";
-import { createUser } from "@/server/user";
 
 
 
@@ -17,8 +16,6 @@ export function OnBoardingTasks(){
       mneumonic : "",
       password : ""
     });
-    const [mnemonic, setMneumonic] = useState<string>()
-    const [user, setUser] = useState()
     const {step, setStep, nextStep, prevStep} = useStep();
 
     console.log(onBoardingData);
@@ -36,7 +33,6 @@ export function OnBoardingTasks(){
         key={"AccountName"}
         onNext={(name) => {
           if (name) {
-            //@ts-ignore
             setOnBoardingData((onBoardingData) => ({...onBoardingData, networkName : name}));
           }
           nextStep();
@@ -45,8 +41,6 @@ export function OnBoardingTasks(){
       <MnemonicInput
         key={"MnemonicInput"}
         onNext={async (data) => {
-          setMneumonic(data)
-          //@ts-ignore
           setOnBoardingData((onBoardingData) => ({...onBoardingData, mneumonic : data}));
           nextStep();
         }}
@@ -65,7 +59,7 @@ export function OnBoardingTasks(){
     return (
         <div className="w-full flex justify-center p-20">
             {step === steps.length ? (
-                <Wallet mnemonic={mnemonic || ""} onBoardingData ={onBoardingData}/>
+                <Wallet onBoardingData ={onBoardingData}/>
             ): (
                 <>
                 {steps[step]}

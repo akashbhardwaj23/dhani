@@ -1,3 +1,4 @@
+import { Loading } from "@/components/ui/loading";
 import { getMneumonics, validate } from "@/server/mnemonic";
 import { useEffect, useState } from "react";
 
@@ -40,7 +41,7 @@ export function MnemonicInput({ onNext }: { onNext: (data: any) => any }) {
     return (
       <div className="max-w-xl w-full flex h-96 items-center justify-center flex-col">
         <h1 className="text-2xl text-white font-semibold flex justify-center">
-          Loading.....
+          <Loading />
         </h1>
       </div>
     );

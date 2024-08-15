@@ -8,3 +8,5 @@ export interface WalletType {
   }
 
   export type SetWalletType = Dispatch<SetStateAction<WalletType[] | null>>
+  
+  export type AssetComponentsType = "home" | "send" | "receive" | "swap";

@@ -1,4 +1,3 @@
-import { Appbar } from "@/ui/Appbar";
 import { HomePage } from "./HomePage";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChangeWallet } from "./ChangeWallet";
@@ -12,20 +11,18 @@ import { useRecoilState } from "recoil";
 import { SecretKey } from "@/lib/utils/recoil";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
 import { useStep } from "@/hooks/useStep";
+import { Loading } from "../ui/loading";
 
-interface User {
-  id : string;
-  Account : {id : number}[]
-}
+
+
+type IswalletsPageType = "wallet" | "change-wallet"
 
 export function Wallet({
-  mnemonic,
   onBoardingData,
 }: {
-  mnemonic: string;
   onBoardingData: OnBoardingTasksType;
 }) {
-  const [iswallets, setIsWallets] = useState(false);
+  const [iswalletsPage, setIsWalletsPage] = useState(false);
   const [model, setModel] = useState<boolean>(false);
   const [wallets, setWallets] = useState<WalletType[] | null>(null);
   const [selectedWallet, setSellectedWallet] = useState<number>(1);
@@ -103,7 +100,7 @@ export function Wallet({
 
   if(!wallets){
     return <div className="flex justify-center h-full w-full items-center text-3xl text-white">
-        Loading ....
+        <Loading />
     </div>
   }
 
@@ -121,23 +118,15 @@ export function Wallet({
           model ? "blur-sm" : ""
         }`}
       >
-        {iswallets ? (
+        {iswalletsPage ? (
           <ChangeWallet
-            setIsWallets={setIsWallets}
+            setIsWalletsPage={setIsWalletsPage}
             setModel={setModel}
             wallets={wallets}
             setSellectedWallet={setSellectedWallet}
             selectedWallet={selectedWallet}
           />
-        ) : (
-          <>
-            <Appbar
-              onClick={() => setIsWallets(true)}
-              selectedWallet={selectedWallet}
-            />
-            <HomePage wallets={wallets} selectedWallet={selectedWallet} onClick={() => getBalanceOnRefresh()} />
-          </>
-        )}
+        ) : ( <HomePage wallets={wallets} selectedWallet={selectedWallet} onClick={() => getBalanceOnRefresh()} onClickAppbar={() => setIsWalletsPage(true)} /> )}
       </div>
       {model && (
         <Model
