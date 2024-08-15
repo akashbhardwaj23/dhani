@@ -17,6 +17,7 @@ export async function createWalletSolana(onBoardingData : OnBoardingTasksType){
         const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
         const publicKey = Keypair.fromSecretKey(secret).publicKey.toBase58();
 
+       try {
         const account = await db.account.create({
             data : {
                 mneumonic : onBoardingData.mneumonic,
@@ -37,6 +38,9 @@ export async function createWalletSolana(onBoardingData : OnBoardingTasksType){
             secret,
             account
         }
+       } catch (error) {
+        console.log(error)
+       }
 } 
 
 export async function createNewWallet(mneumonic: string, walletNumber : Number, accountId : number){
@@ -46,7 +50,8 @@ export async function createNewWallet(mneumonic: string, walletNumber : Number, 
     const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
     const publicKey = Keypair.fromSecretKey(secret).publicKey.toBase58();
 
-
+try {
+    
     const account = await db.account.update({
         where : {
             id : accountId
@@ -71,6 +76,9 @@ export async function createNewWallet(mneumonic: string, walletNumber : Number, 
         secret,
         account
     }
+} catch (error) {
+    console.log(error)
+}
 }
 
 export async function getBalance(publicKey : string){

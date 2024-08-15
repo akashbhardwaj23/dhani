@@ -13,14 +13,19 @@ export async function createUser(onBoardingData : OnBoardingTasksType){
 
 
 
-    const user = await db.account.create({
-        data : {
-            password : onBoardingData.password,
-            mneumonic : onBoardingData.mneumonic
-        
-        },
-    })
-
-    return user
+    try {
+        const user = await db.account.create({
+            data : {
+                password : onBoardingData.password,
+                mneumonic : onBoardingData.mneumonic
+            
+            },
+        })
+    
+        return user
+    } catch (error) {
+        console.log(error)
+        return error
+    }
 }
 
