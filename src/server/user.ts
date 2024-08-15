@@ -8,11 +8,6 @@ import db from "@/prisma/db"
 
 export async function createUser(onBoardingData : OnBoardingTasksType){
     console.log(onBoardingData);
-    // check if the user exists
-
-
-
-
     try {
         const user = await db.account.create({
             data : {
