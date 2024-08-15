@@ -6,7 +6,7 @@ const WalletValue : WalletType[] = [{
     publicKey : "",
     id : 0,
     balance : 0,
-
+    accountId : 0
   }]
 
 export const walletState = atom({
