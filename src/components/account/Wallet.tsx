@@ -42,6 +42,7 @@ export function Wallet({
           setSeceretKey(response.secret.toLocaleString("hex"));
 
           // setWalletPublicKey(response.publicKey);
+          if(response.account)
           setWallets((prev) => {
             if (prev) {
               return [
@@ -153,21 +154,23 @@ function Model({
       const response = await createNewWallet(mneumonic , wallets[wallets.length - 1].id, wallets[wallets.length - 1].accountId);
       const balance = await getBalance(response.publicKey);
       console.log(balance);
-      setWallets((prev) => {
-        if (prev) {
-          return [
-            ...prev,
-            {
-              publicKey: response.publicKey,
-              id: prev.length + 1,
-              balance: balance,
-              accountId : response.account.id
-            },
-          ];
-        } else {
-          return [{ publicKey: response.publicKey, id: 1, balance: balance, accountId : response.account.id}];
-        }
-      });
+      if(response.account){
+        setWallets((prev) => {
+          if (prev) {
+            return [
+              ...prev,
+              {
+                publicKey: response.publicKey,
+                id: prev.length + 1,
+                balance: balance,
+                accountId : response?.account.id
+              },
+            ];
+          } else {
+            return [{ publicKey: response.publicKey, id: 1, balance: balance, accountId : response.account.id}];
+          }
+        });
+      }
     }
 
     setModel(false);
