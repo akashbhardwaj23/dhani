@@ -11,6 +11,7 @@ import { SetWalletType, WalletType } from "@/lib/types/wallettypes";
 import { useRecoilState } from "recoil";
 import { SecretKey } from "@/lib/utils/recoil";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
+import { useStep } from "@/hooks/useStep";
 
 interface User {
   id : string;
@@ -29,6 +30,8 @@ export function Wallet({
   const [wallets, setWallets] = useState<WalletType[] | null>(null);
   const [selectedWallet, setSellectedWallet] = useState<number>(1);
   const [secretKey, setSeceretKey] = useRecoilState(SecretKey);
+  const [error, setError] = useState<boolean>(false);
+  const {resetStep} = useStep()
 
   useEffect(() => {
 
@@ -37,12 +40,16 @@ export function Wallet({
           console.log("Redering again");
           const response = await createWalletSolana(onBoardingData);
           console.log(response);
+          if(!response.account){
+            setError(true);
+            return;
+          }
+          
           const balance = await getBalance(response.publicKey);
           console.log(balance);
           setSeceretKey(response.secret.toLocaleString("hex"));
 
           // setWalletPublicKey(response.publicKey);
-          if(response.account)
           setWallets((prev) => {
             if (prev) {
               return [
@@ -97,6 +104,13 @@ export function Wallet({
   if(!wallets){
     return <div className="flex justify-center h-full w-full items-center text-3xl text-white">
         Loading ....
+    </div>
+  }
+
+  if(error){
+    return <div className="flex justify-center h-full w-full items-center text-3xl text-white">
+        <h1 className="flex justify-center">Database Connection Error</h1>
+        <button className="p-3 border border-gray-600 bg-transparent" onClick={() => resetStep()}>Go Back</button>
     </div>
   }
 

@@ -11,10 +11,13 @@ export function useStep(){
         return s;
     });
 
+    const resetStep = () => setStep(0)
+
     return {
         step, 
         setStep,
         nextStep,
-        prevStep
+        prevStep,
+        resetStep
     }
 }

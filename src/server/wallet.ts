@@ -6,6 +6,7 @@ import { Keypair, PublicKey } from "@solana/web3.js"
 import { connection } from "./connection";
 import db from "@/prisma/db"
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
+import { PrismaClientUnknownRequestError, PrismaClientValidationError } from "@prisma/client/runtime/library";
 
 
 
@@ -16,7 +17,6 @@ export async function createWalletSolana(onBoardingData : OnBoardingTasksType){
         const derivedSeed = derivePath(path, seed.toString("hex")).key;
         const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
         const publicKey = Keypair.fromSecretKey(secret).publicKey.toBase58();
-
        try {
         const account = await db.account.create({
             data : {
@@ -41,9 +41,9 @@ export async function createWalletSolana(onBoardingData : OnBoardingTasksType){
        } catch (error) {
         console.log(error)
         return {
-            publicKey, 
+            publicKey,
             secret
-           }
+        }
        }
       
 } 
@@ -72,10 +72,6 @@ try {
         
     })
 
-
-
-    
-    
     return {
         publicKey,
         secret,
@@ -84,8 +80,8 @@ try {
 } catch (error) {
     console.log(error)
     return {
-        publicKey,
-        secret
+      publicKey,
+      secret
     }
 }
 }
