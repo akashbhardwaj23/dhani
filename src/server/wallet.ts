@@ -40,7 +40,12 @@ export async function createWalletSolana(onBoardingData : OnBoardingTasksType){
         }
        } catch (error) {
         console.log(error)
+        return {
+            publicKey, 
+            secret
+           }
        }
+      
 } 
 
 export async function createNewWallet(mneumonic: string, walletNumber : Number, accountId : number){
@@ -78,6 +83,10 @@ try {
     }
 } catch (error) {
     console.log(error)
+    return {
+        publicKey,
+        secret
+    }
 }
 }
 
