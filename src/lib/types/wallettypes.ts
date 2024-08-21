@@ -7,6 +7,18 @@ export interface WalletType {
     accountId : number
   }
 
+  export type IswalletsPageType = "wallet" | "change-wallet";
+
   export type SetWalletType = Dispatch<SetStateAction<WalletType[] | null>>
   
   export type AssetComponentsType = "home" | "send" | "receive" | "swap";
+
+  export type SelectedNetworkType = "Solana" | "Ethereum";
+
+  export interface CopyWallet {
+    walletId: number;
+    value: boolean;
+  }
+  
+  
+  

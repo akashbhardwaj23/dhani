@@ -1,44 +1,40 @@
 import { SelectedActionType } from "@/lib/types/actiontype";
 
-
 export function RemoveWalletAction({
-    setSelectedAction,
-  }: {
-    setSelectedAction: SelectedActionType;
-  }) {
-    return (
-      <>
-        <div>
-          <div className="flex flex-col justify-between mb-16">
-            <div className="flex mb-6  px-4 pt-2 pb-4 text-xl text-white w-full">
+  setSelectedAction,
+}: {
+  setSelectedAction: SelectedActionType;
+}) {
+  return (
+    <div className="relative flex w-[40rem] flex-col rounded-xl bg-[#1FB4DC] bg-clip-border text-gray-100 shadow-md">
+      <div className="p-10">
+        <div className="flex justify-center">
+          <div className="flex flex-col justify-between items-center mb-16  w-full">
+            <div className="flex items-center mb-6 px-4 pt-2 pb-4 text-5xl font-mono w-full">
               <div
                 className="hover:cursor-pointer"
                 onClick={() => setSelectedAction("")}
               >
                 <svg
-                  className="size-8 text-red-500 hover:text-red-500/70"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
+                  className="size-8 text-red-500 hover:text-red-800"
                   fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  {" "}
-                  <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                  <line x1="5" y1="12" x2="19" y2="12" />{" "}
-                  <line x1="5" y1="12" x2="9" y2="16" />{" "}
-                  <line x1="5" y1="12" x2="9" y2="8" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 16l-4-4m0 0l4-4m-4 4h18"
+                  />
                 </svg>
               </div>
               <h1 className="flex justify-center items-center w-full">
                 Remove Wallet
               </h1>
             </div>
-  
-            <div className="w-full text-white font-semibold mb-8">
+
+            <div className="max-w-xl w-96 text-white font-semibold mb-8 flex flex-col items-center justify-center">
               <div className="flex justify-center mb-4">
                 <svg
                   className="size-12 text-red-500"
@@ -55,23 +51,30 @@ export function RemoveWalletAction({
                   <line x1="12" y1="17" x2="12.01" y2="17" />
                 </svg>
               </div>
-  
-              <div className="flex justify-center items-center mb-2 w-full">
-              <h1 className="flex justify-center w-full text-3xl ">Are you sure you want to remove public key</h1>
-              </div>
-              <h2 className="text-[#969eae]">Removing the wallet will not delete the wallet content it will still be available by importing your secret</h2>
+
+              <h1 className="flex justify-center w-full text-3xl mb-4">
+                Are you sure you want to remove public key
+              </h1>
+
+              <h2 className="text-red-500 text-lg font-mono">
+                Removing the wallet will not delete the wallet content it will
+                still be available by importing your secret
+              </h2>
             </div>
           </div>
-          <div className="flex justify-between text-base font-semibold p-4 w-full gap-4">
-            <button className="flex justify-center items-center p-3 w-1/2 bg-[#202127] text-white rounded-xl hover:bg-[#18191f]" onClick={() => setSelectedAction("")}>
-              Cancel
-            </button>
-            <button className="flex justify-center items-center p-3 w-1/2 text-[#f94845] bg-[#351a1f] rounded-xl hover:bg-gray-200">
-              Remove
-            </button>
-          </div>
         </div>
-      </>
-    );
-  }
-  
+        <div className="flex justify-between text-base font-semibold p-4 w-full gap-4">
+          <button
+            className="flex justify-center items-center p-3 w-1/2 bg-[#202127] text-white rounded-xl hover:bg-[#18191f]"
+            onClick={() => setSelectedAction("")}
+          >
+            Cancel
+          </button>
+          <button className="flex justify-center items-center p-3 w-1/2 text-[#f94845] bg-[#351a1f] hover:text-white rounded-xl hover:bg-red-600">
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

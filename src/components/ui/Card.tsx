@@ -204,7 +204,3 @@ export function AssetsCard({
 }
 
 
-
-function WalletCard(){
-    
-}

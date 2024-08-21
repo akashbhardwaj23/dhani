@@ -2,7 +2,11 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChangeWallet } from "./ChangeWallet";
 import { createUser, getBalance, updateUser } from "@/server/user";
-import { SetWalletType, WalletType } from "@/lib/types/wallettypes";
+import {
+  IswalletsPageType,
+  SetWalletType,
+  WalletType,
+} from "@/lib/types/wallettypes";
 import { useRecoilState } from "recoil";
 import { SecretKey } from "@/lib/utils/state/recoil";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
@@ -17,8 +21,6 @@ import nacl from "tweetnacl";
 import { useWallets } from "@/hooks/useWallets";
 import WalletHomePage from "../WalletHomePage";
 
-type IswalletsPageType = "wallet" | "change-wallet";
-
 export function Wallet({
   email,
   onBoardingData,
@@ -26,7 +28,8 @@ export function Wallet({
   email?: string;
   onBoardingData?: OnBoardingTasksType;
 }) {
-  const [iswalletsPage, setIsWalletsPage] = useState(false);
+  const [iswalletsPage, setIsWalletsPage] =
+    useState<IswalletsPageType>("wallet");
   const [model, setModel] = useState<boolean>(false);
   const { wallets, setWallets } = useWallets(email || "");
   const [encrtedMneumonic, setEncryptedMneumonic] = useState<string>("");
@@ -133,21 +136,25 @@ export function Wallet({
     });
   };
 
-  if(!wallets && !error){
-    return <div className="flex justify-center w-full items-center text-3xl text-white">
+  if (!wallets && !error) {
+    return (
+      <div className="flex justify-center w-full items-center text-3xl text-white">
         <Loading />
-    </div>
+      </div>
+    );
   }
 
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-screen w-full text-white">
-        <h1 className="flex justify-center mb-4 text-3xl">Database Connection Error</h1>
+        <h1 className="flex justify-center mb-4 text-3xl">
+          Database Connection Error
+        </h1>
         <button
           className="p-2 rounded-md border border-gray-600 bg-transparent"
           onClick={() => {
             resetStep();
-            window.location.reload()
+            window.location.reload();
           }}
         >
           Go Back
@@ -159,7 +166,7 @@ export function Wallet({
   return (
     <>
       <div className={`w-full relative ${model ? "blur-sm" : ""}`}>
-        {iswalletsPage ? (
+        {iswalletsPage === "change-wallet" ? (
           <>
             <ChangeWallet
               setIsWalletsPage={setIsWalletsPage}
@@ -168,20 +175,18 @@ export function Wallet({
               setSellectedWallet={setSellectedWallet}
               selectedWallet={selectedWallet}
             />
-            
           </>
         ) : (
-            <WalletHomePage
-              wallets={wallets}
-              secret={secretKey}
-              selectedWallet={selectedWallet}
-              onClick={() => getBalanceOnRefresh()}
-              onClickAppbar={() => setIsWalletsPage(true)}
-            />
-            
+          <WalletHomePage
+            wallets={wallets}
+            secret={secretKey}
+            selectedWallet={selectedWallet}
+            onClick={() => getBalanceOnRefresh()}
+            onClickAppbar={() => setIsWalletsPage("change-wallet")}
+          />
         )}
 
-<div className="bg-transparent ml-96 rounded-full mt-10 w-0 h-0 shadow-background"></div>
+        <div className="bg-transparent ml-96 rounded-full mt-10 w-0 h-0 shadow-background"></div>
       </div>
       {model && (
         <Model
@@ -232,7 +237,9 @@ function Model({
         wallets[wallets.length - 1].accountId,
         newWallet.publicKey
       );
+
       console.log(balance);
+
       if (newWallet.publicKey) {
         setWallets((prev) => {
           if (prev) {
@@ -265,37 +272,38 @@ function Model({
   };
 
   return (
-    <div className="absolute top-10 flex justify-center w-2/5">
-      <div className="w-full h-full rounded-lg border border-[#4c94ff] text-white p-4">
+    <div className="absolute top-4 flex justify-center w-2/5 bg-[#1A8DDD]">
+      <div className="w-full h-full rounded-xl shadow-lg text-white p-4">
         <div
-          className="mb-4 p-4 flex justify-start hover:cursor-pointer"
+          className="mb-2 flex justify-start hover:cursor-pointer"
           onClick={() => setModel(false)}
         >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            className="size-8 text-red-500 hover:text-red-700"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
-            strokeWidth={4}
-            stroke="#747889"
-            className="size-8 text-red-500 hover:animate-bounce"
+            strokeWidth={2}
+            stroke="currentColor"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
-            />
+            {" "}
+            <path stroke="none" d="M0 0h24v24H0z" />{" "}
+            <polyline points="15 6 9 12 15 18" />
           </svg>
         </div>
         <div className="flex flex-col items-center mb-8">
-          <img src="/icon.png" alt="airdrop" className="w-20 h-20 mb-4" />
+          <img src="/icon.png" alt="airdrop" className="w-16 h-16 contrast-200 mb-4" />
           <h1 className="text-4xl text-white font-semibold mb-4">Account 1</h1>
-          <h2 className="text-xl text-[#9ea3be] font-semibold">
+          <h2 className="text-xl text-gray-100 font-semibold">
             Add a new Solana wallet to this account.
           </h2>
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg flex text-black bg-gray-100 mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -317,7 +325,7 @@ function Model({
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg text-black flex bg-gray-100  mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -349,7 +357,7 @@ function Model({
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg flex text-black bg-gray-100 mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -375,7 +383,7 @@ function Model({
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg flex text-black bg-gray-100 mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">

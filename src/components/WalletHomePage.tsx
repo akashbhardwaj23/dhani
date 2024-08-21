@@ -1,10 +1,13 @@
 import { AssetComponentsType, WalletType } from "@/lib/types/wallettypes";
-import { Appbar } from "./ui2/Appbar";
-import { AssetsCard, Card, MyAssetsCard } from "./ui2/Card";
+import { Appbar } from "./ui/Appbar";
+import { AssetsCard, Card, MyAssetsCard } from "./ui/Card";
 import { useState } from "react";
 import { SendAssets } from "./wallet-actions/SendAssets";
 import { Swap } from "./wallet-actions/Swap";
 import { Receive } from "./wallet-actions/ReceiveAssets";
+
+
+
 
 export default function WalletHomePage({
   wallets,
@@ -21,7 +24,6 @@ export default function WalletHomePage({
 }) {
   const [assetsComponents, setAssetsComponents] =
     useState<AssetComponentsType>("home");
-  const [iswalletsPage, setIsWalletsPage] = useState(false);
 
   const wallet = wallets?.filter((wallet) => wallet.id === selectedWallet)[0];
   const balance = wallet?.balance;

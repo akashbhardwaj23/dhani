@@ -1,4 +1,4 @@
-import { WalletType } from "@/lib/types/wallettypes"
+import { SelectedNetworkType, WalletType } from "@/lib/types/wallettypes"
 import {atom} from "recoil"
 
 
@@ -23,4 +23,10 @@ export const SecretKey = atom({
 export const authorizedState = atom<boolean>({
     key : "auth",
     default : false
+})
+
+
+export const selectedNetworkState = atom<SelectedNetworkType>({
+    key : "network",
+    default : "Solana"
 })
