@@ -3,6 +3,7 @@ import { WalletType } from "@/lib/types/wallettypes";
 import { SolanaImageUrl } from "@/config/assets";
 import { RenameWalletAction, ShowSecretAction, RemoveWalletAction } from "../wallet-options";
 import { SelectedActions, SetActionBooleanType } from "@/lib/types/actiontype";
+import { WalletCard } from "../ui2/WalletCardComponent";
 
 export function ChangeWallet({
   setIsWalletsPage,
@@ -20,18 +21,27 @@ export function ChangeWallet({
   const [options, setOptions] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className="w-full absolute flex justify-center items-center top-32">
       {options ? (
         <WalletOptions setOptions={setOptions} wallets ={wallets} selectedWallet={selectedWallet} />
       ) : (
-        <ShowWalletKeys
-          setIsWalletsPage={setIsWalletsPage}
+        // <ShowWallets
+        //   setIsWalletsPage={setIsWalletsPage}
+        //   setModel={setModel}
+        //   setSellectedWallet={setSellectedWallet}
+        //   selectedWallet={selectedWallet}
+        //   wallets={wallets}
+        //   setOptions={setOptions}
+        // />
+
+        <WalletCard 
+        setIsWalletsPage={setIsWalletsPage}
           setModel={setModel}
           setSellectedWallet={setSellectedWallet}
           selectedWallet={selectedWallet}
           wallets={wallets}
           setOptions={setOptions}
-        />
+      />
       )}
     </div>
   );
@@ -71,6 +81,7 @@ function WalletOptions({
     return (
       <>
         <div className="flex flex-col">
+         
           <div className="flex mb-6  px-4 pt-2 pb-4 text-xl text-white w-full">
             <div
               className="hover:cursor-pointer"
@@ -229,7 +240,7 @@ interface CopyWallet {
   value : boolean
 }
 
-function ShowWalletKeys({
+function ShowWallets({
   setModel,
   setIsWalletsPage,
   wallets,

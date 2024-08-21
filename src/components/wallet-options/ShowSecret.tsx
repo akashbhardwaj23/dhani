@@ -1,4 +1,4 @@
-import { SecretKey } from "@/lib/utils/recoil";
+import { SecretKey } from "@/lib/utils/state/recoil";
 import { SelectedActionType } from "@/lib/types/actiontype";
 import { WalletType } from "@/lib/types/wallettypes";
 import { useState } from "react";

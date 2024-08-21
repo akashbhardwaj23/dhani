@@ -1,11 +1,14 @@
 import { SolanaImageUrl } from "@/config/assets";
+import { WalletType } from "@/lib/types/wallettypes";
 import { useState } from "react";
 
 export function Appbar({
   onClick,
+  wallet,
   selectedWallet,
 }: {
   onClick: () => void;
+  wallet : WalletType | undefined
   selectedWallet: number;
 }) {
   const [copied, setCopied] = useState<boolean>(false);
@@ -15,7 +18,7 @@ export function Appbar({
     setTimeout(() => {
       setCopied(false)
     }, 5_000);
-    await navigator.clipboard.writeText("sbsh")
+    await navigator.clipboard.writeText(wallet?.publicKey || "")
   }
 
   return (

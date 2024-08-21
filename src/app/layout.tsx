@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-[#0e0f14]`}>
+      <body className={`${inter.className} bg-[#0e0f14] h-screen w-full`}>
         <RecoilLayout>{children}</RecoilLayout>
       </body>
     </html>

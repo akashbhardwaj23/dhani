@@ -9,14 +9,18 @@ const WalletValue : WalletType[] = [{
     accountId : 0
   }]
 
-export const walletState = atom({
+export const walletState = atom<WalletType[] |  null>({
     key : "wallet-state",
-    default : WalletValue
+    default : null
 })
-
-
 
 export const SecretKey = atom({
     key : "secret",
     default : ""
+})
+
+
+export const authorizedState = atom<boolean>({
+    key : "auth",
+    default : false
 })

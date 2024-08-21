@@ -19,6 +19,7 @@ datasource db {
 model Account {
   id  Int  @id @default(autoincrement())
   password String 
+  email  String
   // user_id  String
   mneumonic String
   // user     User   @relation(fields: [user_id], references: [id])
@@ -26,10 +27,10 @@ model Account {
 }
 
 model Wallet {
-  id  String @id @default(uuid())
+  id  Int @id @default(autoincrement())
   publicKey String 
   accountId Int
-  balance  String?
+  balance  Int?
   account  Account @relation(fields: [accountId], references: [id])
   network Network
 }

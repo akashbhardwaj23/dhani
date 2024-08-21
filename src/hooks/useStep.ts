@@ -11,7 +11,7 @@ export function useStep(){
         return s;
     });
 
-    const resetStep = () => setStep(0)
+    const resetStep = () => setStep(0);
 
     return {
         step, 
