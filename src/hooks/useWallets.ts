@@ -43,7 +43,7 @@ export function useWallets(email: string){
 
        localStorage.setItem("wallets", JSON.stringify(wallets))
 
-    }, [])
+    })
 
 
     return {

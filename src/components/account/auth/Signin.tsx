@@ -139,7 +139,7 @@ export function SignIn({
             className="mb-4 flex justify-center text-base text-white font-mono hover:text-gray-200 hover:cursor-pointer"
             onClick={() => setPage("onBoarding")}
           >
-            Don't have a Account
+            Don&apos;t have a Account
           </div>
         </div>
       )}
