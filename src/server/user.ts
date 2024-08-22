@@ -2,6 +2,7 @@
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js"
 import { connection } from "./connection";
 import db from "@/prisma/db"
+import axios from "axios"
 
 
 
@@ -33,7 +34,8 @@ export async function createUser(email: string, password: string, mneumonic: str
                     create : {
                         network : "SOLANA",
                         publicKey,
-                        balance
+                        assetBalance : balance.orignalBalance,
+                        usdcBalance : Number(balance.usdcPrice)
                     }
                 }
             }
@@ -61,7 +63,8 @@ export async function updateUser(accountId: number, publicKey : string){
                             create : {
                                 network : "SOLANA",
                                 publicKey : publicKey,
-                                balance
+                                assetBalance : balance.orignalBalance,
+                                usdcBalance : Number(balance.usdcPrice)
                             }
                         }
                     }
@@ -121,7 +124,8 @@ export async function getUserWallet(email : string){
                             id : true,
                             accountId : true,
                             publicKey : true,
-                            balance : true
+                            assetBalance : true,
+                            usdcBalance : true
                         }
 
                     }
@@ -141,6 +145,16 @@ export async function getUserWallet(email : string){
 }
 
 export async function getBalance(publicKey : string){
-    const balance = await connection.getBalance(new PublicKey(publicKey))
-    return balance/LAMPORTS_PER_SOL
+    const balance = await connection.getBalance(new PublicKey(publicKey));
+    const orignalBalance = balance/LAMPORTS_PER_SOL;
+    
+    const price = await axios.get("https://price.jup.ag/v6/price?ids=SOL");
+
+    const originalUsdcPrice = price.data.data.SOL.price * orignalBalance;
+    const usdcPrice = originalUsdcPrice.toFixed(3) 
+
+    return {
+        orignalBalance,
+        usdcPrice
+    }
 }

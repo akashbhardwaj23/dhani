@@ -93,7 +93,8 @@ export function Wallet({
               {
                 publicKey: wallet.publicKey,
                 id: prev.length + 1,
-                balance: balance,
+                assetBalance: balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
                 accountId: response.account.id,
               },
             ];
@@ -102,7 +103,8 @@ export function Wallet({
               {
                 publicKey: wallet.publicKey,
                 id: 1,
-                balance: balance,
+                assetBalance: balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
                 accountId: response.account.id,
               },
             ];
@@ -127,7 +129,7 @@ export function Wallet({
       }
       const newWallets = prev?.map((wallet) => {
         if (wallet.id === selectedWallet) {
-          wallet.balance = balance;
+            return {...wallet, assetBalance : balance.orignalBalance, usdcBalance : Number(balance.usdcPrice)}
         }
         return wallet;
       });
@@ -247,7 +249,8 @@ function Model({
               {
                 publicKey: newWallet.publicKey,
                 id: prev.length + 1,
-                balance: balance,
+                assetBalance: balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
                 accountId: wallets[wallets.length - 1].accountId,
               },
             ];
@@ -256,7 +259,8 @@ function Model({
               {
                 publicKey: newWallet.publicKey,
                 id: 1,
-                balance: balance,
+                assetBalance : balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
                 accountId:
                   updatedUser?.updateUser.id ||
                   wallets[wallets.length - 1].accountId,

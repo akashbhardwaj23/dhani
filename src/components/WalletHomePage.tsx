@@ -26,8 +26,8 @@ export default function WalletHomePage({
     useState<AssetComponentsType>("home");
 
   const wallet = wallets?.filter((wallet) => wallet.id === selectedWallet)[0];
-  const balance = wallet?.balance;
-  console.log(balance);
+  const assetBalance = wallet?.assetBalance;
+  console.log(assetBalance);
 
   return (
     <>
@@ -45,6 +45,7 @@ export default function WalletHomePage({
 
             <div className="flex justify-center col-span-2">
               <MyAssetsCard
+              onClick={onClick}
                 wallet={wallet}
                 setAssetsComponents={setAssetsComponents}
               />

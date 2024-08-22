@@ -15,13 +15,16 @@ export function useWallets(email: string){
        if(!wallets){
         const getWallets = async () => {
             if(!email){
-                const localWallets = JSON.parse(localStorage.getItem("wallets") || "");
-                if(!localWallets){
+                
+                const localWalletsString = localStorage.getItem("wallets");
+                if(!localWalletsString){
                     return {
                         wallets,
                         setWallets
                     }
                 }
+                const localWallets = JSON.parse(localWalletsString || "")
+
                 setWallets(localWallets);
                 return {
                     wallets,

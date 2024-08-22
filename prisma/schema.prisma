@@ -30,7 +30,8 @@ model Wallet {
   id  Int @id @default(autoincrement())
   publicKey String 
   accountId Int
-  balance  Int?
+  assetBalance  Int?
+  usdcBalance Int?
   account  Account @relation(fields: [accountId], references: [id])
   network Network
 }

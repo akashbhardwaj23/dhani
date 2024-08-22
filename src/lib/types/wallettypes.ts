@@ -3,7 +3,8 @@ import { Dispatch, SetStateAction } from "react";
 export interface WalletType {
     publicKey : string;
     id : number;
-    balance : number | null,
+    assetBalance : number | null,
+    usdcBalance : number | null
     accountId : number
   }
 

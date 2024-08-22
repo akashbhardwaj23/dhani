@@ -5,7 +5,8 @@ import {atom} from "recoil"
 const WalletValue : WalletType[] = [{
     publicKey : "",
     id : 0,
-    balance : 0,
+    assetBalance : 0,
+    usdcBalance : 0,
     accountId : 0
   }]
 
