@@ -1,137 +1,198 @@
-import { HomePage } from "./HomePage";
+// import { WalletHomePage } from "./WalletHomePage";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChangeWallet } from "./ChangeWallet";
+import { createUser, getBalance, updateUser } from "@/server/user";
 import {
-  createNewWallet,
-  createWalletSolana,
-  getBalance,
-} from "@/server/wallet";
-import { SetWalletType, WalletType } from "@/lib/types/wallettypes";
+  IswalletsPageType,
+  SetWalletType,
+  WalletType,
+} from "@/lib/types/wallettypes";
 import { useRecoilState } from "recoil";
-import { SecretKey } from "@/lib/utils/recoil";
+import { SecretKey } from "@/lib/utils/state/recoil";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
 import { useStep } from "@/hooks/useStep";
 import { Loading } from "../ui/loading";
-
-
-
-type IswalletsPageType = "wallet" | "change-wallet"
+import { decrypt, encrypt } from "@/lib/utils/encrytion";
+import { mnemonicToSeedSync } from "bip39";
+import { derivePath } from "ed25519-hd-key";
+import { Keypair } from "@solana/web3.js";
+import nacl from "tweetnacl";
+import { useWallets } from "@/hooks/useWallets";
+import WalletHomePage from "../WalletHomePage";
 
 export function Wallet({
+  email,
   onBoardingData,
 }: {
-  onBoardingData: OnBoardingTasksType;
+  email?: string;
+  onBoardingData?: OnBoardingTasksType;
 }) {
-  const [iswalletsPage, setIsWalletsPage] = useState(false);
+  const [iswalletsPage, setIsWalletsPage] =
+    useState<IswalletsPageType>("wallet");
   const [model, setModel] = useState<boolean>(false);
-  const [wallets, setWallets] = useState<WalletType[] | null>(null);
+  const { wallets, setWallets } = useWallets(email || "");
+  const [encrtedMneumonic, setEncryptedMneumonic] = useState<string>("");
   const [selectedWallet, setSellectedWallet] = useState<number>(1);
   const [secretKey, setSeceretKey] = useRecoilState(SecretKey);
   const [error, setError] = useState<boolean>(false);
-  const {resetStep} = useStep()
+  const { resetStep } = useStep();
+
+  const createWallet = () => {
+    const seed = mnemonicToSeedSync(onBoardingData?.mneumonic || "");
+    const path = `m/44'/501'/0'/0'`; // This is the derivation path
+    const derivedSeed = derivePath(path, seed.toString("hex")).key;
+    const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
+    const publicKey = Keypair.fromSecretKey(secret).publicKey.toBase58();
+    return {
+      publicKey,
+      secret,
+    };
+  };
 
   useEffect(() => {
+    const wallets = JSON.parse(localStorage.getItem("wallets") || "");
+    if (!wallets) {
+      console.log("Runnig useEffect");
+      const createWalletAndGetBalance = async () => {
+        if (!onBoardingData) {
+          resetStep();
+          return;
+        }
 
-      if (!wallets) {
-        const createWalletAndGetBalance = async () => {
-          console.log("Redering again");
-          const response = await createWalletSolana(onBoardingData);
-          console.log(response);
-          if(!response.account){
-            setError(true);
-            return;
+        console.log(onBoardingData.password);
+
+        const wallet = createWallet();
+
+        const encryptedData = encrypt(onBoardingData.mneumonic);
+        console.log(encryptedData);
+        console.log("Redering again");
+        setEncryptedMneumonic(encryptedData);
+        const response = await createUser(
+          onBoardingData.email,
+          onBoardingData.password,
+          encryptedData,
+          wallet.publicKey
+        );
+        console.log(response);
+        console.log(wallet.secret);
+        if (!response?.account) {
+          console.log("Here");
+          setError(true);
+          return;
+        }
+
+        const balance = await getBalance(wallet.publicKey);
+        console.log(balance);
+        setSeceretKey(wallet.secret.toString());
+
+        // setWalletPublicKey(response.publicKey);
+        setWallets((prev) => {
+          if (prev) {
+            return [
+              ...prev,
+              {
+                publicKey: wallet.publicKey,
+                id: prev.length + 1,
+                assetBalance: balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
+                accountId: response.account.id,
+              },
+            ];
+          } else {
+            return [
+              {
+                publicKey: wallet.publicKey,
+                id: 1,
+                assetBalance: balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
+                accountId: response.account.id,
+              },
+            ];
           }
-          
-          const balance = await getBalance(response.publicKey);
-          console.log(balance);
-          setSeceretKey(response.secret.toLocaleString("hex"));
-
-          // setWalletPublicKey(response.publicKey);
-          setWallets((prev) => {
-            if (prev) {
-              return [
-                ...prev,
-                {
-                  publicKey: response.publicKey,
-                  id: prev.length + 1,
-                  balance: balance,
-                  accountId : response.account.id 
-                },
-              ];
-            } else {
-              return [
-                {
-                  publicKey: response.publicKey,
-                  id: 1,
-                  balance: balance,
-                  accountId : response.account.id 
-                },
-              ];
-            }
-          });
-        };
-        createWalletAndGetBalance();
-      
+        });
+      };
+      createWalletAndGetBalance();
     }
   }, []);
 
   console.log(wallets);
 
-
   const getBalanceOnRefresh = async () => {
-    const walletPublickey = wallets?.filter((wallet) => wallet.id === selectedWallet)[0].publicKey;
-    const balance = await getBalance(walletPublickey || "")
+    const walletPublickey = wallets?.filter(
+      (wallet) => wallet.id === selectedWallet
+    )[0].publicKey;
+    const balance = await getBalance(walletPublickey || "");
 
     setWallets((prev) => {
-
-      if(!prev){
-        return null
+      if (!prev) {
+        return null;
       }
       const newWallets = prev?.map((wallet) => {
-        if(wallet.id === selectedWallet){
-          wallet.balance = balance
+        if (wallet.id === selectedWallet) {
+            return {...wallet, assetBalance : balance.orignalBalance, usdcBalance : Number(balance.usdcPrice)}
         }
         return wallet;
-      })
-      return newWallets
-    })
+      });
+      return newWallets;
+    });
+  };
 
-  }
-
-  if(!wallets){
-    return <div className="flex justify-center h-full w-full items-center text-3xl text-white">
+  if (!wallets && !error) {
+    return (
+      <div className="flex justify-center h-96 w-full items-center text-3xl text-white">
         <Loading />
-    </div>
+      </div>
+    );
   }
 
-  if(error){
-    return <div className="flex justify-center h-full w-full items-center text-3xl text-white">
-        <h1 className="flex justify-center">Database Connection Error</h1>
-        <button className="p-3 border border-gray-600 bg-transparent" onClick={() => resetStep()}>Go Back</button>
-    </div>
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen w-full text-white">
+        <h1 className="flex justify-center mb-4 text-3xl">
+          Database Connection Error
+        </h1>
+        <button
+          className="p-2 rounded-md border border-gray-600 bg-transparent"
+          onClick={() => {
+            resetStep();
+            window.location.reload();
+          }}
+        >
+          Go Back
+        </button>
+      </div>
+    );
   }
 
   return (
     <>
-      <div
-        className={`max-w-xl w-full h-full border border-[#4c94ff] shadow-lg p-4 rounded-md ${
-          model ? "blur-sm" : ""
-        }`}
-      >
-        {iswalletsPage ? (
-          <ChangeWallet
-            setIsWalletsPage={setIsWalletsPage}
-            setModel={setModel}
+      <div className={`w-full relative ${model ? "blur-sm" : ""}`}>
+        {iswalletsPage === "change-wallet" ? (
+          <>
+            <ChangeWallet
+              setIsWalletsPage={setIsWalletsPage}
+              setModel={setModel}
+              wallets={wallets}
+              setSellectedWallet={setSellectedWallet}
+              selectedWallet={selectedWallet}
+            />
+          </>
+        ) : (
+          <WalletHomePage
             wallets={wallets}
-            setSellectedWallet={setSellectedWallet}
+            secret={secretKey}
             selectedWallet={selectedWallet}
+            onClick={() => getBalanceOnRefresh()}
+            onClickAppbar={() => setIsWalletsPage("change-wallet")}
           />
-        ) : ( <HomePage wallets={wallets} selectedWallet={selectedWallet} onClick={() => getBalanceOnRefresh()} onClickAppbar={() => setIsWalletsPage(true)} /> )}
+        )}
+
+        <div className="bg-transparent ml-96 rounded-full mt-10 w-0 h-0 shadow-background"></div>
       </div>
       {model && (
         <Model
           setModel={setModel}
-          mneumonic={onBoardingData.mneumonic}
+          encryptedMneumonic={encrtedMneumonic}
           wallets={wallets}
           setWallets={setWallets}
         />
@@ -143,34 +204,68 @@ export function Wallet({
 function Model({
   setModel,
   wallets,
-  mneumonic,
+  encryptedMneumonic,
   setWallets,
 }: {
   setModel: Dispatch<SetStateAction<boolean>>;
   wallets: WalletType[] | null;
-  mneumonic : string
+  encryptedMneumonic: string;
   setWallets: SetWalletType;
 }) {
+  const createNewWallet = (mneumonic: string, walletNumber: number) => {
+    const seed = mnemonicToSeedSync(mneumonic);
+    const path = `m/44'/501'/${walletNumber}'/0'`;
+    const derivedSeed = derivePath(path, seed.toString("hex")).key;
+    const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;
+    const publicKey = Keypair.fromSecretKey(secret).publicKey.toBase58();
+    return {
+      publicKey,
+      secret,
+    };
+  };
+
   const generateNewWallet = async () => {
+    const decryptedData = decrypt(encryptedMneumonic);
+
     if (wallets) {
       console.log("Running here in generate new Wallets");
-      const response = await createNewWallet(mneumonic , wallets[wallets.length - 1].id, wallets[wallets.length - 1].accountId);
-      const balance = await getBalance(response.publicKey);
+      const newWallet = createNewWallet(
+        decryptedData,
+        wallets[wallets.length - 1].id
+      );
+      const balance = await getBalance(newWallet.publicKey);
+      const updatedUser = await updateUser(
+        wallets[wallets.length - 1].accountId,
+        newWallet.publicKey
+      );
+
       console.log(balance);
-      if(response.account){
+
+      if (newWallet.publicKey) {
         setWallets((prev) => {
           if (prev) {
             return [
               ...prev,
               {
-                publicKey: response.publicKey,
+                publicKey: newWallet.publicKey,
                 id: prev.length + 1,
-                balance: balance,
-                accountId : response?.account.id
+                assetBalance: balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
+                accountId: wallets[wallets.length - 1].accountId,
               },
             ];
           } else {
-            return [{ publicKey: response.publicKey, id: 1, balance: balance, accountId : response.account.id}];
+            return [
+              {
+                publicKey: newWallet.publicKey,
+                id: 1,
+                assetBalance : balance.orignalBalance,
+                usdcBalance : Number(balance.usdcPrice),
+                accountId:
+                  updatedUser?.updateUser.id ||
+                  wallets[wallets.length - 1].accountId,
+              },
+            ];
           }
         });
       }
@@ -180,37 +275,38 @@ function Model({
   };
 
   return (
-    <div className="absolute top-10 flex justify-center w-2/5">
-      <div className="w-full h-full rounded-lg border border-[#4c94ff] text-white p-4">
+    <div className="absolute top-4 flex justify-center w-2/5 bg-[#1A8DDD]">
+      <div className="w-full h-full rounded-xl shadow-lg text-white p-4">
         <div
-          className="mb-4 p-4 flex justify-start hover:cursor-pointer"
+          className="mb-2 flex justify-start hover:cursor-pointer"
           onClick={() => setModel(false)}
         >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            className="size-8 text-red-500 hover:text-red-700"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
-            strokeWidth={4}
-            stroke="#747889"
-            className="size-8 text-red-500 hover:animate-bounce"
+            strokeWidth={2}
+            stroke="currentColor"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
-            />
+            {" "}
+            <path stroke="none" d="M0 0h24v24H0z" />{" "}
+            <polyline points="15 6 9 12 15 18" />
           </svg>
         </div>
         <div className="flex flex-col items-center mb-8">
-          <img src="/icon.png" alt="airdrop" className="w-20 h-20 mb-4" />
+          <img src="/icon.png" alt="airdrop" className="w-16 h-16 contrast-200 mb-4" />
           <h1 className="text-4xl text-white font-semibold mb-4">Account 1</h1>
-          <h2 className="text-xl text-[#9ea3be] font-semibold">
+          <h2 className="text-xl text-gray-100 font-semibold">
             Add a new Solana wallet to this account.
           </h2>
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg flex text-black bg-gray-100 mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -232,7 +328,7 @@ function Model({
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg text-black flex bg-gray-100  mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -264,7 +360,7 @@ function Model({
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg flex text-black bg-gray-100 mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">
@@ -290,7 +386,7 @@ function Model({
         </div>
 
         <div
-          className="p-6 rounded-lg flex bg-[#202127] mb-4 hover:bg-[#1d1d23] hover:cursor-pointer border-2 border-[#9ea3be]"
+          className="p-6 rounded-lg flex text-black bg-gray-100 mb-4 hover:bg-gray-300 hover:cursor-pointer border-2 border-[#9ea3be]"
           onClick={generateNewWallet}
         >
           <div className="mr-4">

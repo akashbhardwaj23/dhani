@@ -1,5 +1,4 @@
 "use client";
-import { PrimaryButton } from "@/components/ui/Button";
 
 export function CreateOrImportWallet({
   onNext 
@@ -7,7 +6,6 @@ export function CreateOrImportWallet({
   onNext : (data : any) => any
 }) {
   return (
-    
       <div className="max-w-xl w-full flex h-full items-center flex-col">
         <div className="mb-4 p-2">
           <img src="icon.png" alt="" className="w-24 h-24" />

@@ -3,9 +3,10 @@ import { useState } from "react";
 export function CreatePassword({
   onNext,
 }: {
-  onNext: (password: string) => void;
+  onNext: ({email, password} : {email : string, password : string}) => void;
 }) {
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [email, setEamil] = useState<string>("")
   const [password, setPassword] = useState<string>();
   const [correctPassword, setCorrectPassword] = useState<string>();
   const [error, setError] = useState<string>();
@@ -20,10 +21,12 @@ export function CreatePassword({
     }
     if(password){
       console.log(password)
-        onNext(password)
+      console.log(email)
+        onNext({
+          email : email,
+          password
+        })
     }
-    
-
   };
 
   return (
@@ -43,6 +46,13 @@ export function CreatePassword({
       </div>
 
       <div className="w-full flex flex-col mb-24 relative">
+
+      <input
+          type="text"
+          className="px-4 py-3 mb-6 bg-[#202127] rounded-lg text-white font-semibold focus:outline-none focus:outline-2 focus:outline-[#4b93f8]"
+          placeholder="Email"
+          onChange={(e) => setEamil(e.target.value)}
+        />
         <input
           type={`${showPassword ? "text" : "password" }`}
           className="px-4 py-3 mb-6 bg-[#202127] rounded-lg text-white font-semibold focus:outline-none focus:outline-2 focus:outline-[#4b93f8]"
@@ -50,14 +60,13 @@ export function CreatePassword({
           onChange={(e) => setPassword(e.target.value)}
         />
        
-
         {showPassword ? (<svg
           xmlns="http://www.w3.org/2000/svg"
           fill="#6d7383"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-6 absolute right-3 top-3 hover:cursor-pointer"
+          className="size-6 absolute right-3 top-[5.2rem] hover:cursor-pointer"
           onClick={() => setShowPassword(false)}
         >
           <path
@@ -72,7 +81,7 @@ export function CreatePassword({
              viewBox="0 0 24 24"
              strokeWidth="1.5"
              stroke="currentColor"
-             className="size-6 absolute right-3 top-3 hover:cursor-pointer\"
+             className="size-6 absolute right-3 top-[5.2rem] hover:cursor-pointer\"
              onClick={() => setShowPassword(true)}
            >
              <path
