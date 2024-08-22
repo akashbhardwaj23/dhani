@@ -12,7 +12,6 @@ import { SecretKey } from "@/lib/utils/state/recoil";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
 import { useStep } from "@/hooks/useStep";
 import { Loading } from "../ui/loading";
-import crypto from "crypto";
 import { decrypt, encrypt } from "@/lib/utils/encrytion";
 import { mnemonicToSeedSync } from "bip39";
 import { derivePath } from "ed25519-hd-key";
@@ -138,7 +137,7 @@ export function Wallet({
 
   if (!wallets && !error) {
     return (
-      <div className="flex justify-center w-full items-center text-3xl text-white">
+      <div className="flex justify-center h-96 w-full items-center text-3xl text-white">
         <Loading />
       </div>
     );

@@ -9,7 +9,7 @@ export function Card() {
         <h1 className="block mb-2 font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
           Your Digital Crypto Wallet For EveryThing
         </h1>
-        <p className="block font-normal text-base antialiased font-light leading-relaxed text-inherit">
+        <p className="block font-normal text-base antialiased leading-relaxed text-inherit">
           Join The Sol Community. Earn and Transfer Assets made Easy
         </p>
       </div>

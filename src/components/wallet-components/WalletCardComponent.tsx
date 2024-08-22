@@ -105,7 +105,7 @@ export function WalletCard({
           </div>
         </div>
 
-        <div className="overflow-y-auto bg-green-800 w-full h-80">
+        <div className="overflow-y-auto w-full h-80">
           {wallets?.map((wallet) => (
             <div
               key={wallet.id}
