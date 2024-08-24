@@ -11,13 +11,11 @@ import { Receive } from "./wallet-actions/ReceiveAssets";
 
 export default function WalletHomePage({
   wallets,
-  secret,
   selectedWallet,
   onClick,
   onClickAppbar,
 }: {
   wallets: WalletType[] | null;
-  secret: string;
   selectedWallet: number;
   onClick: () => void;
   onClickAppbar: () => void;
@@ -62,7 +60,6 @@ export default function WalletHomePage({
 
       {assetsComponents === "send" && (
         <SendAssets
-          secret={secret}
           senderPublicKey={wallet?.publicKey || ""}
           setAssetsComponents={setAssetsComponents}
         />

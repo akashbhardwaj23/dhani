@@ -33,7 +33,7 @@ export function Wallet({
   const { wallets, setWallets } = useWallets(email || "");
   const [encrtedMneumonic, setEncryptedMneumonic] = useState<string>("");
   const [selectedWallet, setSellectedWallet] = useState<number>(1);
-  const [secretKey, setSeceretKey] = useRecoilState(SecretKey);
+  const [secretKeys, setSeceretKeys] = useRecoilState(SecretKey);
   const [error, setError] = useState<boolean>(false);
   const { resetStep } = useStep();
 
@@ -83,7 +83,24 @@ export function Wallet({
 
         const balance = await getBalance(wallet.publicKey);
         console.log(balance);
-        setSeceretKey(wallet.secret.toString());
+        setSeceretKeys(prev => {
+          if(prev){
+            return [
+              ...prev,
+              {
+                walletId : wallet.publicKey,
+                secret : wallet.secret.toString()
+              }
+            ]
+          } else {
+           return [
+              {
+                walletId : wallet.publicKey,
+                secret : wallet.secret.toString()
+              }
+            ]
+          }
+        });
 
         // setWalletPublicKey(response.publicKey);
         setWallets((prev) => {
@@ -180,7 +197,6 @@ export function Wallet({
         ) : (
           <WalletHomePage
             wallets={wallets}
-            secret={secretKey}
             selectedWallet={selectedWallet}
             onClick={() => getBalanceOnRefresh()}
             onClickAppbar={() => setIsWalletsPage("change-wallet")}
