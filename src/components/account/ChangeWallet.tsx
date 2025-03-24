@@ -38,7 +38,6 @@ export function ChangeWallet({
           setIsWalletsPage={setIsWalletsPage}
           setModel={setModel}
           setSellectedWallet={setSellectedWallet}
-          selectedWallet={selectedWallet}
           wallets={wallets}
           setOptions={setOptions}
       />

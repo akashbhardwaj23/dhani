@@ -10,7 +10,7 @@ export function CreateOrImportWallet({
         <div className="mb-4 p-2">
           <img src="icon.png" alt="" className="w-24 h-24" />
         </div>
-        <div className="mb-40">
+        <div className="mb-20">
           <h1 className="text-white text-4xl font-semibold mb-4 tracking-tight">
             Welcome back To Wallet
           </h1>
@@ -19,13 +19,13 @@ export function CreateOrImportWallet({
           </h2>
         </div>
         <button
-          className={`bg-white text-black px-4 py-3 text-base font-semibold rounded-xl mb-4 w-1/2 tracking-tight`}
+          className={`bg-white text-black px-4 py-3 text-base font-semibold rounded-xl mb-4 w-1/2 cursor-pointer tracking-tight`}
           onClick={() => onNext({action : "create"})}
         >
           Create a Wallet
         </button>
         <button
-          className={`bg-[#202127] text-white px-4 py-3 text-base font-semibold rounded-xl mb-2 w-1/2 tracking-tight`}
+          className={`bg-[#202127] text-white px-4 py-3 text-base font-semibold rounded-xl mb-2 w-1/2 cursor-pointer tracking-tight`}
           onClick={() => onNext({action : "import"})}
         >
           Import Wallet

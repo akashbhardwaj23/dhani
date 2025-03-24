@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CreateOrImportWallet } from "./tasks/CreateOrImport";
 import { useStep } from "@/hooks/useStep";
-import { AccountName } from "./tasks/AccountName";
+import { NetworkSelection } from "./tasks/NetworkSelection";
 import { MnemonicInput } from "./tasks/MnemonicInput";
 import { CreatePassword } from "./tasks/CreatePassword";
 import { Wallet } from "../account/Wallet";
@@ -31,8 +31,8 @@ export function OnBoardingTasks() {
       }}
     />,
 
-    <AccountName
-      key={"AccountName"}
+    <NetworkSelection
+      key={"NetworkSelection"}
       onNext={(name) => {
         if (name) {
           setOnBoardingData((onBoardingData) => ({

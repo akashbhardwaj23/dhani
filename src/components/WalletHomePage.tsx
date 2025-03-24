@@ -1,5 +1,5 @@
 import { AssetComponentsType, WalletType } from "@/lib/types/wallettypes";
-import { Appbar } from "./ui/Appbar";
+import { Appbar } from "./appbar/Appbar";
 import { AssetsCard, Card, MyAssetsCard } from "./ui/Card";
 import { useState } from "react";
 import { SendAssets } from "./wallet-actions/SendAssets";

@@ -1,4 +1,3 @@
-// import { WalletHomePage } from "./WalletHomePage";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ChangeWallet } from "./ChangeWallet";
 import { createUser, getBalance, updateUser } from "@/server/user";
@@ -7,8 +6,6 @@ import {
   SetWalletType,
   WalletType,
 } from "@/lib/types/wallettypes";
-import { useRecoilState } from "recoil";
-import { SecretKey } from "@/lib/utils/state/recoil";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
 import { useStep } from "@/hooks/useStep";
 import { Loading } from "../ui/loading";
@@ -19,6 +16,7 @@ import { Keypair } from "@solana/web3.js";
 import nacl from "tweetnacl";
 import { useWallets } from "@/hooks/useWallets";
 import WalletHomePage from "../WalletHomePage";
+import { useStoreContext } from "@/lib/utils/store/context";
 
 export function Wallet({
   email,
@@ -33,7 +31,7 @@ export function Wallet({
   const { wallets, setWallets } = useWallets(email || "");
   const [encrtedMneumonic, setEncryptedMneumonic] = useState<string>("");
   const [selectedWallet, setSellectedWallet] = useState<number>(1);
-  const [secretKeys, setSeceretKeys] = useRecoilState(SecretKey);
+  const {secretKeys, setSecretKeys} = useStoreContext();
   const [error, setError] = useState<boolean>(false);
   const { resetStep } = useStep();
 
@@ -50,7 +48,8 @@ export function Wallet({
   };
 
   useEffect(() => {
-    const wallets = JSON.parse(localStorage.getItem("wallets") || "");
+    // const wallets = JSON.parse(localStorage.getItem("wallets") || "");
+    console.log("Wallets are ", wallets)
     if (!wallets) {
       console.log("Runnig useEffect");
       const createWalletAndGetBalance = async () => {
@@ -83,7 +82,7 @@ export function Wallet({
 
         const balance = await getBalance(wallet.publicKey);
         console.log(balance);
-        setSeceretKeys(prev => {
+        setSecretKeys(prev => {
           if(prev){
             return [
               ...prev,
