@@ -54,7 +54,7 @@ export function SendAssets({
         return value.secret;
       }
     });
-    const arr = secret?.secret.split(",").map((x) => Number(x)) || [];
+    const arr = secret?.secret.split(",").map((x : string) => Number(x)) || [];
 
     const encryptedKey = new Uint8Array(arr);
     // const decryptedKey = crypto.publicDecrypt(

@@ -17,7 +17,10 @@ export const walletState = atom<WalletType[] |  null>({
 
 
 
-
+interface SecretKeyType {
+    walletId : string,
+    secret : string
+}
 
 export const SecretKey = atom<SecretKeyType[] | null>({
     key : "secret",
