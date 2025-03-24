@@ -6,15 +6,13 @@ import { SetActionBooleanType } from "@/lib/types/actiontype";
 import { CopyWallet, IswalletsPageType, WalletType } from "@/lib/types/wallettypes";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SelectedNetworkType } from "@/lib/types/wallettypes";
-import { useRecoilState } from "recoil";
-import { selectedNetworkState } from "@/lib/utils/state/recoil";
+import { useStoreContext } from "@/lib/utils/store/context";
 
 
 export function WalletCard({
   setModel,
   setIsWalletsPage,
   wallets,
-  selectedWallet,
   setSellectedWallet,
   setOptions,
 }: {
@@ -22,13 +20,15 @@ export function WalletCard({
   setModel: SetActionBooleanType;
   wallets: WalletType[] | null;
   setSellectedWallet: Dispatch<SetStateAction<number>>;
-  selectedWallet: number;
   setOptions: SetActionBooleanType;
 }) {
   const [copied, setCopied] = useState<CopyWallet | undefined>();
   const [network, setNetwork] = useState<boolean>(false);
 
-    const [selectedNetwork, setSelectedNetwork] = useRecoilState(selectedNetworkState)
+    const {selectedNetwork, setSelectedNetwork} = useStoreContext()
+
+    console.log(copied);
+    console.log(wallets)
 
   const copyPublicKey = async (walletId: number) => {
     setCopied({
@@ -140,7 +140,7 @@ export function WalletCard({
               </div>
 
               <div className="flex items-center">
-                <div className="p-2 rounded-full hover:bg-black right-20 absolute" onClick={() => copyPublicKey(selectedWallet)}>
+                <div className="p-2 rounded-full hover:bg-black right-20 absolute" onClick={() => copyPublicKey(wallet.id)}>
                   {copied?.value && copied.walletId === wallet.id ? (
                     <svg
                       className="size-8 text-red-500"

@@ -1,17 +1,15 @@
-import { getUser, getUserWallet } from "@/server/user";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import {walletState} from "@/lib/utils/state/recoil"
+import { getUserWallet } from "@/server/user";
+import { useEffect } from "react";
+import { useStoreContext } from "@/lib/utils/store/context";
 
 
 
 
 export function useWallets(email: string){
-    const [wallets, setWallets] = useRecoilState(walletState)
+    const {wallets, setWallets} = useStoreContext();
     console.log("Usewallets ",wallets)
 
     useEffect(() => {
-        console.log("Called UseEffect")
        if(!wallets){
         const getWallets = async () => {
             if(!email){

@@ -6,12 +6,11 @@ export function Swap({
 }: {
   setAssetsComponents: (value: AssetComponentsType) => void;
 }) {
-  let [inputmintValue, setInputmintValue] = useState<number>(0);
-  let [outputmintValue, setOutputmintValue] = useState<number>(0);
+  let [inputmintValue, setInputmintValue] = useState<string>('');
+  let [outputmintValue, setOutputmintValue] = useState<string>("");
   let [inputmint, setInputmint] = useState<string>("sol");
   let [outputmint, setOutputmint] = useState<string>("usdc");
-  console.log(inputmintValue);
-  console.log(outputmintValue);
+  
   return (
     <div className="flex justify-center items-center w-full h-full p-10">
       <div className="relative flex w-[45rem] flex-col rounded-xl bg-white bg-clip-border text-black shadow-md">

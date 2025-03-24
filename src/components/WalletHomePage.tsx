@@ -1,5 +1,5 @@
 import { AssetComponentsType, WalletType } from "@/lib/types/wallettypes";
-import { Appbar } from "./ui/Appbar";
+import { Appbar } from "./appbar/Appbar";
 import { AssetsCard, Card, MyAssetsCard } from "./ui/Card";
 import { useState } from "react";
 import { SendAssets } from "./wallet-actions/SendAssets";
@@ -11,13 +11,11 @@ import { Receive } from "./wallet-actions/ReceiveAssets";
 
 export default function WalletHomePage({
   wallets,
-  secret,
   selectedWallet,
   onClick,
   onClickAppbar,
 }: {
   wallets: WalletType[] | null;
-  secret: string;
   selectedWallet: number;
   onClick: () => void;
   onClickAppbar: () => void;
@@ -62,7 +60,6 @@ export default function WalletHomePage({
 
       {assetsComponents === "send" && (
         <SendAssets
-          secret={secret}
           senderPublicKey={wallet?.publicKey || ""}
           setAssetsComponents={setAssetsComponents}
         />

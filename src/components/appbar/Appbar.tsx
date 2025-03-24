@@ -1,8 +1,7 @@
 import { EthereumImageUrl, SolanaImageUrl } from "@/config/assets";
 import { SelectedNetworkType, WalletType } from "@/lib/types/wallettypes";
-import { selectedNetworkState } from "@/lib/utils/state/recoil";
+import { useStoreContext } from "@/lib/utils/store/context";
 import { Dispatch, SetStateAction, useState } from "react";
-import { SetterOrUpdater, useRecoilState } from "recoil";
 
 export function Appbar({
   onClick,
@@ -16,7 +15,7 @@ export function Appbar({
   const [copied, setCopied] = useState<boolean>(false);
   const [network, setNetwork] = useState<boolean>(false);
 
-  const [selectedNetwork, setSelectedNetwork] = useRecoilState(selectedNetworkState);
+  const {selectedNetwork, setSelectedNetwork} = useStoreContext()
 
 
   const copy = async () => {
@@ -121,7 +120,7 @@ function NetworkModelAppbar({
    { className: string, 
     setNetwork : Dispatch<SetStateAction<boolean>>
     selectedNetwork : SelectedNetworkType,
-    setSelectedNetwork : SetterOrUpdater<SelectedNetworkType>
+    setSelectedNetwork : Dispatch<SetStateAction<SelectedNetworkType>>
   
   }) {
 
