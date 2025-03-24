@@ -1,8 +1,6 @@
-import { SecretKey } from "@/lib/utils/state/recoil";
 import { SelectedActionType } from "@/lib/types/actiontype";
 import { WalletType } from "@/lib/types/wallettypes";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 import { useStoreContext } from "@/lib/utils/store/context";
 
 export function ShowSecretAction({

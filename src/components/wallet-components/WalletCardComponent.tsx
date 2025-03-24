@@ -6,8 +6,7 @@ import { SetActionBooleanType } from "@/lib/types/actiontype";
 import { CopyWallet, IswalletsPageType, WalletType } from "@/lib/types/wallettypes";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SelectedNetworkType } from "@/lib/types/wallettypes";
-import { useRecoilState } from "recoil";
-import { selectedNetworkState } from "@/lib/utils/state/recoil";
+import { useStoreContext } from "@/lib/utils/store/context";
 
 
 export function WalletCard({
@@ -26,7 +25,7 @@ export function WalletCard({
   const [copied, setCopied] = useState<CopyWallet | undefined>();
   const [network, setNetwork] = useState<boolean>(false);
 
-    const [selectedNetwork, setSelectedNetwork] = useRecoilState(selectedNetworkState)
+    const {selectedNetwork, setSelectedNetwork} = useStoreContext()
 
     console.log(copied);
     console.log(wallets)

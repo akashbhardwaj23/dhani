@@ -3,9 +3,6 @@ import { AssetComponentsType } from "@/lib/types/wallettypes";
 import { EthereumImageUrl, SolanaImageUrl } from "@/config/assets";
 import {
   Drawer,
-  Button,
-  Typography,
-  IconButton,
 } from "@material-tailwind/react";
 import {
   Keypair,
@@ -16,9 +13,7 @@ import {
   Transaction,
 } from "@solana/web3.js";
 import { connection } from "@/server/connection";
-import crypto from "crypto";
-import { useRecoilValue } from "recoil";
-import { SecretKey } from "@/lib/utils/state/recoil";
+import { useStoreContext } from "@/lib/utils/store/context";
 
 export function SendAssets({
   senderPublicKey,
@@ -32,7 +27,7 @@ export function SendAssets({
   const [amount, setAmount] = useState("");
   const [model, setModel] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const secretKeys = useRecoilValue(SecretKey);
+  const secretKeys = useStoreContext().secretKeys;
   const [signature, setSignature] = useState<string>("");
 
   const closeDrawerBottom = () => setModel(false);
