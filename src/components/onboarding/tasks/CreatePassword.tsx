@@ -120,7 +120,7 @@ export function CreatePassword({
             onClick={() => setIsChecked((prev) => !prev)}
           >
             I agree to{" "}
-            <span className="text-[#4c94f0]">Terms annd Services</span>
+            <span className="text-[#4c94f0]">Terms and Services</span>
           </span>
         </div>
 

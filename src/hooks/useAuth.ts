@@ -7,5 +7,4 @@ export function useAuth(){
         authorized,
         setAuthorized
     }
-
 }

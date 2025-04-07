@@ -19,7 +19,7 @@ export function WalletOptions({
 }) {
   const [copied, setCopied] = useState<boolean>(false);
   const [selectedAction, setSelectedAction] = useState<SelectedActions>("");
-  const wallet = wallets?.filter((w) => w.id === selectedWallet)[0];
+  const wallet = wallets?.filter((w) => w.walletNumber === selectedWallet)[0];
 
   const copyText = async () => {
     setCopied(true);
@@ -69,7 +69,7 @@ export function WalletOptions({
               </div>
               <div className="flex justify-center w-full">
                 <h1 className="font-mono text-5xl text-white font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-                  Wallet {wallet?.id}
+                  Wallet {wallet?.walletNumber}
                 </h1>
               </div>
             </div>

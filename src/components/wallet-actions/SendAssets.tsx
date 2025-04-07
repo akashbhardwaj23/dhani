@@ -14,6 +14,8 @@ import {
 } from "@solana/web3.js";
 import { connection } from "@/server/connection";
 import { useStoreContext } from "@/lib/utils/store/context";
+import { LuArrowLeft, LuCircleX } from "react-icons/lu";
+import { SiEthereum, SiSolana } from "react-icons/si";
 
 export function SendAssets({
   senderPublicKey,
@@ -27,7 +29,7 @@ export function SendAssets({
   const [amount, setAmount] = useState("");
   const [model, setModel] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const secretKeys = useStoreContext().secretKeys;
+  const {secretKeys} = useStoreContext();
   const [signature, setSignature] = useState<string>("");
 
   const closeDrawerBottom = () => setModel(false);
@@ -49,15 +51,10 @@ export function SendAssets({
         return value.secret;
       }
     });
+    console.log(secret)
     const arr = secret?.secret.split(",").map((x : string) => Number(x)) || [];
 
     const encryptedKey = new Uint8Array(arr);
-    // const decryptedKey = crypto.publicDecrypt(
-    //   encryptedKey.toString(),
-    //   Buffer.from("a")
-    // );
-    // console.log(decryptedKey);
-
     const keyPair = Keypair.fromSecretKey(encryptedKey);
     console.log(keyPair);
     // do something here
@@ -107,19 +104,7 @@ export function SendAssets({
           <div className="p-8">
             <div className="w-full flex justify-center flex-col">
               <div className="mb-6" onClick={() => setAssetsComponents("home")}>
-                <svg
-                  className="size-8 text-gray-900"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
+                <LuArrowLeft className="w-8 h-8 text-gray-900 hover:text-gray-600" />
               </div>
               <div className="flex items-center mb-2">
                 <h1 className="text-3xl text-black font-bold">Send Tokens</h1>
@@ -131,15 +116,15 @@ export function SendAssets({
                 className="select select-bordered w-full bg-gray-100 text-[#1A8DDD]  font-bold"
                 onChange={(e: any) => setSelectedAsset(e.target.value)}
               >
-                <option disabled selected>
+                <option disabled value={"SOLANA"}>
                   Select the Network
                 </option>
-                <option>
-                  <img src={SolanaImageUrl} alt="sol" className="w-8 h-8" />
+                <option key={"SOLANA"}>
+                  <SiSolana className="w-8 h-8" />
                   Solana
                 </option>
-                <option>
-                  <img src={EthereumImageUrl} alt="sol" className="w-8 h-8" />
+                <option key={"ETHEREUM"}>
+                  <SiEthereum className="w-8 h-8" />
                   Ethereum
                 </option>
               </select>
@@ -181,7 +166,7 @@ export function SendAssets({
             </div>
 
             {model && (
-              <div className="w-full absolute left-0 bg-transparent top-[30%] h-[20rem] z-40 py-12 rounded-lg">
+              <div className="w-full absolute left-0 bg-transparent top-[8%] h-[30rem] z-40 py-12 rounded-lg">
                 <Drawer
                   placement="bottom"
                   open={model}
@@ -196,27 +181,15 @@ export function SendAssets({
                       className="hover:cursor-pointer"
                       onClick={() => closeDrawerBottom()}
                     >
-                      <svg
-                        className="h-8 w-8 text-gray-100 hover:text-gray-300"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        {" "}
-                        <line x1="18" y1="6" x2="6" y2="18" />{" "}
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
+                      <LuCircleX className="h-8 w-8 text-gray-100 hover:text-gray-300" />
                     </div>
-                    <div className="w-full flex justify-center ">
+                    <div className="w-full flex justify-center mb-10">
                       <h1 className="text-3xl text-white font-semibold">
                         Review
                       </h1>
                     </div>
                   </div>
-                  <div className="flex justify-center w-full mb-8 text-lg font-semibold text-gray-200">
+                  <div className="flex justify-center w-full mb-20 text-2xl font-semibold text-gray-200">
                     {`You are sending ${amount} to ${receiverPublickey} on ${selectedAsset}`}
                   </div>
 

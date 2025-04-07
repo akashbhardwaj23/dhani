@@ -5,13 +5,11 @@ import db from "@/prisma/db"
 import axios from "axios"
 
 
-
-
-export async function createUser(email: string, password: string, mneumonic: string, publicKey : string){
+export async function createUser(email: string, password: string, mneumonic: string, iv : string, key : string, publicKey : string){
    
        try {
 
-        const existingUser = await db.account.findFirst({
+        const existingUser = await db.userAccount.findFirst({
             where : {
                 email
             }
@@ -19,20 +17,33 @@ export async function createUser(email: string, password: string, mneumonic: str
 
         if(existingUser){
             return {
-                existingUser
+                account : existingUser
             }
         }
 
         const balance = await getBalance(publicKey)
 
-        const account = await db.account.create({
+
+        const walletNumber = await db.wallet.findFirst({
+            where : {
+                publicKey
+            },
+            select : {
+                walletNumber : true
+            }
+        })
+
+        const userAccount = await db.userAccount.create({
             data : {
                 email,
                 mneumonic ,
+                iv,
+                key,
                 password,
                 Wallet : {
                     create : {
                         network : "SOLANA",
+                        walletNumber : walletNumber?.walletNumber || 1,
                         publicKey,
                         assetBalance : balance.orignalBalance,
                         usdcBalance : Number(balance.usdcPrice)
@@ -42,7 +53,7 @@ export async function createUser(email: string, password: string, mneumonic: str
         })
 
         return {
-            account
+            account : userAccount
         }
        } catch (error) {
         console.log(error)
@@ -51,10 +62,78 @@ export async function createUser(email: string, password: string, mneumonic: str
       
 } 
 
+
+export async function getUserMneumonic(email : string){
+    try {
+        const user = await db.userAccount.findFirst({
+            where : {
+                email
+            },
+            select : {
+                mneumonic : true,
+                iv : true,
+                key : true
+            }
+        })
+
+        if(!user){
+            return null
+        }
+
+        return {
+            mneumonic : user.mneumonic,
+            iv : user.iv,
+            key : user.key
+        }
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+
+export async function getUserWallets(email : string){
+    try {
+       const data = await db.userAccount.findFirst({
+        where : {
+            email
+        },
+        select : {
+            Wallet : true
+        }
+       })
+
+       if(!data){
+        return null
+       }
+
+       return {
+        wallets : data.Wallet
+       }
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
 export async function updateUser(accountId: number, publicKey : string){
         try {
                 const balance = await getBalance(publicKey)
-                const updateUser = await db.account.update({
+
+                const data = await db.userAccount.findFirst({
+                    where : {
+                        id : accountId
+                    }, 
+                    select : {
+                        Wallet : true
+                    }
+                })
+
+                if(!data?.Wallet){
+                    return 
+                }
+
+                const updateUser = await db.userAccount.update({
                     where : {
                         id : Number(accountId)
                     },
@@ -62,6 +141,7 @@ export async function updateUser(accountId: number, publicKey : string){
                         Wallet :{
                             create : {
                                 network : "SOLANA",
+                                walletNumber : data.Wallet.length + 1,
                                 publicKey : publicKey,
                                 assetBalance : balance.orignalBalance,
                                 usdcBalance : Number(balance.usdcPrice)
@@ -86,8 +166,7 @@ export async function updateUser(accountId: number, publicKey : string){
 
 export async function getUser(email : string,password : string){
     try {
-        console.log('hi there in getUser')
-        const user = await db.account.findFirst({
+        const user = await db.userAccount.findFirst({
             where : {
                 email ,
                 password 
@@ -112,49 +191,59 @@ export async function getUser(email : string,password : string){
 
 
 
-export async function getUserWallet(email : string){
-        try {
-            const wallet = await db.account.findFirst({
-                where : {
-                    email
-                },
-                include : {
-                    Wallet : {
-                        select : {
-                            id : true,
-                            accountId : true,
-                            publicKey : true,
-                            assetBalance : true,
-                            usdcBalance : true
-                        }
+// export async function getUserWallet(email : string){
+//         try {
+//             const wallet = await db.userAccount.findFirst({
+//                 where : {
+//                     email
+//                 },
+//                 include : {
+//                     Wallet : {
+//                         select : {
+//                             id : true,
+//                             useraccountId : true,
+//                             walletNumber : true,
+//                             publicKey : true,
+//                             assetBalance : true,
+//                             usdcBalance : true
+//                         }
 
-                    }
-                }
-            });
+//                     }
+//                 }
+//             });
 
-            if(!wallet){
-                return null
-            }
-            return {
-                wallet
-            }
-        } catch (error) {
-            console.error;
-            return null
-        }
-}
+//             if(!wallet){
+//                 return null
+//             }
+//             return {
+//                 wallet
+//             }
+//         } catch (error) {
+//             console.error;
+//             return null
+//         }
+// }
 
 export async function getBalance(publicKey : string){
     const balance = await connection.getBalance(new PublicKey(publicKey));
+    console.log("Balance is ",balance)
     const orignalBalance = balance/LAMPORTS_PER_SOL;
-    
-    const price = await axios.get("https://price.jup.ag/v6/price?ids=SOL");
+    const SOLANA_ADDRESS = 'So11111111111111111111111111111111111111112'
+    const response = await axios.get(`https://api.jup.ag/price/v2?ids=JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN,${SOLANA_ADDRESS}`);
 
-    const originalUsdcPrice = price.data.data.SOL.price * orignalBalance;
+
+   const price = response.data
+   console.log(price.data.So11111111111111111111111111111111111111112)
+    const originalUsdcPrice = price.data.So11111111111111111111111111111111111111112.price * orignalBalance;
     const usdcPrice = originalUsdcPrice.toFixed(3) 
 
     return {
         orignalBalance,
         usdcPrice
     }
+}
+
+
+export async function getUserBalanceOnDevnet(publicKey : string){
+
 }

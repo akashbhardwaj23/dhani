@@ -1,4 +1,4 @@
-import { getUserWallet } from "@/server/user";
+import { getUserWallets } from "@/server/user";
 import { useEffect } from "react";
 import { useStoreContext } from "@/lib/utils/store/context";
 
@@ -7,41 +7,34 @@ import { useStoreContext } from "@/lib/utils/store/context";
 
 export function useWallets(email: string){
     const {wallets, setWallets} = useStoreContext();
-    console.log("Usewallets ",wallets)
+    // console.log("Usewallets ", wallets)
 
     useEffect(() => {
        if(!wallets){
         const getWallets = async () => {
-            if(!email){
+            // if(!email){
                 
-                const localWalletsString = localStorage.getItem("wallets");
-                if(!localWalletsString){
-                    return {
-                        wallets,
-                        setWallets
-                    }
-                }
-                const localWallets = JSON.parse(localWalletsString || "")
+            //     const localWalletsString = localStorage.getItem("wallets");
+            //     if(!localWalletsString){
+            //         return 
+            //     }
+            //     const localWallets = JSON.parse(localWalletsString || "")
 
-                setWallets(localWallets);
-                return {
-                    wallets,
-                    setWallets
-                }
+            //     setWallets(localWallets);
+            //    return
 
-            }
+            // }
             
-            const account = await getUserWallet(email)
-            if(!account){
+            const newWallets = await getUserWallets(email)
+            if(!newWallets){
                 return
             }
 
-            setWallets(account.wallet.Wallet)
+            setWallets(newWallets.wallets)
        }
 
        getWallets()
        }
-
        localStorage.setItem("wallets", JSON.stringify(wallets))
 
     })
@@ -52,4 +45,15 @@ export function useWallets(email: string){
         setWallets
     }
 
+}
+
+
+
+
+export function createWallets(){
+    const {wallets, setWallets} = useStoreContext()
+
+    useEffect(() => {
+
+    }, [])
 }
