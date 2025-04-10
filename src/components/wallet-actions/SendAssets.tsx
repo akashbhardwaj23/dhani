@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AssetComponentsType } from "@/lib/types/wallettypes";
-import { EthereumImageUrl, SolanaImageUrl } from "@/config/assets";
+// import { EthereumImageUrl, SolanaImageUrl } from "@/config/assets";
 import {
   Drawer,
 } from "@material-tailwind/react";
