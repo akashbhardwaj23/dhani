@@ -4,6 +4,7 @@ import { Wallet } from "../Wallet";
 import { PageType } from "@/components/home/WelcomePage";
 import { Loading } from "@/components/ui/loading";
 import { useAuth } from "@/hooks/useAuth";
+import { LoadWalletsData } from "../LoadWallets";
 
 export function SignIn({
   setPage,
@@ -14,10 +15,11 @@ export function SignIn({
   const { authorized, setAuthorized } = useAuth();
 
   return (
-    <div className="w-full flex justify-center p-20">
+    <>
       {authorized ? (
-        <Wallet email={email} />
+        <LoadWalletsData email={email}  />
       ) : (
+        <div className="w-full flex justify-center p-20">
         <div className="max-w-xl w-full flex h-full items-center flex-col">
           <div className="mb-4">
             <h1 className="text-4xl text-white font-semibold mb-4 tracking-normal flex justify-center">
@@ -42,8 +44,9 @@ export function SignIn({
             Don&apos;t have a Account
           </div>
         </div>
+        </div>
       )}
-    </div>
+      </>
   );
 }
 

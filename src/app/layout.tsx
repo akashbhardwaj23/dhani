@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { StoreContextProvider } from "@/lib/utils/store/context";
-// import RecoilLayout  from "./(RecoilLayout)/layout";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -2,10 +2,11 @@ import { Dispatch, SetStateAction } from "react";
 
 export interface WalletType {
     publicKey : string;
-    id : number;
     assetBalance : number | null,
+    walletNumber : number
     usdcBalance : number | null
-    accountId : number
+    useraccountId : number,
+    network : SelectedNetworkType
   }
 
   export type IswalletsPageType = "wallet" | "change-wallet";
@@ -14,7 +15,9 @@ export interface WalletType {
   
   export type AssetComponentsType = "home" | "send" | "receive" | "swap";
 
-  export type SelectedNetworkType = "Solana" | "Ethereum";
+  export type SelectedNetworkType = "SOLANA" | "ETHEREUM";
+
+  // type NetworkType = "SOLANA" | "ETHEREUM"
 
   export interface CopyWallet {
     walletId: number;

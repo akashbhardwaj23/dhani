@@ -1,3 +1,4 @@
+import { SelectedNetworkType } from "./wallettypes";
 
 
 export type action = "create" | "import"
@@ -5,7 +6,7 @@ export type action = "create" | "import"
 
 export interface OnBoardingTasksType {
   action : action;
-  networkName : string;
+  networkName : SelectedNetworkType;
   mneumonic : string;
   email : string;
   password : string

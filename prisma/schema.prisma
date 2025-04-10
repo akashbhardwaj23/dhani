@@ -14,14 +14,13 @@ datasource db {
 }
 
 
-
-
-model Account {
+model UserAccount {
   id  Int  @id @default(autoincrement())
   password String 
   email  String
-  // user_id  String
   mneumonic String
+  iv        String
+  key       String
   // user     User   @relation(fields: [user_id], references: [id])
   Wallet Wallet[]
 }
@@ -29,10 +28,11 @@ model Account {
 model Wallet {
   id  Int @id @default(autoincrement())
   publicKey String 
-  accountId Int
+  useraccountId Int
   assetBalance  Int?
   usdcBalance Int?
-  account  Account @relation(fields: [accountId], references: [id])
+  walletNumber Int
+  account  UserAccount @relation(fields: [useraccountId], references: [id])
   network Network
 }
 

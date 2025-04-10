@@ -7,6 +7,8 @@ import { CopyWallet, IswalletsPageType, WalletType } from "@/lib/types/wallettyp
 import { Dispatch, SetStateAction, useState } from "react";
 import { SelectedNetworkType } from "@/lib/types/wallettypes";
 import { useStoreContext } from "@/lib/utils/store/context";
+import { SiEthereum, SiSolana } from "react-icons/si";
+import { LuArrowLeft, LuCheck, LuChevronDown, LuCirclePlus, LuCopy, LuCopyCheck, LuMenu } from "react-icons/lu"
 
 
 export function WalletCard({
@@ -46,7 +48,7 @@ export function WalletCard({
       5_000
     );
     const walletPublicKey = wallets?.filter(
-      (wallet) => wallet.id === walletId
+      (wallet) => wallet.walletNumber === walletId
     )[0].publicKey;
     await navigator.clipboard.writeText(walletPublicKey || "");
   };
@@ -59,19 +61,7 @@ export function WalletCard({
             className="flex hover:cursor-pointer"
             onClick={() => setIsWalletsPage("wallet")}
           >
-            <svg
-              className="h-8 w-8 text-neutral-100 hover:text-neutral-900"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M7 16l-4-4m0 0l4-4m-4 4h18"
-              />
-            </svg>
+            <LuArrowLeft className="w-10 h-10 hover:text-neutral-900" />
           </div>
 
           <div className="flex w-full justify-center">
@@ -86,29 +76,16 @@ export function WalletCard({
             className="flex items-center rounded-full border text-black border-black bg-white w-auto p-2 hover:bg-[#14151b] hover:text-white hover:cursor-pointer"
             onClick={() => setNetwork((prev => !prev))}
           >
-            <img src={selectedNetwork === "Solana" ? SolanaImageUrl : EthereumImageUrl} alt="sol" className="w-8 h-8 contrast-200 mr-2" />
-            <h1 className="text-base font-semibold mr-2">{selectedNetwork === "Solana" ? "Solana" : "Ethereum"}</h1>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="#75798a"
-              className="size-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m19.5 8.25-7.5 7.5-7.5-7.5"
-              />
-            </svg>
+            {selectedNetwork === "SOLANA" ? <SiSolana className="w-6 h-6 contrast-200 mr-2" /> : <SiEthereum className="w-6 h-6 contrast-200 mr-2" />}
+            <h1 className="text-base font-semibold mr-2">{selectedNetwork === "SOLANA" ? "Solana" : "Ethereum"}</h1>
+            <LuChevronDown className="w-4 h-4" />
           </div>
         </div>
 
         <div className="overflow-y-auto w-full h-80">
           {wallets?.map((wallet) => (
             <div
-              key={wallet.id}
+              key={wallet.walletNumber}
               className={`bg-gray-100 p-6 flex justify-between items-center relative rounded-md  mb-8 ${`
             selectedWallet === wallet.id ? "border-2 border-[#4c94ff]" : ""`} 
             hover:bg-gray-200 hover:cursor-pointer`}
@@ -116,18 +93,15 @@ export function WalletCard({
               <div
                 className="flex items-center"
                 onClick={() => {
-                  setSellectedWallet(wallet?.id);
+                  setSellectedWallet(wallet?.walletNumber);
                   setIsWalletsPage("wallet");
                 }}
               >
-                <img
-                  src={SolanaImageUrl}
-                  alt="sol"
-                  className="h-10 w-10 contrast-200 mr-4"
-                />
+
+                {selectedNetwork === "SOLANA" ? <SiSolana className="h-10 w-10 contrast-200 mr-4 text-black" /> : <SiEthereum className="h-10 w-10 contrast-200 mr-4 text-black" />}
                 <div>
                   <h1 className="text-black text-xl font-semibold">
-                    Wallet {wallet.id}
+                    Wallet {wallet.walletNumber}
                   </h1>
                   <h2 className="text-[#969faf] text-base font-semibold">
                     {wallet.publicKey.slice(0, 4)}...
@@ -140,59 +114,21 @@ export function WalletCard({
               </div>
 
               <div className="flex items-center">
-                <div className="p-2 rounded-full hover:bg-black right-20 absolute" onClick={() => copyPublicKey(wallet.id)}>
-                  {copied?.value && copied.walletId === wallet.id ? (
-                    <svg
-                      className="size-8 text-red-500"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      {" "}
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
+                <div className="p-2 rounded-full text-black hover:bg-black hover:text-white right-20 absolute" onClick={() => copyPublicKey(wallet.walletNumber)}>
+                  {copied?.value && copied.walletId === wallet.walletNumber ? (
+                    <LuCopyCheck className="w-6 h-6" />
                   ) : (
-                    <svg
-                      className="size-8 text-neutral-900 hover:text-white"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      {" "}
-                      <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                      <rect x="8" y="8" width="12" height="12" rx="2" />{" "}
-                      <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" />
-                    </svg>
+                    <LuCopy className="w-6 h-6" />
                   )}
                 </div>
                 <div
-                  className="p-2 rounded-full hover:bg-black absolute right-4"
+                  className="p-2 rounded-full text-black hover:bg-black hover:text-white absolute right-4"
                   onClick={() => {
-                    setSellectedWallet(wallet.id);
+                    setSellectedWallet(wallet.walletNumber);
                     setOptions(true);
                   }}
                 >
-                  <svg
-                    className="size-8 text-neutral-900 hover:text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
+                  <LuMenu className="w-6 h-6" />
                 </div>
               </div>
             </div>
@@ -200,26 +136,13 @@ export function WalletCard({
         </div>
 
         <div
-          className="text-[#4c94ff] font-bold text-base flex items-center gap-2 hover:cursor-pointer"
+          className="text-[#4c94ff] font-bold text-base flex items-center gap-2 hover:cursor-pointer hover:text-gray-200"
           onClick={() => setModel(true)}
         >
-          <div className="flex justify-center items-center h-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="size-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4.5v15m7.5-7.5h-15"
-              />
-            </svg>
+          <div className="flex justify-center text-white items-center h-full">
+          <LuCirclePlus />
           </div>
-          <span className="flex justify-center items-center">
+          <span className="flex justify-center items-center text-white">
             Add new solana wallet
           </span>
         </div>
@@ -250,27 +173,15 @@ function NetworkModel({
             <div
               className="w-full p-2 flex items-center rounded-t-lg hover:bg-neutral-800 hover:cursor-pointer"
               onClick={() => {
-                setSelectedNetwork("Solana")
+                setSelectedNetwork("SOLANA")
                 setNetwork(false)
               }}
             >
-              <img src={SolanaImageUrl} alt="sol" className="w-6 h-6 mr-4" />
+              <SiSolana className="w-6 h-6 mr-4" />
               <h1 className="text-base font-mono">Solana</h1>
-              {selectedNetwork === "Solana" && (
+              {selectedNetwork === "SOLANA" && (
                 <div className="flex justify-end w-full">
-                  <svg
-                    className="size-6 text-red-500 ml-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <LuCheck className="text-red-600 ml-2" />
                 </div>
               )}
             </div>
@@ -278,27 +189,15 @@ function NetworkModel({
             <div
               className="w-full p-2 flex items-center rounded-b-lg hover:bg-neutral-800 hover:cursor-pointer"
               onClick={() => {
-                setSelectedNetwork("Ethereum");
+                setSelectedNetwork("ETHEREUM");
                 setNetwork(false)
               }}
             >
-              <img src={EthereumImageUrl} alt="eth" className="w-6 h-6 mr-4" />
+              <SiEthereum className="w-4 h-4 mr-2" />
               <h1 className="text-base font-mono">Ethereum</h1>
-              {selectedNetwork === "Ethereum" && (
+              {selectedNetwork === "ETHEREUM" && (
                 <div className="flex justify-end w-full">
-                  <svg
-                    className="size-6 text-red-500 ml-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <LuCheck className="text-red-600 ml-2" />
                 </div>
               )}
             </div>

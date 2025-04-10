@@ -6,6 +6,8 @@ import { MnemonicInput } from "./tasks/MnemonicInput";
 import { CreatePassword } from "./tasks/CreatePassword";
 import { Wallet } from "../account/Wallet";
 import type { OnBoardingTasksType } from "@/lib/types/onBoarding";
+import { LoadWalletsData } from "../account/LoadWallets";
+import { CreateWallet } from "../account/CreateWallet";
 
 export function OnBoardingTasks() {
   const [onBoardingData, setOnBoardingData] = useState<OnBoardingTasksType>({
@@ -72,7 +74,7 @@ export function OnBoardingTasks() {
     <div className="w-full flex justify-center">
         <>
           {step === steps.length ? (
-            <Wallet onBoardingData={onBoardingData} />
+            <CreateWallet onBoardingData={onBoardingData} />
           ) : (
             <div className="w-full flex justify-center p-20">{steps[step]}</div>
           )}

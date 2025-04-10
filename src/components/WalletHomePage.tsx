@@ -7,8 +7,6 @@ import { Swap } from "./wallet-actions/Swap";
 import { Receive } from "./wallet-actions/ReceiveAssets";
 
 
-
-
 export default function WalletHomePage({
   wallets,
   selectedWallet,
@@ -23,7 +21,8 @@ export default function WalletHomePage({
   const [assetsComponents, setAssetsComponents] =
     useState<AssetComponentsType>("home");
 
-  const wallet = wallets?.filter((wallet) => wallet.id === selectedWallet)[0];
+  const wallet = wallets?.filter((wallet) => wallet.walletNumber === selectedWallet)[0];
+  console.log('wallet is ', wallet)
   const assetBalance = wallet?.assetBalance;
   console.log(assetBalance);
 

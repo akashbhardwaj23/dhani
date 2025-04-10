@@ -9,6 +9,10 @@ interface SecretKeyType {
 }
 
 type StoreType = {
+    userId : number | undefined
+    setUserId : Dispatch<SetStateAction<number | undefined>>
+    email : string | undefined
+    setEmail : Dispatch<SetStateAction<string | undefined>>
     wallets : WalletType[] | null,
     setWallets : Dispatch<SetStateAction<WalletType[] | null>>
     secretKeys : SecretKeyType[] | null,
@@ -27,13 +31,15 @@ export function StoreContextProvider({
 } : {
     children : React.ReactNode
 }){
+    const [userId, setUserId] = useState<number | undefined>()
+    const [email, setEmail] = useState<string | undefined>()
     const [wallets, setWallets] = useState<WalletType[] | null>(null);
     const [secretKeys, setSecretKeys] = useState<SecretKeyType[] | null>(null);
     const [authorized, setAuthorized] = useState<boolean>(false);
-    const [selectedNetwork, setSelectedNetwork] = useState<SelectedNetworkType>("Solana")
+    const [selectedNetwork, setSelectedNetwork] = useState<SelectedNetworkType>("SOLANA")
 
     return (
-        <StoreContext.Provider value={{wallets, setWallets, secretKeys, setSecretKeys, authorized, setAuthorized, selectedNetwork, setSelectedNetwork}}>
+        <StoreContext.Provider value={{userId, setUserId, email, setEmail, wallets, setWallets, secretKeys, setSecretKeys, authorized, setAuthorized, selectedNetwork, setSelectedNetwork}}>
             {children}
         </StoreContext.Provider>
     )
