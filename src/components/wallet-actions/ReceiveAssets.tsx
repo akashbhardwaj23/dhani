@@ -20,7 +20,7 @@ export function Receive({
         console.log("success!");
       });
     }
-  }, []);
+  }, [publicKey]);
 
   const copy = async () => {
     setCopied(true);

@@ -1,16 +1,9 @@
 import { useStep } from "@/hooks/useStep";
-import { useWallets } from "@/hooks/useWallets";
-import { OnBoardingTasksType } from "@/lib/types/onBoarding";
-import { useStoreContext } from "@/lib/utils/store/context";
-import { Keypair } from "@solana/web3.js";
-import { mnemonicToSeedSync } from "bip39";
-import { derivePath } from "ed25519-hd-key";
 import { useEffect, useState } from "react";
-import nacl from "tweetnacl";
-import { encrypt } from "@/lib/utils/encrytion";
-import { createUser, getBalance, getUserMneumonic } from "@/server/user";
+import { getUserMneumonic, getUserWallets } from "@/server/user";
 import { Wallet } from "./Wallet";
 import { Loading } from "../ui/loading";
+import { useStoreContext } from "@/lib/utils/store/context";
 
 
 
@@ -20,12 +13,28 @@ export function LoadWalletsData({
     email?: string;
 }){
     const [error, setError] = useState<string>("");
-    const { wallets, setWallets } = useWallets(email || "");
+    const {wallets, setWallets} = useStoreContext();
     const [encryptedMneumonic, setEncryptedMneumonic] = useState<string>("");
     const [iv, setIv] = useState("")
     const [myKey, setMyKey] = useState("")
 
     const { resetStep } = useStep();
+
+
+    useEffect(() => {
+      if(!wallets){
+        const getWallets = async () => {
+            const newWallets = await getUserWallets(email || "")
+            if(!newWallets){
+                return
+            }
+
+            setWallets(newWallets.wallets)
+       }
+
+       getWallets()
+       }
+    }, [])
 
     useEffect(() => {
         const fetchUserMneumonic = async () => {

@@ -3,6 +3,8 @@ import { SolanaImageUrl, USDCImageUrl } from "@/config/assets";
 import { AssetComponentsType, WalletType } from "@/lib/types/wallettypes";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
+import { SiSolana } from "react-icons/si";
+import { IoLogoUsd } from "react-icons/io5"
 
 export function Card() {
 
@@ -172,7 +174,7 @@ export function AssetsCard({
         <div className="w-full col-span-1">
           <div className="flex mb-1 font-mono text-4xl antialiased font-semibold leading-snug tracking-normal justify-between text-blue-gray-900">
             <div className="w-full flex items-center">
-              <img src={SolanaImageUrl} className="w-16 h-16 mr-8" />
+              <SiSolana className="w-10 h-10 mr-8" />
               <div className="flex flex-col">
                 <h1 className="block font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   Solana
@@ -202,13 +204,13 @@ export function AssetsCard({
 
         <div className="flex mb-1 font-mono text-4xl antialiased font-semibold leading-snug tracking-normal justify-between text-blue-gray-900">
             <div className="w-full flex items-center">
-              <img src={USDCImageUrl} className="w-16 h-16 mr-8" />
+              <IoLogoUsd className="w-10 h-10 mr-8" />
               <div className="flex flex-col">
                 <h1 className="block font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   USDC
                 </h1>
                 <h2 className="block mb-1 font-mono text-lg antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  {wallet?.usdcBalance} usdc
+                  {wallet?.usdcBalance} Usdc
                 </h2>
               </div>
             </div>
