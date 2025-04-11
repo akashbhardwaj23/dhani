@@ -17,7 +17,7 @@ export function ShowSecretAction({
   const { secretKeys } = useStoreContext();
   const secretKey = secretKeys![0]?.secret;
 
-  const wallet = wallets?.filter((w) => w.id === selectedWallet)[0];
+  const wallet = wallets?.filter((w) => w.walletNumber === selectedWallet)[0];
 
   const copy = async () => {
     setCopied(true);

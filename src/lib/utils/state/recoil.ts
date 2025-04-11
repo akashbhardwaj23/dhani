@@ -4,10 +4,11 @@ import {atom} from "recoil"
 
 const WalletValue : WalletType[] = [{
     publicKey : "",
-    id : 0,
+    walletNumber : 0,
     assetBalance : 0,
     usdcBalance : 0,
-    accountId : 0
+    useraccountId : 0,
+    network : "SOLANA"
   }]
 
 export const walletState = atom<WalletType[] |  null>({
@@ -36,5 +37,5 @@ export const authorizedState = atom<boolean>({
 
 export const selectedNetworkState = atom<SelectedNetworkType>({
     key : "network",
-    default : "Solana"
+    default : "SOLANA"
 })
