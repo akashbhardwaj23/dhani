@@ -22,7 +22,7 @@ type StoreType = {
     selectedNetwork : SelectedNetworkType,
     setSelectedNetwork : Dispatch<SetStateAction<SelectedNetworkType>>
 }
-const StoreContext = createContext<StoreType | undefined>(undefined)
+export const StoreContext = createContext<StoreType | undefined>(undefined)
 
 
 

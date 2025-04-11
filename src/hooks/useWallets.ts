@@ -3,10 +3,6 @@ import { getUserWallets } from "@/server/user";
 import { useEffect } from "react";
 
 
-
-
-
-
 export function useWallets(){
     const {wallets, setWallets, email} = getStoreContext();
 
