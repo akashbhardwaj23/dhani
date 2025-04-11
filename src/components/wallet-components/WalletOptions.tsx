@@ -6,6 +6,8 @@ import {
   RenameWalletAction,
   ShowSecretAction,
 } from "../wallet-options";
+import { LuArrowLeft, LuCheck, LuChevronDown, LuChevronRight, LuCirclePlus, LuCopy, LuCopyCheck, LuMenu } from "react-icons/lu"
+
 
 // Need to change the name
 export function WalletOptions({
@@ -42,7 +44,7 @@ export function WalletOptions({
       </>
     );
   } else if (selectedAction === "remove-wallet") {
-    return <RemoveWalletAction setSelectedAction={setSelectedAction} />;
+    return <RemoveWalletAction setSelectedAction={setSelectedAction} wallet={wallet!} setOptions = {setOptions} />;
   } else {
     return (
       <div className="relative flex w-[40rem] flex-col rounded-xl bg-[#1FB4DC] bg-clip-border text-gray-100 shadow-md">
@@ -53,19 +55,7 @@ export function WalletOptions({
                 className="hover:cursor-pointer"
                 onClick={() => setOptions(false)}
               >
-                <svg
-                  className="size-8 text-red-500 hover:text-red-700"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 16l-4-4m0 0l4-4m-4 4h18"
-                  />
-                </svg>
+               <LuArrowLeft className="w-8 h-8 text-white hover:text-neutral-900" />
               </div>
               <div className="flex justify-center w-full">
                 <h1 className="font-mono text-5xl text-white font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
@@ -87,36 +77,10 @@ export function WalletOptions({
                   </h2>
                   <div className="" onClick={copyText}>
                     {!copied ? (
-                      <svg
-                        className="size-8 text-neutral-500"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        {" "}
-                        <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                        <rect x="8" y="8" width="12" height="12" rx="2" />{" "}
-                        <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" />
-                      </svg>
+                      <LuCopy className="w-6 h-6" />
+                      
                     ) : (
-                      <svg
-                        className="size-8 text-red-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      <LuCopyCheck className="w-6 h-6" />
                     )}
                   </div>
                 </div>
@@ -135,19 +99,7 @@ export function WalletOptions({
               >
                 <h1>Rename Wallet</h1>
                 <div>
-                  <svg
-                    className="size-8 text-red-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  <LuChevronRight className="w-6 h-6" />
                 </div>
               </div>
             </div>
@@ -159,19 +111,7 @@ export function WalletOptions({
               >
                 <h1>Show private key</h1>
                 <div>
-                  <svg
-                    className="size-8 text-red-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  <LuChevronRight className="w-6 h-6" />
                 </div>
               </div>
             </div>
@@ -183,19 +123,7 @@ export function WalletOptions({
               >
                 <h1>Remove wallet</h1>
                 <div>
-                  <svg
-                    className="size-8 text-red-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  <LuChevronRight className="w-6 h-6 text-red-700" />
                 </div>
               </div>
             </div>

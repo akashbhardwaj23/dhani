@@ -13,7 +13,7 @@ import {
   Transaction,
 } from "@solana/web3.js";
 import { connection } from "@/server/connection";
-import { useStoreContext } from "@/lib/utils/store/context";
+import { getStoreContext } from "@/lib/utils/store/context";
 import { LuArrowLeft, LuCircleX } from "react-icons/lu";
 import { SiEthereum, SiSolana } from "react-icons/si";
 
@@ -29,7 +29,7 @@ export function SendAssets({
   const [amount, setAmount] = useState("");
   const [model, setModel] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const {secretKeys} = useStoreContext();
+  const {secretKeys} = getStoreContext()
   const [signature, setSignature] = useState<string>("");
 
   const closeDrawerBottom = () => setModel(false);

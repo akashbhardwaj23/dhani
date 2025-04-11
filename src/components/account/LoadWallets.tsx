@@ -1,9 +1,9 @@
 import { useStep } from "@/hooks/useStep";
 import { useEffect, useState } from "react";
 import { getUserMneumonic, getUserWallets } from "@/server/user";
-import { Wallet } from "./Wallet";
+import { WalletComponent } from "./Wallet";
 import { Loading } from "../ui/loading";
-import { useStoreContext } from "@/lib/utils/store/context";
+import { getStoreContext } from "@/lib/utils/store/context";
 
 
 
@@ -13,7 +13,7 @@ export function LoadWalletsData({
     email?: string;
 }){
     const [error, setError] = useState<string>("");
-    const {wallets, setWallets} = useStoreContext();
+    const {wallets, setWallets, setEmail} = getStoreContext()
     const [encryptedMneumonic, setEncryptedMneumonic] = useState<string>("");
     const [iv, setIv] = useState("")
     const [myKey, setMyKey] = useState("")
@@ -23,6 +23,7 @@ export function LoadWalletsData({
 
     useEffect(() => {
       if(!wallets){
+        setEmail(email)
         const getWallets = async () => {
             const newWallets = await getUserWallets(email || "")
             if(!newWallets){
@@ -79,7 +80,7 @@ export function LoadWalletsData({
 
   if(wallets){
     return (
-       <Wallet encryptedMneumonic={encryptedMneumonic} setWallets={setWallets} wallets={wallets} iv={iv} mykey={myKey} />
+       <WalletComponent encryptedMneumonic={encryptedMneumonic} setWallets={setWallets} wallets={wallets} iv={iv} mykey={myKey} />
     )
   }
   

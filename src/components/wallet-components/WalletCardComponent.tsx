@@ -1,33 +1,30 @@
-import {
-  EthereumImageUrl,
-  SolanaImageUrl,
-} from "@/config/assets";
 import { SetActionBooleanType } from "@/lib/types/actiontype";
 import { CopyWallet, IswalletsPageType, WalletType } from "@/lib/types/wallettypes";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SelectedNetworkType } from "@/lib/types/wallettypes";
-import { useStoreContext } from "@/lib/utils/store/context";
+// import { useStoreContext } from "@/lib/utils/store/context";
 import { SiEthereum, SiSolana } from "react-icons/si";
 import { LuArrowLeft, LuCheck, LuChevronDown, LuCirclePlus, LuCopy, LuCopyCheck, LuMenu } from "react-icons/lu"
+import { useWallets } from "@/hooks/useWallets";
+import { getStoreContext } from "@/lib/utils/store/context";
 
 
 export function WalletCard({
   setModel,
   setIsWalletsPage,
-  wallets,
   setSellectedWallet,
   setOptions,
 }: {
   setIsWalletsPage: Dispatch<SetStateAction<IswalletsPageType>>;
   setModel: SetActionBooleanType;
-  wallets: WalletType[] | null;
   setSellectedWallet: Dispatch<SetStateAction<number>>;
   setOptions: SetActionBooleanType;
 }) {
   const [copied, setCopied] = useState<CopyWallet | undefined>();
   const [network, setNetwork] = useState<boolean>(false);
+  const {wallets} = useWallets()
 
-    const {selectedNetwork, setSelectedNetwork} = useStoreContext()
+    const {selectedNetwork, setSelectedNetwork} = getStoreContext()
 
     console.log(copied);
     console.log(wallets)
@@ -84,54 +81,66 @@ export function WalletCard({
 
         <div className="overflow-y-auto w-full h-80">
           {wallets?.map((wallet) => (
-            <div
-              key={wallet.walletNumber}
-              className={`bg-gray-100 p-6 flex justify-between items-center relative rounded-md  mb-8 ${`
-            selectedWallet === wallet.id ? "border-2 border-[#4c94ff]" : ""`} 
-            hover:bg-gray-200 hover:cursor-pointer`}
-            >
-              <div
-                className="flex items-center"
-                onClick={() => {
-                  setSellectedWallet(wallet?.walletNumber);
-                  setIsWalletsPage("wallet");
-                }}
-              >
-
-                {selectedNetwork === "SOLANA" ? <SiSolana className="h-10 w-10 contrast-200 mr-4 text-black" /> : <SiEthereum className="h-10 w-10 contrast-200 mr-4 text-black" />}
-                <div>
-                  <h1 className="text-black text-xl font-semibold">
-                    Wallet {wallet.walletNumber}
-                  </h1>
-                  <h2 className="text-[#969faf] text-base font-semibold">
-                    {wallet.publicKey.slice(0, 4)}...
-                    {wallet.publicKey.slice(
-                      wallet.publicKey.length - 4,
-                      wallet.publicKey.length
-                    )}
-                  </h2>
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <div className="p-2 rounded-full text-black hover:bg-black hover:text-white right-20 absolute" onClick={() => copyPublicKey(wallet.walletNumber)}>
-                  {copied?.value && copied.walletId === wallet.walletNumber ? (
-                    <LuCopyCheck className="w-6 h-6" />
-                  ) : (
-                    <LuCopy className="w-6 h-6" />
-                  )}
-                </div>
-                <div
-                  className="p-2 rounded-full text-black hover:bg-black hover:text-white absolute right-4"
-                  onClick={() => {
-                    setSellectedWallet(wallet.walletNumber);
-                    setOptions(true);
-                  }}
-                >
-                  <LuMenu className="w-6 h-6" />
-                </div>
-              </div>
-            </div>
+            <>
+              {selectedNetwork === wallet.network ? (
+                <>
+                {
+                  wallet.publicKey ? (<div
+                    key={wallet.walletNumber}
+                    className={`bg-gray-100 p-6 flex justify-between items-center relative rounded-md  mb-8 ${`
+                  selectedWallet === wallet.id ? "border-2 border-[#4c94ff]" : ""`} 
+                  hover:bg-gray-200 hover:cursor-pointer`}
+                  >
+                    <div
+                      className="flex items-center"
+                      onClick={() => {
+                        setSellectedWallet(wallet?.walletNumber);
+                        setIsWalletsPage("wallet");
+                      }}
+                    >
+      
+                      {selectedNetwork === "SOLANA" ? <SiSolana className="h-10 w-10 contrast-200 mr-4 text-black" /> : <SiEthereum className="h-10 w-10 contrast-200 mr-4 text-black" />}
+                      <div>
+                        <h1 className="text-black text-xl font-semibold">
+                          Wallet {wallet.walletNumber}
+                        </h1>
+                        <h2 className="text-[#969faf] text-base font-semibold">
+                          {wallet.publicKey.slice(0, 4)}...
+                          {wallet.publicKey.slice(
+                            wallet.publicKey.length - 4,
+                            wallet.publicKey.length
+                          )}
+                        </h2>
+                      </div>
+                    </div>
+      
+                    <div className="flex items-center">
+                      <div className="p-2 rounded-full text-black hover:bg-black hover:text-white right-20 absolute" onClick={() => copyPublicKey(wallet.walletNumber)}>
+                        {copied?.value && copied.walletId === wallet.walletNumber ? (
+                          <LuCopyCheck className="w-6 h-6" />
+                        ) : (
+                          <LuCopy className="w-6 h-6" />
+                        )}
+                      </div>
+                      <div
+                        className="p-2 rounded-full text-black hover:bg-black hover:text-white absolute right-4"
+                        onClick={() => {
+                          setSellectedWallet(wallet.walletNumber);
+                          setOptions(true);
+                        }}
+                      >
+                        <LuMenu className="w-6 h-6" />
+                      </div>
+                    </div>
+                  </div>) : (
+                    <div className="">
+                      whats up
+                    </div>
+                  )
+                }
+                </>
+              ) : null}
+            </>
           ))}
         </div>
 

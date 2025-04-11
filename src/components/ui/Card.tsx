@@ -1,5 +1,4 @@
 "use client"
-import { SolanaImageUrl, USDCImageUrl } from "@/config/assets";
 import { AssetComponentsType, WalletType } from "@/lib/types/wallettypes";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -7,7 +6,6 @@ import { SiSolana } from "react-icons/si";
 import { IoLogoUsd } from "react-icons/io5"
 
 export function Card() {
-
   const router = useRouter()
 
   return (
@@ -44,6 +42,8 @@ export function MyAssetsCard({
 }) {
 
   const [copied, setCopied] = useState<boolean>(false)
+
+  console.log("Wallet are ", wallet)
 
   const copy = async () => {
     setCopied(true);

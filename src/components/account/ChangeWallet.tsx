@@ -25,20 +25,11 @@ export function ChangeWallet({
       {options ? (
         <WalletOptions setOptions={setOptions} wallets ={wallets} selectedWallet={selectedWallet} />
       ) : (
-        // <ShowWallets
-        //   setIsWalletsPage={setIsWalletsPage}
-        //   setModel={setModel}
-        //   setSellectedWallet={setSellectedWallet}
-        //   selectedWallet={selectedWallet}
-        //   wallets={wallets}
-        //   setOptions={setOptions}
-        // />
 
         <WalletCard 
           setIsWalletsPage={setIsWalletsPage}
           setModel={setModel}
           setSellectedWallet={setSellectedWallet}
-          wallets={wallets}
           setOptions={setOptions}
       />
       )}

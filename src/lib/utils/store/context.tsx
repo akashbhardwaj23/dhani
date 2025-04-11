@@ -46,7 +46,7 @@ export function StoreContextProvider({
 }
 
 
-export function useStoreContext(){
+export function getStoreContext(){
     const context = useContext(StoreContext);
     if(context === undefined){
         throw new Error("useStoreContext must be used within a StoreContextProvider");

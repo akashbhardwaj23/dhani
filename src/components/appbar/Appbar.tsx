@@ -1,6 +1,5 @@
-import { EthereumImageUrl, SolanaImageUrl } from "@/config/assets";
 import { SelectedNetworkType, WalletType } from "@/lib/types/wallettypes";
-import { useStoreContext } from "@/lib/utils/store/context";
+import { getStoreContext } from "@/lib/utils/store/context";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LuCheck, LuChevronDown, LuCopy, LuCopyCheck } from "react-icons/lu";
 import { SiEthereum, SiSolana } from "react-icons/si";
@@ -17,7 +16,7 @@ export function Appbar({
   const [copied, setCopied] = useState<boolean>(false);
   const [network, setNetwork] = useState<boolean>(false);
 
-  const {selectedNetwork, setSelectedNetwork} = useStoreContext()
+  const {selectedNetwork, setSelectedNetwork} = getStoreContext()
 
 
   const copy = async () => {

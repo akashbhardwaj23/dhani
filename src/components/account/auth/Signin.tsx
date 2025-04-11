@@ -1,6 +1,5 @@
 import { getUser } from "@/server/user";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Wallet } from "../Wallet";
 import { PageType } from "@/components/home/WelcomePage";
 import { Loading } from "@/components/ui/loading";
 import { useAuth } from "@/hooks/useAuth";

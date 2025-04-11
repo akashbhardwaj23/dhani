@@ -1,14 +1,14 @@
 import { useStep } from "@/hooks/useStep";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
 import { encrypt } from "@/lib/utils/encrytion";
-import { useStoreContext } from "@/lib/utils/store/context";
-import { createUser, getBalance } from "@/server/user";
+import { getStoreContext } from "@/lib/utils/store/context";
+import { createUser,  getSolanaBalance } from "@/server/user";
 import { Keypair } from "@solana/web3.js";
 import { mnemonicToSeedSync } from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import { useEffect, useState } from "react";
 import nacl from "tweetnacl";
-import { Wallet } from "./Wallet";
+import { WalletComponent } from "./Wallet";
 import { Loading } from "../ui/loading";
 
 
@@ -23,11 +23,10 @@ export function CreateWallet({
     const [encryptedMneumonic, setEncryptedMneumonic] = useState<string>("")
     const [iv, setIv] = useState("")
     const [key, setKey] = useState("")
-    const {wallets, setWallets} = useStoreContext()
-    const { setSecretKeys } = useStoreContext();
+    const {wallets, setWallets} = getStoreContext()
+    const { setSecretKeys } = getStoreContext()
     const [error, setError] = useState<string>("");
-    const {setEmail, setUserId} = useStoreContext()
-
+    const {setEmail, setUserId} = getStoreContext()
     
     const createWallet = () => {
         const seed = mnemonicToSeedSync(onBoardingData?.mneumonic || "");
@@ -80,7 +79,7 @@ export function CreateWallet({
               return;
             }
     
-            const balance = await getBalance(wallet.publicKey);
+            const balance = await getSolanaBalance(wallet.publicKey)
             console.log(balance);
             setSecretKeys(prev => {
               if(prev){
@@ -156,7 +155,7 @@ export function CreateWallet({
 
      if(wallets){
         return (
-            <Wallet encryptedMneumonic={encryptedMneumonic} setWallets={setWallets} wallets={wallets} iv={iv} mykey={key} />
+            <WalletComponent encryptedMneumonic={encryptedMneumonic} setWallets={setWallets} wallets={wallets} iv={iv} mykey={key} />
           )
         
      }

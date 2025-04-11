@@ -1,12 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { ChangeWallet } from "./ChangeWallet";
-import {  getBalance, updateUser } from "@/server/user";
+import { getEthereumbalance, getSolanaBalance, updateUser, updateUserByEmail } from "@/server/user";
 import {
   IswalletsPageType,
   SetWalletType,
   WalletType,
 } from "@/lib/types/wallettypes";
-
 import { decrypt } from "@/lib/utils/encrytion";
 import { mnemonicToSeedSync } from "bip39";
 import { derivePath } from "ed25519-hd-key";
@@ -14,16 +13,17 @@ import { Keypair } from "@solana/web3.js";
 import nacl from "tweetnacl";
 import WalletHomePage from "../WalletHomePage";
 import { LuChevronDown, LuChevronLeft, LuCirclePlus, LuEye, LuFileKey, LuRecycle } from "react-icons/lu";
-import { useStoreContext } from "@/lib/utils/store/context";
+import { getStoreContext } from "@/lib/utils/store/context";
+import { ethers, Wallet } from "ethers";
 
-export function Wallet({
+export function WalletComponent({
   wallets,
   setWallets,
   encryptedMneumonic,
   iv,
   mykey
 }: {
- wallets : WalletType[] | null
+ wallets : WalletType[]
  setWallets : Dispatch<SetStateAction<WalletType[] | null>>
  encryptedMneumonic : string,
  iv : string
@@ -32,7 +32,7 @@ export function Wallet({
   const [iswalletsPage, setIsWalletsPage] =
     useState<IswalletsPageType>("wallet");
   const [model, setModel] = useState<boolean>(false);
-  const [selectedWallet, setSellectedWallet] = useState<number>(1);
+  const [selectedWallet, setSellectedWallet] = useState<number>(wallets[0].walletNumber);
 
 
   console.log("wallets in wallet component is ", wallets)
@@ -45,7 +45,7 @@ export function Wallet({
     const walletPublickey = wallets?.filter(
       (wallet) => wallet.walletNumber === selectedWallet
     )[0].publicKey;
-    const balance = await getBalance(walletPublickey || "");
+    const balance = await getSolanaBalance(walletPublickey || "")
 
     setWallets((prev) => {
       if (!prev) {
@@ -116,9 +116,10 @@ function Model({
   myKey : string
 }) {
 
-  const {selectedNetwork} = useStoreContext()
+  const {email,selectedNetwork} = getStoreContext()
 
-  const createNewWallet = (mneumonic: string, walletNumber: number) => {
+
+  const createNewSolanaWallet = (mneumonic: string, walletNumber: number) => {
     const seed = mnemonicToSeedSync(mneumonic);
     const path = `m/44'/501'/${walletNumber}'/0'`;
     const derivedSeed = derivePath(path, seed.toString("hex")).key;
@@ -130,52 +131,187 @@ function Model({
     };
   };
 
+
+  const createNewEthereumWallet = (mneumonic : string, walletNumber : number) => {
+    const seed = mnemonicToSeedSync(mneumonic)
+    const path = `m/44'/60'/${walletNumber}'/0'`;
+    const hdNode = ethers.HDNodeWallet.fromSeed(seed)
+    const child = hdNode.derivePath(path);
+    const data = new Wallet(child.privateKey);
+
+
+    const signingKey = new ethers.SigningKey(data.privateKey);
+  const publicKey = signingKey.publicKey;
+   
+    return {
+      publicKey : publicKey,
+      secret : data.privateKey,
+      address : data.address
+    }
+
+  }
+
   const generateNewWallet = async () => {
     const decryptedData = decrypt(encryptedMneumonic, iv, myKey);
 
-    if (wallets) {
-      console.log("Running here in generate new Wallets");
-      const newWallet = createNewWallet(
-        decryptedData,
-        wallets[wallets.length - 1].walletNumber
-      );
-      const balance = await getBalance(newWallet.publicKey);
-      const updatedUser = await updateUser(
-        wallets[wallets.length - 1].useraccountId,
-        newWallet.publicKey
-      );
+    console.log("Selected Network is ", selectedNetwork)
 
-      console.log(balance);
+    if(selectedNetwork === "SOLANA"){
+      if (wallets && wallets.length > 0) {
+        console.log("Running here in generate new Wallets");
+        const newWallet = createNewSolanaWallet(
+          decryptedData,
+          wallets[wallets.length - 1].walletNumber
+        );
+        const balance = await getSolanaBalance(newWallet.publicKey);
+        const updatedUser = await updateUser(
+          wallets[wallets.length - 1].useraccountId,
+          newWallet.publicKey,
+          selectedNetwork
+        );
+  
+        // console.log(balance);
+  
+        if (newWallet.publicKey) {
+          setWallets((prev) => {
+            if (prev) {
+              return [
+                ...prev,
+                {
+                  publicKey: newWallet.publicKey,
+                  walletNumber: prev.length + 1,
+                  assetBalance: balance.orignalBalance,
+                  usdcBalance : Number(balance.usdcPrice),
+                  useraccountId: wallets[wallets.length - 1].useraccountId,
+                  network : selectedNetwork
+                },
+              ];
+            } else {
+              return [
+                {
+                  publicKey: newWallet.publicKey,
+                  walletNumber : 1,
+                  assetBalance : balance.orignalBalance,
+                  usdcBalance : Number(balance.usdcPrice),
+                  useraccountId:
+                    updatedUser?.updateUser.id ||
+                    wallets[wallets.length - 1].useraccountId,
+                  network  : selectedNetwork
+                },
+              ];
+            }
+          });
+        }
+      } else {
+        const newWallet = createNewSolanaWallet(decryptedData, 0);
+        const data = await updateUserByEmail(
+          email!,
+          newWallet.publicKey,
+          selectedNetwork
+        );
+  
+        if(newWallet.publicKey){
+          setWallets(prev => {
+            if(prev){
+              return [...prev, {
+                publicKey : newWallet.publicKey,
+                assetBalance : data!.balance.orignalBalance,
+                walletNumber : prev.length + 1,
+                network : selectedNetwork,
+                usdcBalance : Number(data!.balance.usdcPrice),
+                useraccountId : data!.updateUser.id
+              }]
+            }
+  
+            return [{
+              publicKey : newWallet.publicKey,
+              assetBalance : data!.balance.orignalBalance,
+              walletNumber : 1,
+              network : selectedNetwork,
+              usdcBalance : Number(data!.balance.usdcPrice),
+              useraccountId : data!.updateUser.id
+            }]
+          })
+        }
+      }
+    } else {
+      if(wallets && wallets.length > 0){
+        console.log("here")
+        const newWallet = createNewEthereumWallet(decryptedData, wallets[wallets.length - 1].walletNumber)
+        const balance = await getEthereumbalance(newWallet.publicKey);
 
-      if (newWallet.publicKey) {
-        setWallets((prev) => {
-          if (prev) {
-            return [
-              ...prev,
-              {
-                publicKey: newWallet.publicKey,
-                walletNumber: prev.length + 1,
-                assetBalance: balance.orignalBalance,
-                usdcBalance : Number(balance.usdcPrice),
-                useraccountId: wallets[wallets.length - 1].useraccountId,
-                network : selectedNetwork
-              },
-            ];
-          } else {
-            return [
-              {
-                publicKey: newWallet.publicKey,
-                walletNumber : 1,
+        const updatedUser = await updateUser(
+          wallets[wallets.length - 1].useraccountId,
+          newWallet.publicKey,
+          selectedNetwork
+        );
+
+        if (newWallet.publicKey) {
+          setWallets((prev) => {
+            if (prev) {
+              return [
+                ...prev,
+                {
+                  publicKey: newWallet.publicKey,
+                  walletNumber: prev.length + 1,
+                  assetBalance: balance.orignalBalance,
+                  usdcBalance : Number(balance.usdcPrice),
+                  useraccountId: wallets[wallets.length - 1].useraccountId,
+                  network : selectedNetwork
+                },
+              ];
+            } else {
+              return [
+                {
+                  publicKey: newWallet.publicKey,
+                  walletNumber : 1,
+                  assetBalance : balance.orignalBalance,
+                  usdcBalance : Number(balance.usdcPrice),
+                  useraccountId:
+                    updatedUser?.updateUser.id ||
+                    wallets[wallets.length - 1].useraccountId,
+                  network  : selectedNetwork
+                },
+              ];
+            }
+          });
+        }
+          
+
+      } else {
+        const newWallet = createNewEthereumWallet(decryptedData, 0);
+        const balance = await getEthereumbalance(newWallet.publicKey);
+        console.log("here again")
+        const data = await updateUserByEmail(
+          email!,
+          newWallet.publicKey,
+          selectedNetwork
+        );
+  
+        if(newWallet.publicKey){
+          setWallets(prev => {
+            if(prev){
+              return [...prev, {
+                publicKey : newWallet.publicKey,
                 assetBalance : balance.orignalBalance,
+                walletNumber : prev.length + 1,
+                network : selectedNetwork,
                 usdcBalance : Number(balance.usdcPrice),
-                useraccountId:
-                  updatedUser?.updateUser.id ||
-                  wallets[wallets.length - 1].useraccountId,
-                network  : selectedNetwork
-              },
-            ];
-          }
-        });
+                useraccountId : data!.updateUser.id
+              }]
+            }
+  
+            return [{
+              publicKey : newWallet.publicKey,
+              assetBalance : data!.balance.orignalBalance,
+              walletNumber : 1,
+              network : selectedNetwork,
+              usdcBalance : Number(data!.balance.usdcPrice),
+              useraccountId : data!.updateUser.id
+            }]
+          })
+        }
+        
       }
     }
 
