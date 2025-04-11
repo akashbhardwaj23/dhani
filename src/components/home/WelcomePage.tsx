@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { SignIn } from "../account/auth/Signin";
 import { OnBoardingTasks } from "../onboarding/OnBoardingTasks";
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "@/hooks/useWallets";
 import { LoadWalletsData } from "../account/LoadWallets";
 
 
@@ -11,7 +11,7 @@ export type PageType = "signin" | "onBoarding"
 
 export function WelcomePage(){
     const [page, setPage] = useState<PageType>("signin");
-    const { email, userId } = getStoreContext()
+    const { email, userId } = useStoreContext()
     console.log(email, userId)
 
     return (

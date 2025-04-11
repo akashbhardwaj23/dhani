@@ -4,9 +4,7 @@ import { useStep } from "@/hooks/useStep";
 import { NetworkSelection } from "./tasks/NetworkSelection";
 import { MnemonicInput } from "./tasks/MnemonicInput";
 import { CreatePassword } from "./tasks/CreatePassword";
-import { Wallet } from "../account/Wallet";
 import type { OnBoardingTasksType } from "@/lib/types/onBoarding";
-import { LoadWalletsData } from "../account/LoadWallets";
 import { CreateWallet } from "../account/CreateWallet";
 
 export function OnBoardingTasks() {

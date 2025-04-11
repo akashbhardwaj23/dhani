@@ -6,7 +6,7 @@ import { SelectedNetworkType } from "@/lib/types/wallettypes";
 import { SiEthereum, SiSolana } from "react-icons/si";
 import { LuArrowLeft, LuCheck, LuChevronDown, LuCirclePlus, LuCopy, LuCopyCheck, LuMenu } from "react-icons/lu"
 import { useWallets } from "@/hooks/useWallets";
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "@/hooks/useWallets";
 
 
 export function WalletCard({
@@ -24,7 +24,7 @@ export function WalletCard({
   const [network, setNetwork] = useState<boolean>(false);
   const {wallets} = useWallets()
 
-    const {selectedNetwork, setSelectedNetwork} = getStoreContext()
+    const {selectedNetwork, setSelectedNetwork} = useStoreContext()
 
     console.log(copied);
     console.log(wallets)

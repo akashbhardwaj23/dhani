@@ -1,10 +1,19 @@
-import { getStoreContext } from "@/lib/utils/store/context";
+import { StoreContext } from "@/lib/utils/store/context";
 import { getUserWallets } from "@/server/user";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+
+export function useStoreContext(){
+    const context = useContext(StoreContext);
+    if(context === undefined){
+        throw new Error("useStoreContext must be used within a StoreContextProvider");
+    }
+    return context
+}
+
 
 
 export function useWallets(){
-    const {wallets, setWallets, email} = getStoreContext();
+    const {wallets, setWallets, email} = useStoreContext();
 
     useEffect(() => {
         console.log("Email is ", email)
@@ -23,7 +32,7 @@ export function useWallets(){
     
            getWallets()
         }
-    }, [])
+    }, [email])
 
     return {
         wallets,

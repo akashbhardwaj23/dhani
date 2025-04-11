@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getUserMneumonic, getUserWallets } from "@/server/user";
 import { WalletComponent } from "./Wallet";
 import { Loading } from "../ui/loading";
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "@/hooks/useWallets";
 
 
 
@@ -13,7 +13,7 @@ export function LoadWalletsData({
     email?: string;
 }){
     const [error, setError] = useState<string>("");
-    const {wallets, setWallets, setEmail} = getStoreContext()
+    const {wallets, setWallets, setEmail} = useStoreContext()
     const [encryptedMneumonic, setEncryptedMneumonic] = useState<string>("");
     const [iv, setIv] = useState("")
     const [myKey, setMyKey] = useState("")

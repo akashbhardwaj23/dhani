@@ -46,14 +46,6 @@ export function StoreContextProvider({
 }
 
 
-export function getStoreContext(){
-    const context = useContext(StoreContext);
-    if(context === undefined){
-        throw new Error("useStoreContext must be used within a StoreContextProvider");
-    }
-    return context
-}
-
 
 
 // import { SelectedNetworkType, WalletType } from "@/lib/types/wallettypes"

@@ -1,8 +1,8 @@
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "./useWallets";
 
 
 export function useAuth(){
-    const {authorized, setAuthorized} = getStoreContext()
+    const {authorized, setAuthorized} = useStoreContext()
     return {
         authorized,
         setAuthorized

@@ -1,5 +1,5 @@
 import { SelectedNetworkType, WalletType } from "@/lib/types/wallettypes";
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "@/hooks/useWallets";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LuCheck, LuChevronDown, LuCopy, LuCopyCheck } from "react-icons/lu";
 import { SiEthereum, SiSolana } from "react-icons/si";
@@ -16,7 +16,7 @@ export function Appbar({
   const [copied, setCopied] = useState<boolean>(false);
   const [network, setNetwork] = useState<boolean>(false);
 
-  const {selectedNetwork, setSelectedNetwork} = getStoreContext()
+  const {selectedNetwork, setSelectedNetwork} = useStoreContext()
 
 
   const copy = async () => {

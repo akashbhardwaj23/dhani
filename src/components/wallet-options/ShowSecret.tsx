@@ -1,7 +1,7 @@
 import { SelectedActionType } from "@/lib/types/actiontype";
 import { WalletType } from "@/lib/types/wallettypes";
 import { useState } from "react";
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "@/hooks/useWallets";
 
 export function ShowSecretAction({
   setSelectedAction,
@@ -14,7 +14,7 @@ export function ShowSecretAction({
 }) {
   const [copied, setCopied] = useState<boolean>(false);
 
-  const { secretKeys } = getStoreContext();
+  const { secretKeys } = useStoreContext();
   const secretKey = secretKeys![0]?.secret;
 
   const wallet = wallets?.filter((w) => w.walletNumber === selectedWallet)[0];

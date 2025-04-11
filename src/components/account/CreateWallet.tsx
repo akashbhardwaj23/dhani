@@ -1,7 +1,7 @@
 import { useStep } from "@/hooks/useStep";
 import { OnBoardingTasksType } from "@/lib/types/onBoarding";
 import { encrypt } from "@/lib/utils/encrytion";
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "@/hooks/useWallets";
 import { createUser,  getSolanaBalance } from "@/server/user";
 import { Keypair } from "@solana/web3.js";
 import { mnemonicToSeedSync } from "bip39";
@@ -10,8 +10,6 @@ import { useEffect, useState } from "react";
 import nacl from "tweetnacl";
 import { WalletComponent } from "./Wallet";
 import { Loading } from "../ui/loading";
-
-
 
 
 export function CreateWallet({
@@ -23,10 +21,10 @@ export function CreateWallet({
     const [encryptedMneumonic, setEncryptedMneumonic] = useState<string>("")
     const [iv, setIv] = useState("")
     const [key, setKey] = useState("")
-    const {wallets, setWallets} = getStoreContext()
-    const { setSecretKeys } = getStoreContext()
+    const {wallets, setWallets} = useStoreContext()
+    const { setSecretKeys } = useStoreContext()
     const [error, setError] = useState<string>("");
-    const {setEmail, setUserId} = getStoreContext()
+    const {setEmail, setUserId} = useStoreContext()
     
     const createWallet = () => {
         const seed = mnemonicToSeedSync(onBoardingData?.mneumonic || "");

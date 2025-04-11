@@ -13,7 +13,7 @@ import { Keypair } from "@solana/web3.js";
 import nacl from "tweetnacl";
 import WalletHomePage from "../WalletHomePage";
 import { LuChevronDown, LuChevronLeft, LuCirclePlus, LuEye, LuFileKey, LuRecycle } from "react-icons/lu";
-import { getStoreContext } from "@/lib/utils/store/context";
+import { useStoreContext } from "@/hooks/useWallets";
 import { ethers, Wallet } from "ethers";
 
 export function WalletComponent({
@@ -116,7 +116,7 @@ function Model({
   myKey : string
 }) {
 
-  const {email,selectedNetwork} = getStoreContext()
+  const {email,selectedNetwork} = useStoreContext()
 
 
   const createNewSolanaWallet = (mneumonic: string, walletNumber: number) => {
