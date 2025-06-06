@@ -18,17 +18,17 @@ export function SignIn({
       {authorized ? (
         <LoadWalletsData email={email}  />
       ) : (
-        <div className="w-full flex justify-center p-20">
-        <div className="max-w-xl w-full flex h-full items-center flex-col">
+        <div className="w-full flex justify-center p-10 pt-20 md:p-20">
+        <div className="max-w-2xl md:max-w-xl w-full flex h-full md:items-center flex-col">
           <div className="mb-4">
-            <h1 className="text-4xl text-white font-semibold mb-4 tracking-normal flex justify-center">
+            <h1 className="text-4xl text-white font-semibold mb-2 md:mb-4 tracking-normal flex md:justify-center">
               SignIn
             </h1>
-            <h2 className="text-[#969fa5] text-base font-medium tracking-normal">
-              <span className="flex justify-center">
-                It should be at least 8 characters.
+            <h2 className="text-[#969fa5] text-xs md:text-base font-medium tracking-normal">
+              <span className="flex md:justify-center mr-1 md:mr-0">
+              It should be at least 8 characters.
               </span>
-              <span className="flex justify-center">
+              <span className="flex md:justify-center">
                 You&apos;ll need this to unlock Wallet App.
               </span>
             </h2>
@@ -59,13 +59,14 @@ function Auth({
   setAuthorized : Dispatch<SetStateAction<boolean>>
 }) {
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const sendpassword = async () => {
     // check if password and correctPassword are same
+    setError(null)
     setLoading(true);
     const user = await getUser(email, password);
     if (user) {
@@ -79,14 +80,18 @@ function Auth({
 
   return (
     <>
-      <div className="w-full flex flex-col mb-12 relative">
+      <div className="w-full flex flex-col gap-1 mb-4 md:mb-8 relative">
+        <label htmlFor="email" className="ml-2">Email</label>
         <input
+        id="email"
           type="text"
-          className="px-4 py-3 mb-6 bg-[#202127] rounded-lg text-white font-semibold focus:outline-none focus:outline-2 focus:outline-[#4b93f8]"
+          className="px-4 py-3 mb-4 md:mb-6 bg-[#202127] rounded-lg text-white font-semibold focus:outline-none focus:outline-2 focus:outline-[#4b93f8]"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
+        <label htmlFor="password" className="ml-2">Password</label>
         <input
+        id="password"
           type={`${showPassword ? "text" : "password"}`}
           className="px-4 py-3 mb-6 bg-[#202127] rounded-lg text-white font-semibold focus:outline-none focus:outline-2 focus:outline-[#4b93f8]"
           placeholder="Password"
@@ -100,7 +105,7 @@ function Auth({
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6 absolute right-3 top-[5.2rem] hover:cursor-pointer"
+            className="size-6 absolute right-3 top-[8.6rem] md:top-[9rem] hover:cursor-pointer"
             onClick={() => setShowPassword(false)}
           >
             <path
@@ -116,7 +121,7 @@ function Auth({
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="size-6 absolute right-3 top-[5.3rem] hover:cursor-pointer\"
+            className="size-6 absolute right-3 top-[8.6rem] md:top-[9rem] hover:cursor-pointer"
             onClick={() => setShowPassword(true)}
           >
             <path
@@ -135,7 +140,7 @@ function Auth({
         {error && <h1 className="text-[#f14948] text-sm font-bold">{error}</h1>}
       </div>
       <div className="w-full flex flex-col items-center">
-        <div className="text-[#8e94a5] mb-4 flex justify-center items-center">
+        <div className="text-[#8e94a5] w-[80%] md:w-full max-w-lg mx-auto mb-4 text-xs md:text-base flex justify-center items-center">
           <input
             type="checkbox"
             className="mr-2 p-4 h-4 w-4 hover:cursor-pointer"
@@ -147,12 +152,12 @@ function Auth({
             onClick={() => setIsChecked((prev) => !prev)}
           >
             I agree to{" "}
-            <span className="text-[#4c94f0]">Terms annd Services</span>
+            <span className="text-[#4c94f0]">Term&apos;s and Services</span>
           </span>
         </div>
 
         <button
-          className="bg-white text-black px-4 py-3 text-base font-semibold hover:cursor-pointer rounded-xl mb-4 disabled:bg-[#b7b7b9] hover:bg-gray-200 w-1/2 tracking-tight"
+          className="bg-white w-full text-black px-4 py-3 text-base font-semibold hover:cursor-pointer rounded-xl mb-4 disabled:bg-[#b7b7b9] hover:bg-neutral-200 md:w-1/2 tracking-tight"
           disabled={!isChecked}
           onClick={sendpassword}
         >

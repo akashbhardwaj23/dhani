@@ -28,28 +28,28 @@ export function Appbar({
   };
 
   return (
-    <div className="w-full p-8 flex justify-between relative">
+    <div className="w-full p-8 flex justify-between items-center relative">
       <div className="flex justify-center items-center">
         <img
           src={"/icon.png"}
           alt="icon"
-          className="w-12 h-12 contrast-200 drop-shadow-blue-shadow"
+          className="w-8 h-8 md:w-12 md:h-12 contrast-200 drop-shadow-blue-shadow"
         />
       </div>
 
       <div className="flex justify-center items-center ">
-        <div className="w-[42rem] grid grid-cols-5 h-full items-center bg-[#141718] rounded-3xl  border border-[#37383d] shadow-sm shadow-[#1FB4DC]">
+        <div className="w-48 md:w-[42rem] grid grid-cols-5 h-full items-center bg-[#141718] rounded-3xl  border border-[#37383d] shadow-sm shadow-[#1FB4DC]">
           <div
-            className="p-2 pl-12 rounded-l-3xl float-left col-span-1 hover:bg-[#0e0f14] hover:cursor-pointer"
+            className="p-2 pl-4 md:pl-12 rounded-l-3xl float-left col-span-1 hover:bg-[#0e0f14] hover:cursor-pointer"
             onClick={() => setNetwork((prev) => !prev)}
           >
-            {selectedNetwork === "SOLANA" ? <SiSolana className="w-6 h-6 contrast-200" /> : <SiEthereum className="w-6 h-6 contrast-200" />}
+            {selectedNetwork === "SOLANA" ? <SiSolana className="w-4 h-4 md:w-6 md:h-6 contrast-200" /> : <SiEthereum className="w-4 h-4 md:w-6 md:h-6 contrast-200" />}
           </div>
           <div
-            className="flex border-x-2 border-[#37383d] h-full justify-center items-center col-span-3 text-base text-white font-semibold hover:bg-[#0e0f14] hover:cursor-pointer"
+            className="flex border-x-2 border-[#37383d] h-full justify-center items-center col-span-3 text-xs md:text-base text-white font-semibold hover:bg-[#0e0f14] hover:cursor-pointer"
             onClick={onClick}
           >
-            <span className="mr-6 text-lg">Wallet {selectedWallet}</span>
+            <span className="mr-4 md:mr-6 text-sm md:text-lg">Wallet {selectedWallet}</span>
             <LuChevronDown />
           </div>
           <div
@@ -57,14 +57,14 @@ export function Appbar({
             onClick={copy}
           >
             {copied ? (
-              <LuCopyCheck className="w-6 h-6 text-blue-600/80" />
+              <LuCopyCheck className="w-4 h-4 md:w-6 md:h-6 text-blue-600/80" />
             ) : (
-              <LuCopy className="w-6 h-6" />
+              <LuCopy className="w-4 h-4 md:w-6 md:h-6" />
             )}
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center text-white font-mono font-semibold rounded-full p-2 bg-[#1A8DDD] h-10 w-10 shadow-md">
+      <div className="flex justify-center items-center text-white font-mono font-semibold rounded-full p-2 bg-[#1A8DDD] h-8 w-8 md:h-10 md:w-10 shadow-md">
         A
       </div>
 
@@ -88,7 +88,7 @@ function NetworkModelAppbar({
 
   return (
     <div
-      className={`${className} rounded-lg left-[28rem] top-20 bg-black absolute z-50`}
+      className={`${className} rounded-lg left-24 md:left-[28rem] top-20 bg-black absolute z-50`}
     >
       <div className="w-full flex flex-col items-center">
         <div
@@ -99,7 +99,7 @@ function NetworkModelAppbar({
           }}
         >
           <SiSolana className="w-6 h-6 mr-4" />
-          <h1 className="text-base font-mono">Solana</h1>
+          <h1 className="text-sm md:text-base font-mono">Solana</h1>
           {selectedNetwork === "SOLANA" && (
             <div className="flex justify-end w-full">
               <LuCheck className="text-red-600" />

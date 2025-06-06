@@ -74,7 +74,7 @@ export function OnBoardingTasks() {
           {step === steps.length ? (
             <CreateWallet onBoardingData={onBoardingData} />
           ) : (
-            <div className="w-full flex justify-center p-20">{steps[step]}</div>
+            <div className="w-full flex justify-center p-10 pt-20 md:p-20">{steps[step]}</div>
           )}
         </>
     </div>

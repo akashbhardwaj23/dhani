@@ -10,11 +10,11 @@ export function NetworkSelection({ onNext }: { onNext: (name: any) => any }) {
   return (
     <div className="max-w-xl w-full flex h-full items-center flex-col">
       <div className="mb-8">
-        <h1 className="text-4xl text-white font-semibold mb-6 tracking-normal flex justify-center">
+        <h1 className="text-xl md:text-4xl text-white font-semibold mb-2 md:mb-6 tracking-normal flex md:justify-center">
           Select Network
         </h1>
-        <h2 className="text-[#969fa5] text-base font-medium tracking-normal">
-          <span className="flex justify-center">
+        <h2 className="text-[#969fa5] text-xs md:text-base font-medium tracking-normal">
+          <span className="flex md:justify-center">
             We supports two blockchains.
           </span>
           <span>Which do you want to use? You can add more later.</span>

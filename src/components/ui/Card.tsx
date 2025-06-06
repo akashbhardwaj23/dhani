@@ -9,12 +9,12 @@ export function Card() {
   const router = useRouter()
 
   return (
-    <div className="relative flex flex-col mt-6 text-white bg-[#161819] shadow-md bg-clip-border rounded-xl w-2/3">
+    <div className="relative flex flex-col mt-6 text-white bg-[#161819] shadow-md bg-clip-border rounded-xl w-[90%] md:w-2/3">
       <div className="p-10">
-        <h1 className="block mb-2 font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+        <h1 className="block mb-2 font-mono text-xl md:text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
           Your Digital Crypto Wallet For EveryThing
         </h1>
-        <p className="block font-normal text-base antialiased leading-relaxed text-inherit">
+        <p className="block font-normal text-sm md:text-base antialiased leading-relaxed text-inherit">
           Join The Sol Community. Earn and Transfer Assets made Easy
         </p>
       </div>
@@ -55,10 +55,10 @@ export function MyAssetsCard({
 
 
   return (
-    <div className="relative flex flex-col mt-6 text-gray-50 bg-[#1A8DDD] shadow-md bg-clip-border rounded-2xl w-[92%]">
+    <div className="relative flex flex-col mt-6 text-gray-50 bg-[#1A8DDD] shadow-md bg-clip-border rounded-2xl w-[90%]">
       <div className="p-10">
         <div className="w-full col-span-1">
-          <h1 className="block mb-1 font-mono text-4xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+          <h1 className="block mb-1 font-mono text-2xl md:text-4xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
             Assets
           </h1>
           <h2 className="flex mb-2 text-lg antialiased font-light leading-snug tracking-normal text-blue-gray-900">
@@ -82,24 +82,24 @@ export function MyAssetsCard({
             </span>
           </h2>
          <div className="w-full flex justify-between items-center">
-         <p className="block font-mono text-5xl antialiased font-bold leading-snug text-inherit">
+         <p className="block font-mono text-4xl md:text-5xl antialiased font-bold leading-snug text-inherit">
             <span className="mr-2">$</span>
             <span className="mr-4">{wallet?.usdcBalance}</span>
             
           </p>
-          <span onClick={onClick}><svg className="size-8 text-neutral-100 active:animate-ping"  width="24" height="24" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3" />  <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3-3l3-3" /></svg></span>
+          <span onClick={onClick}><svg className="size-7 md:size-8 text-neutral-100 active:animate-ping"  width="24" height="24" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3" />  <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3-3l3-3" /></svg></span>
          </div>
         </div>
       </div>
-      <div className="flex justify-between p-10 pt-0 w-full">
+      <div className="flex justify-between py-10 px-4 md:p-8 pt-0 w-full">
         <button
-          className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-lg py-3 px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm md:text-lg py-3 px-4 md:px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           type="button"
           onClick={() => setAssetsComponents("send")}
         >
           <span className="mr-2">
             <svg
-              className="size-6 text-gray-100"
+              className="size-4 md:size-6 text-gray-100"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -115,13 +115,13 @@ export function MyAssetsCard({
           <span>Send</span>
         </button>
         <button
-          className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-lg py-3 px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm md:text-lg py-3 px-4 md:px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           type="button"
           onClick={() => setAssetsComponents('receive')}
         >
           <span className="mr-2">
             <svg
-              className="size-6 text-gray-100"
+              className="size-4 md:size-6 text-gray-100"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -137,13 +137,13 @@ export function MyAssetsCard({
           <span>Receive</span>
         </button>
         <button
-          className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-lg py-3 px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+          className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm md:text-lg py-3 px-4 md:px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           type="button"
           onClick={() => setAssetsComponents('swap')}
         >
           <span className="mr-2">
             <svg
-              className="size-6 text-gray-100"
+              className="size-4 md:size-6 text-gray-100"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -169,7 +169,7 @@ export function AssetsCard({
   wallet : WalletType | undefined
 }) {
   return (
-    <div className="relative flex flex-col mt-2 text-gray-50 bg-[#1A8DDD] shadow-md bg-clip-border rounded-2xl w-5/6">
+    <div className="relative flex flex-col mt-2 text-gray-50 bg-[#1A8DDD] shadow-md bg-clip-border rounded-2xl w-[90%] md:w-5/6">
       <div className="p-4 px-8">
         <div className="w-full col-span-1">
           <div className="flex mb-1 font-mono text-4xl antialiased font-semibold leading-snug tracking-normal justify-between text-blue-gray-900">

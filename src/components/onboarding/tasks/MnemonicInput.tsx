@@ -48,16 +48,16 @@ export function MnemonicInput({ onNext }: { onNext: (data: any) => any }) {
   }
 
   return (
-    <div className="max-w-xl w-full flex h-full items-center flex-col">
+    <div className="max-w-xl w-full flex h-full md:items-center flex-col">
       <div className="mb-8">
-        <h1 className="text-4xl text-white font-semibold mb-6 tracking-normal flex justify-center">
+        <h1 className="text-xl md:text-4xl text-white font-semibold md:mb-6 mb-2 tracking-normal flex md:justify-center">
           Secret Recovery Phrase
         </h1>
-        <h2 className="text-[#969fa5] text-base font-medium mb-8 tracking-normal flex justify-center">
+        <h2 className="text-[#969fa5] text-sm md:text-base font-medium mb-2 md:mb-8 tracking-normal flex md:justify-center">
           Save these words in a safe place.
         </h2>
 
-        <h1 className="text-[#4a91fa] contrast-100 text-base font-bold tracking-normal flex justify-center">
+        <h1 className="text-[#4a91fa] contrast-100 text-sm md:text-base font-bold tracking-normal flex md:justify-center">
           Read the warnings again
         </h1>
       </div>
@@ -69,18 +69,18 @@ export function MnemonicInput({ onNext }: { onNext: (data: any) => any }) {
         <MneumonicTable mneumonicWords={mneumonicWords} />
         <div className="border-t border-[#969fa5] flex justify-center pt-1">
           {copied ? (
-            <h1 className="text-sm text-[#969fa5]">
+            <h1 className="text-[10px] md:text-sm text-[#969fa5]">
                 copied
             </h1>
           ) : (
-            <h1 className="text-sm text-[#969fa5]">
+            <h1 className="text-[10px] md:text-sm text-[#969fa5]">
               click anywhere on this card to copy
             </h1>
           )}
         </div>
       </div>
 
-      <div className="text-[#969faf] text-base font-medium hover:cursor-pointer flex justify-center items-center mb-4">
+      <div className="text-[#969faf] text-xs md:text-base w-[90%] md:w-full font-medium hover:cursor-pointer flex justify-center items-center mb-4">
         <input
           type="checkbox"
           className="mr-2 h-[1.1rem] w-[1.1rem] accent-transparent"
@@ -92,7 +92,7 @@ export function MnemonicInput({ onNext }: { onNext: (data: any) => any }) {
 
       <div className="w-full flex justify-center">
         <button
-          className="bg-white text-[#14151b] px-4 py-3 text-center text-base font-semibold rounded-xl mb-4 w-1/2 tracking-tight hover:cursor-pointer disabled:bg-[#b7b7b9]"
+          className="bg-white text-[#14151b] px-4 py-3 text-center text-base w-full font-semibold rounded-xl mb-4 md:w-1/2 tracking-tight hover:cursor-pointer disabled:bg-[#b7b7b9]"
           disabled={!isChecked}
           onClick={async () => {
             setLoading(true);
@@ -123,8 +123,8 @@ function MneumonicTable({ mneumonicWords }: { mneumonicWords: string[] }) {
         {newMneumonic.map((mneumonicArray, i) => (
           <tr key={i}>
             {mneumonicArray.map((word, index) => (
-              <td className="text-start text-sm" key={word + i + index}>
-                <span className="mr-4 text-[#969fa5]">{i + 1 + index}</span>
+              <td className="text-start text-[10px] md:text-sm" key={word + i + index}>
+                <span className="mr-2 md:mr-4 text-[#969fa5]">{i + 1 + index}</span>
                 <span className="text-white font-semibold">{word}</span>
               </td>
             ))}

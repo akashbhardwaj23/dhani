@@ -6,7 +6,6 @@ import { SendAssets } from "./wallet-actions/SendAssets";
 import { Swap } from "./wallet-actions/Swap";
 import { Receive } from "./wallet-actions/ReceiveAssets";
 
-
 export default function WalletHomePage({
   wallets,
   selectedWallet,
@@ -21,8 +20,10 @@ export default function WalletHomePage({
   const [assetsComponents, setAssetsComponents] =
     useState<AssetComponentsType>("home");
 
-  const wallet = wallets?.filter((wallet) => wallet.walletNumber === selectedWallet)[0];
-  console.log('wallet is ', wallet)
+  const wallet = wallets?.filter(
+    (wallet) => wallet.walletNumber === selectedWallet
+  )[0];
+  console.log("wallet is ", wallet);
   const assetBalance = wallet?.assetBalance;
   console.log(assetBalance);
 
@@ -35,23 +36,23 @@ export default function WalletHomePage({
             onClick={onClickAppbar}
             selectedWallet={selectedWallet}
           />
-          <div className="w-full grid grid-cols-4 gap-2 absolute z-10 p-4 pr-6">
-            <div className="col-span-2 flex justify-center">
+          <div className="w-full flex flex-col md:grid md:grid-cols-4 gap-2 md:pr-6">
+            <div className="md:col-span-2 flex justify-center">
               <Card />
             </div>
 
             <div className="flex justify-center col-span-2">
               <MyAssetsCard
-              onClick={onClick}
+                onClick={onClick}
                 wallet={wallet}
                 setAssetsComponents={setAssetsComponents}
               />
             </div>
           </div>
 
-          <div className="bg-transparent ml-96 rounded-full mt-10 w-44 h-32 shadow-background"></div>
+          <div className="bg-transparent ml-96 rounded-full md:mt-10 md:w-44 h-32 shadow-background"></div>
 
-          <div className="w-full p-4 absolute top-[30rem] flex justify-center pr-6">
+          <div className="w-full p-4 flex justify-center pr-6">
             <AssetsCard wallet={wallet} />
           </div>
         </div>
