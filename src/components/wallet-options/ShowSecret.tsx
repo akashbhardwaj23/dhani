@@ -29,9 +29,9 @@ export function ShowSecretAction({
 
   return (
     <div className="relative flex w-[32rem] flex-col rounded-[20px] bg-gradient-to-tr from-white to-neutral-200 bg-clip-border shadow-md">
-      <div className="p-10">
-        <div className="flex flex-col justify-between mb-4">
-          <div className="flex mb-4 px-4 pt-2 pb-4 text-4xl font-semibold text-neutral-800 tracking-tight w-full">
+      <div className="p-8 md:p-10">
+        <div className="flex flex-col justify-between md:mb-4">
+          <div className="flex mb-4 md:px-4 pt-2 pb-4 text-2xl md:text-4xl font-semibold text-neutral-800 tracking-tight w-full">
             <h1 className="flex justify-center font-mono items-center w-full">
               Show Private Key
             </h1>
@@ -63,7 +63,7 @@ export function ShowSecretAction({
             <h1 className="flex justify-center items-center text-xl mb-4">
               Your Private key
             </h1>
-            <h2 className="flex mb-8">Never give your private key to anyone</h2>
+            <h2 className="flex mb-4 md:mb-8 px-4 md:px-0">Never give your private key to anyone</h2>
             <input
               type="text"
               value={""}
@@ -74,7 +74,7 @@ export function ShowSecretAction({
         </div>
         <div className="flex flex-col items-center text-base font-semibold p-4 w-full gap-4">
           <button
-            className="flex justify-center items-center p-3 w-1/2 text-neutral-900 bg-white rounded-xl hover:bg-gray-200"
+            className="flex justify-center w-full items-center p-3 md:w-1/2 text-neutral-900 bg-white rounded-xl hover:bg-gray-200"
             onClick={() => {}}
           >
             
@@ -86,7 +86,7 @@ export function ShowSecretAction({
           </button>
 
           <button
-            className="flex justify-center items-center p-3 w-1/2 bg-[#202127] text-white rounded-[12px] hover:bg-[#18191f]"
+            className="flex justify-center w-full items-center p-3 md:w-1/2 bg-[#202127] text-white rounded-[12px] hover:bg-[#18191f]"
             onClick={() => setSelectedAction("")}
           >
             Close

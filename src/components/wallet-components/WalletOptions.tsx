@@ -48,9 +48,9 @@ export function WalletOptions({
   } else {
     return (
       <div className="relative flex w-[32rem] flex-col rounded-[20px] bg-gradient-to-br from-white to-neutral-200 bg-clip-border text-gray-100 shadow-md">
-        <div className="p-10">
+        <div className="p-8 md:p-10">
           <div className="flex flex-col">
-            <div className="flex mb-6 px-4 pt-2 pb-4 items-center text-xl text-black w-full">
+            <div className="flex mb-6 md:px-4 pt-2 pb-4 items-center text-xl text-black w-full">
               <div
                 className="hover:cursor-pointer"
                 onClick={() => setOptions(false)}
@@ -58,7 +58,7 @@ export function WalletOptions({
                <LuArrowLeft className="w-8 h-8 text-neutral-800 hover:text-neutral-700" />
               </div>
               <div className="flex justify-center w-full">
-                <h1 className="font-mono text-5xl text-neutral-800 font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+                <h1 className="font-mono text-5xl text-neutral-800 font-semibold leading-snug tracking-tighter text-blue-gray-900 antialiased">
                   Wallet {wallet?.walletNumber}
                 </h1>
               </div>
@@ -68,7 +68,7 @@ export function WalletOptions({
               <div className="flex justify-between p-4 hover:bg-neutral-300 hover:cursor-pointer rounded-t-lg" onClick={copyText}>
                 <h1>Wallet Address</h1>
                 <div className="flex justify-center items-center gap-2">
-                  <h2 className="mr-4">
+                  <h2 className="text-sm md:text-base md:mr-4">
                     {wallet?.publicKey.slice(0, 4)}...
                     {wallet?.publicKey.slice(
                       wallet.publicKey.length - 4,
@@ -77,10 +77,10 @@ export function WalletOptions({
                   </h2>
                   <div>
                     {!copied ? (
-                      <LuCopy className="w-6 h-6" />
+                      <LuCopy className="size-5 md:size-6" />
                       
                     ) : (
-                      <LuCopyCheck className="w-6 h-6" />
+                      <LuCopyCheck className="size-5 md:size-6" />
                     )}
                   </div>
                 </div>

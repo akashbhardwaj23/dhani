@@ -28,17 +28,17 @@ export function RemoveWalletAction({
 
   return (
     <div className="relative flex w-[32rem] flex-col rounded-[20px] bg-gradient-to-br from-white to-neutral-200 bg-clip-border text-gray-100 shadow-md">
-      <div className="p-10">
+      <div className="p-8 md:p-10">
         <div className="flex justify-center">
-          <div className="flex flex-col items-center mb-16  w-full">
-            <div className="flex items-center gap-10 mb-6 pt-2 pb-4 text-3xl font-mono w-full">
+          <div className="flex flex-col items-center mb-4 md:mb-10 w-full">
+            <div className="flex items-center gap-10 pt-2 pb-4 font-mono w-full">
               <div
                 className="hover:cursor-pointer"
                 onClick={() => setSelectedAction("")}
               >
-                <LuArrowLeft className="h-8 w-8 text-neutral-800 hover:text-neutral-700" />
+                <LuArrowLeft className="size-5 md:size-7 text-neutral-800 hover:text-neutral-700" />
               </div>
-              <h1 className="font-mono text-4xl text-neutral-800 font-semibold leading-snug tracking-tighter text-blue-gray-900 antialiased">
+              <h1 className="font-mono text-2xl md:text-4xl text-neutral-800 font-semibold leading-snug tracking-tighter text-blue-gray-900 antialiased">
                 Remove Wallet
               </h1>
             </div>
@@ -61,12 +61,12 @@ export function RemoveWalletAction({
                 </svg>
              
 
-              <h1 className="flex justify-center w-full text-2xl mb-4">
+              <h1 className="flex justify-center w-full text-lg md:text-2xl mb-4">
                 Are you sure you want to remove public key
               </h1>
               </div>
 
-              <h2 className="text-black text-base font-inter">
+              <h2 className="text-black text-sm md:text-base font-inter">
                 Removing the wallet will not delete the wallet content it will
                 still be available by importing your secret
               </h2>

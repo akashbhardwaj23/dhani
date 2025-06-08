@@ -8,17 +8,17 @@ export function RenameWalletAction({
 }) {
   return (
     <div className="relative flex w-[32rem] flex-col rounded-[20px] bg-gradient-to-br from-white to-neutral-200 bg-clip-border text-gray-100 shadow-md">
-      <div className="p-10">
+      <div className="p-8 md:p-10">
         <div>
-          <div className="flex flex-col justify-between mb-16">
-            <div className="flex mb-6  px-4 pt-2 pb-4 text-xl text-white w-full">
+          <div className="flex flex-col justify-between mb-4 md:mb-10">
+            <div className="flex items-center gap-8 pt-2 pb-4 mb-10 w-full">
               <div
                 className="hover:cursor-pointer"
                 onClick={() => setSelectedAction("")}
               >
-                <LuArrowLeft className="h-8 w-8 text-neutral-800 hover:text-neutral-700" />
+                <LuArrowLeft className="size-5 md:size-7 text-neutral-800 hover:text-neutral-700" />
               </div>
-              <h1 className="flex justify-center items-center text-neutral-800 tracking-tight text-4xl w-full">
+              <h1 className="flex justify-center items-center font-semibold font-mono text-neutral-800 tracking-tight text-2xl md:text-4xl w-full">
                 Rename Wallet
               </h1>
             </div>
