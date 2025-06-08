@@ -21,14 +21,14 @@ export function SignIn({
         <div className="w-full flex justify-center p-10 pt-20 md:p-20">
         <div className="max-w-2xl md:max-w-xl w-full flex h-full md:items-center flex-col">
           <div className="mb-4">
-            <h1 className="text-4xl text-white font-semibold mb-2 md:mb-4 tracking-normal flex md:justify-center">
+            <h1 className="text-4xl text-white font-semibold ml-2 md:ml-0 mb-2 md:mb-4 tracking-normal flex md:justify-center">
               SignIn
             </h1>
             <h2 className="text-[#969fa5] text-xs md:text-base font-medium tracking-normal">
-              <span className="flex md:justify-center mr-1 md:mr-0">
+              <span className="flex md:justify-center ml-2 md:ml-0">
               It should be at least 8 characters.
               </span>
-              <span className="flex md:justify-center">
+              <span className="flex md:justify-center ml-2 md:ml-0">
                 You&apos;ll need this to unlock Wallet App.
               </span>
             </h2>

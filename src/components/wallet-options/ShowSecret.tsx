@@ -2,6 +2,7 @@ import { SelectedActionType } from "@/lib/types/actiontype";
 import { WalletType } from "@/lib/types/wallettypes";
 import { useState } from "react";
 import { useStoreContext } from "@/hooks/useWallets";
+import { LuCopy, LuCopyCheck } from "react-icons/lu";
 
 export function ShowSecretAction({
   setSelectedAction,
@@ -15,30 +16,31 @@ export function ShowSecretAction({
   const [copied, setCopied] = useState<boolean>(false);
 
   const { secretKeys } = useStoreContext();
-  const secretKey = secretKeys![0]?.secret;
+  // const secretKey = secretKeys![0]?.secret;
+  console.log(secretKeys)
 
   const wallet = wallets?.filter((w) => w.walletNumber === selectedWallet)[0];
 
-  const copy = async () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 5_000);
-    await navigator.clipboard.writeText(secretKey);
-  };
+  // const copy = async () => {
+  //   setCopied(true);
+  //   setTimeout(() => setCopied(false), 5_000);
+  //   await navigator.clipboard.writeText(secretKey);
+  // };
 
   return (
-    <div className="relative flex w-[40rem] flex-col rounded-xl bg-[#1FB4DC] bg-clip-border text-gray-100 shadow-md">
+    <div className="relative flex w-[32rem] flex-col rounded-[20px] bg-gradient-to-tr from-white to-neutral-200 bg-clip-border shadow-md">
       <div className="p-10">
-        <div className="flex flex-col justify-between mb-16">
-          <div className="flex mb-4 px-4 pt-2 pb-4 text-4xl font-semibold text-white w-full">
+        <div className="flex flex-col justify-between mb-4">
+          <div className="flex mb-4 px-4 pt-2 pb-4 text-4xl font-semibold text-neutral-800 tracking-tight w-full">
             <h1 className="flex justify-center font-mono items-center w-full">
               Show Private Key
             </h1>
           </div>
 
-          <div className="w-full text-base flex flex-col items-center text-white font-semibold mb-8">
+          <div className="w-full text-base flex flex-col items-center text-neutral-700 font-semibold mb-8">
             <div className="mb-2">
               <svg
-                className="size-10 text-red-900 hover:text-red-500"
+                className="size-10 text-red-800 hover:text-red-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -64,47 +66,27 @@ export function ShowSecretAction({
             <h2 className="flex mb-8">Never give your private key to anyone</h2>
             <input
               type="text"
-              value={secretKey}
-              className="p-4 bg-[#202127] w-full rounded-lg"
+              value={""}
+              className="p-4 bg-gradient-to-r from-neutral-200 to-neutral-300 text-neutral-900 w-full rounded-lg"
               readOnly
             />
           </div>
         </div>
         <div className="flex flex-col items-center text-base font-semibold p-4 w-full gap-4">
           <button
-            className="flex justify-center items-center p-3 w-1/2 text-[#202127] bg-white rounded-xl hover:bg-gray-200"
-            onClick={copy}
+            className="flex justify-center items-center p-3 w-1/2 text-neutral-900 bg-white rounded-xl hover:bg-gray-200"
+            onClick={() => {}}
           >
             
             {!copied ? (
-              <>
-              <span className="mr-2">Copy</span>
-              <svg
-              className="size-6 text-neutral-500"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {" "}
-              <path stroke="none" d="M0 0h24v24H0z" />{" "}
-              <rect x="8" y="8" width="12" height="12" rx="2" />{" "}
-              <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" />
-            </svg>
-            </>
+             <LuCopy className="w-6 h-6" />
             ): (
-              <>
-              <span className="mr-2">Copied</span>
-              </>
+             <LuCopyCheck className="w-6 h-6" />
             )}
           </button>
 
           <button
-            className="flex justify-center items-center p-3 w-1/2 bg-[#202127] text-white rounded-xl hover:bg-[#18191f]"
+            className="flex justify-center items-center p-3 w-1/2 bg-[#202127] text-white rounded-[12px] hover:bg-[#18191f]"
             onClick={() => setSelectedAction("")}
           >
             Close

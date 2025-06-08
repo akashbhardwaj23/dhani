@@ -26,8 +26,8 @@ export function WalletCard({
 
     const {selectedNetwork, setSelectedNetwork} = useStoreContext()
 
-    console.log(copied);
-    console.log(wallets)
+    // console.log(copied);
+    // console.log(wallets)
 
   const copyPublicKey = async (walletId: number) => {
     setCopied({
@@ -51,18 +51,18 @@ export function WalletCard({
   };
 
   return (
-    <div className="relative flex w-[40rem] flex-col rounded-xl bg-[#1FB4DC] bg-clip-border text-gray-100 shadow-md">
+    <div className="relative flex w-[32rem] flex-col rounded-[20px] bg-gradient-to-tr from-white to-neutral-200 bg-clip-border text-gray-100 shadow-md">
       <div className="p-8">
         <div className="mb-4 flex items-center">
           <div
             className="flex hover:cursor-pointer"
             onClick={() => setIsWalletsPage("wallet")}
           >
-            <LuArrowLeft className="w-10 h-10 hover:text-neutral-900" />
+            <LuArrowLeft className="w-8 h-8 text-neutral-800 hover:text-neutral-700" />
           </div>
 
           <div className="flex w-full justify-center">
-            <h1 className="flex justify-center font-mono text-5xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+            <h1 className="flex justify-center font-mono text-5xl text-neutral-800 font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
               Wallet
             </h1>
           </div>
@@ -70,10 +70,10 @@ export function WalletCard({
 
         <div className="p-2 flex justify-center mb-4">
           <div
-            className="flex items-center rounded-full border text-black border-black bg-white w-auto p-2 hover:bg-[#14151b] hover:text-white hover:cursor-pointer"
+            className="flex items-center rounded-full border text-neutral-800 border-neutral-700 bg-white w-auto p-2 hover:bg-[#14151b] hover:text-white hover:cursor-pointer"
             onClick={() => setNetwork((prev => !prev))}
           >
-            {selectedNetwork === "SOLANA" ? <SiSolana className="w-6 h-6 contrast-200 mr-2" /> : <SiEthereum className="w-6 h-6 contrast-200 mr-2" />}
+            {selectedNetwork === "SOLANA" ? <SiSolana className="w-4 h-4 contrast-200 mr-2" /> : <SiEthereum className="w-4 h-4 contrast-200 mr-2" />}
             <h1 className="text-base font-semibold mr-2">{selectedNetwork === "SOLANA" ? "Solana" : "Ethereum"}</h1>
             <LuChevronDown className="w-4 h-4" />
           </div>
@@ -87,9 +87,9 @@ export function WalletCard({
                 {
                   wallet.publicKey ? (<div
                     key={wallet.walletNumber}
-                    className={`bg-gray-100 p-6 flex justify-between items-center relative rounded-md  mb-8 ${`
+                    className={`bg-gradient-to-br from-[#ffffff] from-75% to-[#f8f023] p-6 flex justify-between items-center relative rounded-md shadow mb-4 md:mb-8 ${`
                   selectedWallet === wallet.id ? "border-2 border-[#4c94ff]" : ""`} 
-                  hover:bg-gray-200 hover:cursor-pointer`}
+                  hover:bg-[#f8f023]/80 hover:cursor-pointer`}
                   >
                     <div
                       className="flex items-center"
@@ -99,12 +99,12 @@ export function WalletCard({
                       }}
                     >
       
-                      {selectedNetwork === "SOLANA" ? <SiSolana className="h-10 w-10 contrast-200 mr-4 text-black" /> : <SiEthereum className="h-10 w-10 contrast-200 mr-4 text-black" />}
+                      {selectedNetwork === "SOLANA" ? <SiSolana className="w-8 h-8 md:h-10 md:w-10 contrast-200 mr-4 text-black" /> : <SiEthereum className="w-8 h-8 md:h-10 md:w-10 contrast-200 mr-4 text-black" />}
                       <div>
-                        <h1 className="text-black text-xl font-semibold">
+                        <h1 className="text-neutral-800 text-xl font-semibold">
                           Wallet {wallet.walletNumber}
                         </h1>
-                        <h2 className="text-[#969faf] text-base font-semibold">
+                        <h2 className="text-neutral-600 text-xs md:text-base font-semibold">
                           {wallet.publicKey.slice(0, 4)}...
                           {wallet.publicKey.slice(
                             wallet.publicKey.length - 4,
@@ -115,25 +115,25 @@ export function WalletCard({
                     </div>
       
                     <div className="flex items-center">
-                      <div className="p-2 rounded-full text-black hover:bg-black hover:text-white right-20 absolute" onClick={() => copyPublicKey(wallet.walletNumber)}>
+                      <div className="p-2 rounded-full text-black hover:bg-black hover:text-white right-10 md:right-20 absolute" onClick={() => copyPublicKey(wallet.walletNumber)}>
                         {copied?.value && copied.walletId === wallet.walletNumber ? (
-                          <LuCopyCheck className="w-6 h-6" />
+                          <LuCopyCheck className="size-4 md:size-6" />
                         ) : (
-                          <LuCopy className="w-6 h-6" />
+                          <LuCopy className="size-5 md:size-6" />
                         )}
                       </div>
                       <div
-                        className="p-2 rounded-full text-black hover:bg-black hover:text-white absolute right-4"
+                        className="p-2 rounded-full text-black hover:bg-black hover:text-white right-2 md:right-4 absolute"
                         onClick={() => {
                           setSellectedWallet(wallet.walletNumber);
                           setOptions(true);
                         }}
                       >
-                        <LuMenu className="w-6 h-6" />
+                        <LuMenu className="size-5 md:size-6" />
                       </div>
                     </div>
                   </div>) : (
-                    <div className="">
+                    <div className="text-black">
                       whats up
                     </div>
                   )

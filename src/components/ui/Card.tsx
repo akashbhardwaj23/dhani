@@ -1,15 +1,15 @@
-"use client"
+"use client";
 import { AssetComponentsType, WalletType } from "@/lib/types/wallettypes";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SiSolana } from "react-icons/si";
-import { IoLogoUsd } from "react-icons/io5"
+import { IoLogoUsd } from "react-icons/io5";
 
 export function Card() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
-    <div className="relative flex flex-col mt-6 text-white bg-[#161819] shadow-md bg-clip-border rounded-xl w-[90%] md:w-2/3">
+    <div className="relative flex flex-col mt-6 text-white bg-[#161819] h-auto shadow-md bg-clip-border rounded-xl w-[90%] md:w-2/3">
       <div className="p-10">
         <h1 className="block mb-2 font-mono text-xl md:text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
           Your Digital Crypto Wallet For EveryThing
@@ -34,25 +34,23 @@ export function Card() {
 export function MyAssetsCard({
   wallet,
   onClick,
-  setAssetsComponents
+  setAssetsComponents,
 }: {
-  wallet : WalletType | undefined,
-  onClick : () => void
-  setAssetsComponents : Dispatch<SetStateAction<AssetComponentsType>>
+  wallet: WalletType | undefined;
+  onClick: () => void;
+  setAssetsComponents: Dispatch<SetStateAction<AssetComponentsType>>;
 }) {
+  const [copied, setCopied] = useState<boolean>(false);
 
-  const [copied, setCopied] = useState<boolean>(false)
-
-  console.log("Wallet are ", wallet)
+  console.log("Wallet are ", wallet);
 
   const copy = async () => {
     setCopied(true);
-    
+
     setTimeout(() => setCopied(false), 5000);
 
-    await navigator.clipboard.writeText(wallet?.publicKey || "")
-  }
-
+    await navigator.clipboard.writeText(wallet?.publicKey || "");
+  };
 
   return (
     <div className="relative flex flex-col mt-6 text-gray-50 bg-[#1A8DDD] shadow-md bg-clip-border rounded-2xl w-[90%]">
@@ -63,32 +61,53 @@ export function MyAssetsCard({
           </h1>
           <h2 className="flex mb-2 text-lg antialiased font-light leading-snug tracking-normal text-blue-gray-900">
             <span className="mr-2">{wallet?.publicKey.slice(0, 6)}...</span>
-            <span className="flex justify-center items-center hover:cursor-pointer" onClick={copy}>
-              {!copied ? (<svg
-                className="size-4 text-gray-100 hover:text-gray-300"
+            <span
+              className="flex justify-center items-center hover:cursor-pointer"
+              onClick={copy}
+            >
+              {!copied ? (
+                <svg
+                  className="size-4 text-gray-100 hover:text-gray-300"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {" "}
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />{" "}
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+              ) : (
+                <span className="text-sm font-semibold">copied</span>
+              )}
+            </span>
+          </h2>
+          <div className="w-full flex justify-between items-center">
+            <p className="block font-mono text-4xl md:text-5xl antialiased font-bold leading-snug text-inherit">
+              <span className="mr-2">$</span>
+              <span className="mr-4">{wallet?.usdcBalance}</span>
+            </p>
+            <span onClick={onClick}>
+              <svg
+                className="size-7 md:size-8 text-neutral-100 active:animate-ping"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
                 strokeWidth={2}
+                stroke="currentColor"
+                fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
                 {" "}
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />{" "}
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-              </svg>) : (<span className="text-sm font-semibold">
-                copied
-                </span>)}
+                <path stroke="none" d="M0 0h24v24H0z" />{" "}
+                <path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3" />{" "}
+                <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3-3l3-3" />
+              </svg>
             </span>
-          </h2>
-         <div className="w-full flex justify-between items-center">
-         <p className="block font-mono text-4xl md:text-5xl antialiased font-bold leading-snug text-inherit">
-            <span className="mr-2">$</span>
-            <span className="mr-4">{wallet?.usdcBalance}</span>
-            
-          </p>
-          <span onClick={onClick}><svg className="size-7 md:size-8 text-neutral-100 active:animate-ping"  width="24" height="24" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3" />  <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3-3l3-3" /></svg></span>
-         </div>
+          </div>
         </div>
       </div>
       <div className="flex justify-between py-10 px-4 md:p-8 pt-0 w-full">
@@ -117,7 +136,7 @@ export function MyAssetsCard({
         <button
           className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm md:text-lg py-3 px-4 md:px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           type="button"
-          onClick={() => setAssetsComponents('receive')}
+          onClick={() => setAssetsComponents("receive")}
         >
           <span className="mr-2">
             <svg
@@ -139,7 +158,7 @@ export function MyAssetsCard({
         <button
           className="flex justify-center items-center font-mono font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm md:text-lg py-3 px-4 md:px-8 rounded-md bg-[#3e99e3]/80 text-white shadow-md shadow-gray-900/10 hover:shadow-2xl hover:shadow-gray-900/60 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           type="button"
-          onClick={() => setAssetsComponents('swap')}
+          onClick={() => setAssetsComponents("swap")}
         >
           <span className="mr-2">
             <svg
@@ -163,72 +182,62 @@ export function MyAssetsCard({
   );
 }
 
-export function AssetsCard({
-  wallet
-}: {
-  wallet : WalletType | undefined
-}) {
+export function AssetsCard({ wallet }: { wallet: WalletType | undefined }) {
   return (
     <div className="relative flex flex-col mt-2 text-gray-50 bg-[#1A8DDD] shadow-md bg-clip-border rounded-2xl w-[90%] md:w-5/6">
       <div className="p-4 px-8">
         <div className="w-full col-span-1">
           <div className="flex mb-1 font-mono text-4xl antialiased font-semibold leading-snug tracking-normal justify-between text-blue-gray-900">
             <div className="w-full flex items-center">
-              <SiSolana className="w-10 h-10 mr-8" />
+              <SiSolana className="w-8 h-8 md:w-10 md:h-10 mr-4 md:mr-8" />
               <div className="flex flex-col">
-                <h1 className="block font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                <h1 className="block font-mono text-xl md:text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   Solana
                 </h1>
-                <h2 className="block mb-1 font-mono text-lg antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                <h2 className="block mb-1 font-mono text-sm md:text-lg antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   {wallet?.assetBalance} SOL
                 </h2>
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              <h1 className="block font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+              <h1 className="block font-mono text-xl md:text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 {" "}
                 ${wallet?.assetBalance}
               </h1>
-              <h2 className="font-mono text-base flex justify-end antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+              <h2 className="font-mono text-xs md:text-base flex justify-end antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 +3.37%
               </h2>
             </div>
           </div>
         </div>
 
-        <div className="w-full boder border-[#eaeaea]">
-
-        </div>
+        <div className="w-full boder-b-2 h-2 border-[#eaeaea]"></div>
 
         <div className="w-full col-span-1">
-
-        <div className="flex mb-1 font-mono text-4xl antialiased font-semibold leading-snug tracking-normal justify-between text-blue-gray-900">
+          <div className="flex mb-1 font-mono text-4xl antialiased font-semibold leading-snug tracking-normal justify-between text-blue-gray-900">
             <div className="w-full flex items-center">
-              <IoLogoUsd className="w-10 h-10 mr-8" />
+              <IoLogoUsd className="w-8 h-8 md:w-10 md:h-10 mr-4 md:mr-8" />
               <div className="flex flex-col">
-                <h1 className="block font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                <h1 className="block font-mono text-xl md:text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   USDC
                 </h1>
-                <h2 className="block mb-1 font-mono text-lg antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                <h2 className="block mb-1 font-mono text-sm md:text-lg antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   {wallet?.usdcBalance} Usdc
                 </h2>
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              <h1 className="block font-mono text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+              <h1 className="block font-mono text-xl md:text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 {" "}
                 ${wallet?.usdcBalance}
               </h1>
-              <h2 className="font-mono text-base flex justify-end antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+              <h2 className="font-mono text-xs md:text-base flex justify-end antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 +3.37%
               </h2>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   );
 }
-
-

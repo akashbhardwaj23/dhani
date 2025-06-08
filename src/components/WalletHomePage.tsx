@@ -23,12 +23,12 @@ export default function WalletHomePage({
   const wallet = wallets?.filter(
     (wallet) => wallet.walletNumber === selectedWallet
   )[0];
-  console.log("wallet is ", wallet);
-  const assetBalance = wallet?.assetBalance;
-  console.log(assetBalance);
+  // console.log("wallet is ", wallet);
+  // const assetBalance = wallet?.assetBalance;
+  // console.log(assetBalance);
 
   return (
-    <>
+    <div className="max-w-7xl mx-auto">
       {assetsComponents === "home" && (
         <div className="w-full">
           <Appbar
@@ -36,12 +36,12 @@ export default function WalletHomePage({
             onClick={onClickAppbar}
             selectedWallet={selectedWallet}
           />
-          <div className="w-full flex flex-col md:grid md:grid-cols-4 gap-2 md:pr-6">
+          <div className="w-full flex flex-col md:grid md:grid-cols-4 md:items-start gap-2 md:pr-6">
             <div className="md:col-span-2 flex justify-center">
               <Card />
             </div>
 
-            <div className="flex justify-center col-span-2">
+            <div className="flex justify-center col-span-2 mb-8 md:mb-0">
               <MyAssetsCard
                 onClick={onClick}
                 wallet={wallet}
@@ -50,9 +50,9 @@ export default function WalletHomePage({
             </div>
           </div>
 
-          <div className="bg-transparent ml-96 rounded-full md:mt-10 md:w-44 h-32 shadow-background"></div>
+          <div className="hidden md:block bg-transparent ml-96 rounded-full md:w-44 h-20 shadow-background"></div>
 
-          <div className="w-full p-4 flex justify-center pr-6">
+          <div className="w-full md:p-4 flex justify-center md:pr-6">
             <AssetsCard wallet={wallet} />
           </div>
         </div>
@@ -73,6 +73,6 @@ export default function WalletHomePage({
           setAssetsComponents={setAssetsComponents}
         />
       )}
-    </>
+    </div>
   );
 }
