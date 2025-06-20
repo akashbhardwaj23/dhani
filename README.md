@@ -1,7 +1,7 @@
-# Web3 Wallet
+# Dhani
 
 A Web3 based wallet similar to backpack but as a website .
-We only support Solana Devnet blockchain
+We only support Solana Devnet blockchain right now
 
 It has multiple features -
   1 - Create multiple public/private key for a single account
@@ -42,7 +42,7 @@ Here is some information about the project
 Clone the project
 
 ```bash
-  git clone https://github.com/akashbhardwaj23/web3-wallet
+  git clone https://github.com/akashbhardwaj23/dhani
 ```
 
 Install dependencies
